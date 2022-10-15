@@ -1,12 +1,16 @@
 ﻿using System;
 using Resturant_managment.Models.Base;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Resturant_managment.Models
 {
 	public class Menu:BaseClass
 	{
-		string Name { get; set; }
-		List<Category> Categories { get; set; }
+		public string Name { get; set; }
+		public List<Category> Categories { get; set; }
+		public int Restaurantid { get; set; }
+		// public virtual Restaurant Restaurant { get; set; }
 	}
 }
 

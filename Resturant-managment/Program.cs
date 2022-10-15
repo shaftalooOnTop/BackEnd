@@ -1,4 +1,8 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using Resturant_managment;
+
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -7,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<RmDbContext>(options => options.UseSqlite("Data Source=Application.db;Cache=Shared"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

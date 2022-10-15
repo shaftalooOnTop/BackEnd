@@ -1,34 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using Microsoft.AspNetCore.Mvc;
+using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
 {
     [Route("api/[controller]")]
     public class MenuController : Controller
     {
-        // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly RmDbContext _db;
+        public MenuController(RmDbContext db)
         {
-            return new string[] { "value1", "value2" };
+            _db = db;
         }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{RestaurantId}")]
+        public IEnumerable<Menu> GetWholeMenus(int RestaurantId)
         {
-            return "value";
+            var menus = _db.Menus.Where(x => x.Restaurantid == RestaurantId);
+            
+            foreach (var menu in menus)
+            {
+                menu.Categories = GetMenuCategories(menu.id);
+                foreach (var category in menu.Categories)
+                {
+                    category.Foods = GetCategoryFoods(category.id);
+                }
+            }
+            return menus.ToList();
         }
-
-        // POST api/values
         [HttpPost]
         public void Post([FromBody]string value)
         {
+            
         }
 
         // PUT api/values/5
@@ -42,6 +43,11 @@ namespace Resturant_managment.Controllers
         public void Delete(int id)
         {
         }
+
+
+        private List<Food> GetCategoryFoods(int catId) => _db.Foods.Where(x => x.Categoryid == catId).ToList();
+        private List<Category> GetMenuCategories(int menuId) => _db.Categories.Where(x => x.Menuid == menuId).ToList();
+
     }
 }
 
