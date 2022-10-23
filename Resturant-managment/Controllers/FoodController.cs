@@ -51,6 +51,17 @@ namespace Resturant_managment.Controllers
                 return NoContent();
             }
         }
+
+        [HttpPut]
+        public ActionResult<Food> Put(Food value)
+        {
+            if (value.id == 0) return NotFound();
+            
+            _db.Foods.Update(value);
+            _db.SaveChangesAsync();
+            return Ok(value);
+        }
+        
     }
 }
 
