@@ -12,9 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
-    .AddIdentityCore<IdentityUser>(options => {
+    .AddIdentityCore<IdentityUser>(options =>
+    {
         options.SignIn.RequireConfirmedAccount = false;
-        options.User.RequireUniqueEmail = true;
         options.Password.RequireDigit = false;
         options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
@@ -43,8 +43,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

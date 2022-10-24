@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Resturant_managment.Models;
 using Resturant_managment.Services;
 
@@ -12,14 +13,14 @@ namespace Resturant_managment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SignUpController : ControllerBase
+    public class UserController : ControllerBase
     {
         
         private IConfiguration _conf;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtService _jwtService;
 
-        public SignUpController(IConfiguration conf,UserManager<IdentityUser> userManager,JwtService jwtService)
+        public UserController(IConfiguration conf,UserManager<IdentityUser> userManager,JwtService jwtService)
         {
             _conf = conf;
             _userManager = userManager;
@@ -34,7 +35,7 @@ namespace Resturant_managment.Controllers
             }
 
             var result = await _userManager.CreateAsync(
-                new IdentityUser() { UserName = user.Username },
+                new IdentityUser { UserName = user.Username,Email = user.Email},
                 user.Password
             );
 
@@ -84,7 +85,7 @@ namespace Resturant_managment.Controllers
             }
 
             var token = _jwtService.CreateToken(user);
-
+            
             return Ok(token);
         }
     }

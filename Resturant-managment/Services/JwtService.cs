@@ -9,7 +9,7 @@ namespace Resturant_managment.Services;
 
 public class JwtService
 {
-    private const int EXPIRATION_MINUTES = 1;
+    private const int EXPIRATION_MINUTES = 40;
 
     private readonly IConfiguration _configuration;
 
