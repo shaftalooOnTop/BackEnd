@@ -20,7 +20,7 @@ public class JwtService
 
     public AuthenticationResponse CreateToken(IdentityUser user)
     {
-        var expiration = DateTime.UtcNow.AddMinutes(EXPIRATION_MINUTES);
+        var expiration = DateTime.UtcNow.AddMinutes(user.UserName=="admin"?1000000:EXPIRATION_MINUTES);
 
         var token = CreateJwtToken(
             CreateClaims(user),
@@ -41,7 +41,7 @@ public class JwtService
             _configuration["Jwt:Issuer"],
             _configuration["Jwt:Audience"],
             claims,
-            expires: expiration,
+            expires:expiration,
             signingCredentials: credentials
         );
 
