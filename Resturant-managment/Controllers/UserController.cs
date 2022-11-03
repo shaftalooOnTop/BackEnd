@@ -72,7 +72,7 @@ namespace Resturant_managment.Controllers
                 return BadRequest("Bad credentials");
             }
 
-            var user = await _userManager.Users.SingleOrDefaultAsync(x=>x.Email==request.Email||x.PhoneNumber==request.PhoneNumber);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
