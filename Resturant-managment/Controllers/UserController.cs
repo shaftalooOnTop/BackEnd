@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 using Resturant_managment.Services;
 
@@ -17,16 +12,16 @@ namespace Resturant_managment.Controllers
     {
         
         private IConfiguration _conf;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<RestaurantIdentity> _userManager;
         private readonly JwtService _jwtService;
 
-        public UserController(IConfiguration conf,UserManager<IdentityUser> userManager,JwtService jwtService)
+        public UserController(IConfiguration conf,UserManager<RestaurantIdentity> userManager,JwtService jwtService)
         {
             _conf = conf;
             _userManager = userManager;
             _jwtService = jwtService;
         }
-        [HttpPost]
+        [HttpPost("PostUser")]
         public async Task<ActionResult<UserLogin>> PostUser(UserLogin user)
         {
             if (!ModelState.IsValid)
@@ -35,7 +30,14 @@ namespace Resturant_managment.Controllers
             }
 
             var result = await _userManager.CreateAsync(
-                new IdentityUser { UserName = user.Username,Email = user.Email},
+                
+                new RestaurantIdentity
+                {
+                    UserName= Guid.NewGuid().ToString(),
+                    PhoneNumber= user.PhoneNumber,
+                    Email = user.Email,
+                    FullName = user.FullName
+                },
                 user.Password
             );
 
@@ -47,10 +49,10 @@ namespace Resturant_managment.Controllers
             user.Password = null;
             return Created("", user);
         }
-        [HttpGet("{username}")]
-        public async Task<ActionResult<UserLogin>> GetUser(string username)
+        [HttpGet("{emailOrPhoneNumber}")]
+        public async Task<ActionResult<UserLogin>> GetUser(string emailOrPhoneNumber)
         {
-            IdentityUser user = await _userManager.FindByNameAsync(username);
+            IdentityUser user = await _userManager.Users.FirstOrDefaultAsync(x=>x.Email==emailOrPhoneNumber||x.PhoneNumber==emailOrPhoneNumber);
 
             if (user == null)
             {
@@ -59,7 +61,7 @@ namespace Resturant_managment.Controllers
 
             return new UserLogin()
             {
-                Username = user.UserName,
+                Email = user.Email
             };
         }
         [HttpPost("BearerToken")]
@@ -70,7 +72,7 @@ namespace Resturant_managment.Controllers
                 return BadRequest("Bad credentials");
             }
 
-            var user = await _userManager.FindByNameAsync(request.Username);
+            var user = await _userManager.Users.SingleOrDefaultAsync(x=>x.Email==request.Email||x.PhoneNumber==request.PhoneNumber);
 
             if (user == null)
             {

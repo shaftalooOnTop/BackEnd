@@ -5,7 +5,7 @@ using Resturant_managment.Models;
 
 namespace Resturant_managment;
 
-public class RmDbContext:IdentityUserContext<IdentityUser>
+public class RmDbContext:IdentityUserContext<RestaurantIdentity>
 {
     public RmDbContext(DbContextOptions<RmDbContext> options) : base(options)
     {

@@ -38,7 +38,7 @@ namespace Resturant_managment.Controllers
             _db.SaveChangesAsync();
         }
         [HttpPost("PostRange")]
-        public ActionResult< List<Food>> PostRange([FromBody] List<Food> value)
+        public ActionResult<List<Food>> PostRange([FromBody] List<Food> value)
         {
             try
             {
