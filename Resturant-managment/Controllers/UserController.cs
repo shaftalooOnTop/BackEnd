@@ -52,8 +52,7 @@ namespace Resturant_managment.Controllers
         [HttpGet("{emailOrPhoneNumber}")]
         public async Task<ActionResult<UserLogin>> GetUser(string emailOrPhoneNumber)
         {
-            IdentityUser user = await _userManager.Users.FirstOrDefaultAsync(x=>x.Email==emailOrPhoneNumber||x.PhoneNumber==emailOrPhoneNumber);
-
+            IdentityUser user = await _userManager.FindByEmailAsync(emailOrPhoneNumber);
             if (user == null)
             {
                 return NotFound();

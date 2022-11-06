@@ -27,21 +27,32 @@ namespace Resturant_managment.Controllers
             return menus.ToList();
         }
         [HttpPost]
-        public void Post([FromBody]string value)
+        public ActionResult<Menu> Post([FromBody]Menu value)
         {
-            
+            _db.Add(value);
+            _db.SaveChangesAsync();
+            return Created("",value);
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public ActionResult Put( [FromBody] Menu menu)
         {
+            _db.Menus.Update(menu);
+            _db.SaveChangesAsync();
+            return Ok();
+            
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            var t=_db.Menus.Find(id);
+            if (t == null) return NotFound();
+            _db.Menus.Remove(t);
+            _db.SaveChangesAsync();
+            return Ok();
         }
 
 

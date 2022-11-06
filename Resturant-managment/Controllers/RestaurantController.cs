@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 using Resturant_managment.Repositories;
 
-namespace Resturant_managment.Controllers
-{
+namespace Resturant_managment.Controllers;
+
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantController : ControllerBase
@@ -32,8 +32,6 @@ namespace Resturant_managment.Controllers
         {
             
             var rep = new MenuRepository(_db);
-            Console.WriteLine(rep.GetRestaurantMenu(id));
-            var t = rep.GetRestaurantMenu(id);
             return Ok(rep.GetRestaurantMenu(id));
         }
         [HttpGet("JustRestaurants")]
@@ -53,15 +51,5 @@ namespace Resturant_managment.Controllers
             _db.SaveChangesAsync();
             return Ok(value);
         }
-
-        [HttpPost("postMultiRestaurants")]
-        public ActionResult<IEnumerable<Restaurant>> PostMulti([FromBody] IEnumerable<Restaurant> value)
-        {
-            _db.Restaurant.AddRange(value);
-            _db.SaveChangesAsync();
-            return Ok(value);
-        }
-
-
     }
-}
+
