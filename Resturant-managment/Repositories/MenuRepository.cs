@@ -16,11 +16,10 @@ public class MenuRepository:IDisposable
         return _db.Menus.ToList();
     }
 
-    public IEnumerable<Menu> GetRestaurantMenu(int id)
+    public IEnumerable<Menu> GetRestaurantMenu(int restaurantId)
     {
-        var t = _db.Restaurant.ToList();
-        Console.WriteLine(t);
-        return _db.Menus.Where(x => x.id == id);
+        var t=_db.Menus.Where(x => x.Restaurantid == restaurantId);
+        return t;
     }
 
     public void Dispose()

@@ -32,7 +32,8 @@ namespace Resturant_managment.Controllers;
         {
             
             var rep = new MenuRepository(_db);
-            return Ok(rep.GetRestaurantMenu(id));
+        var r = _db.Restaurant.Where(x=>x.id==id);
+            return Ok(r);
         }
         [HttpGet("JustRestaurants")]
         public ActionResult<List<Restaurant>> GetJustRestaurantList()
@@ -51,5 +52,32 @@ namespace Resturant_managment.Controllers;
             _db.SaveChangesAsync();
             return Ok(value);
         }
+
+        [HttpGet("GetRestaurantsCardData")]
+        public IEnumerable<RestaurantCard> GetRestaurantsCardData()
+        {
+            var restaurants = _db.Restaurant.ToList();
+            var result = new List<RestaurantCard>();
+            foreach (var i in restaurants)
+            {
+                var avg = _db.Comments.Average(x => x.Rate);
+
+                var card = new RestaurantCard
+                {
+                    Avg = avg,
+                    Address = i.Address,
+                    id = i.id,
+                    name = i.name,
+                    Menus = null,
+                    Orders = null
+                };
+                result.Append(card);
+
+            }
+
+            return result;
+        }
+
+
     }
 

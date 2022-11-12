@@ -6,9 +6,9 @@ namespace Resturant_managment.Models
 	{
         public string? CategoryName { get; set; }
         // public int MenuId { get; set; }
-        public List<Food> Foods { get; set; }
+        public List<Food>? Foods { get; set; }
 
-        // public virtual Menu Menu { get; set; }
+        public virtual Menu? Menu { get; }
         public int? Menuid { get; set; }
     }
 }

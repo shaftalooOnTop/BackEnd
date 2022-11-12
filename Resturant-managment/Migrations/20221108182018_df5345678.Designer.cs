@@ -11,8 +11,8 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    [Migration("20221103083506_erfg3")]
-    partial class erfg3
+    [Migration("20221108182018_df5345678")]
+    partial class df5345678
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,6 +102,32 @@ namespace Resturant_managment.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Resturant_managment.Models.Comment", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RestaurantUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RestaurantUserId1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("RestaurantUserId1");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Resturant_managment.Models.Food", b =>
                 {
                     b.Property<int>("id")
@@ -178,6 +204,10 @@ namespace Resturant_managment.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -258,6 +288,29 @@ namespace Resturant_managment.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Resturant_managment.Models.Tag", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Restaurantid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ResturantId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("value")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("Restaurantid");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("Resturant_managment.Models.RestaurantIdentity", null)
@@ -287,9 +340,20 @@ namespace Resturant_managment.Migrations
 
             modelBuilder.Entity("Resturant_managment.Models.Category", b =>
                 {
-                    b.HasOne("Resturant_managment.Models.Menu", null)
+                    b.HasOne("Resturant_managment.Models.Menu", "Menu")
                         .WithMany("Categories")
                         .HasForeignKey("Menuid");
+
+                    b.Navigation("Menu");
+                });
+
+            modelBuilder.Entity("Resturant_managment.Models.Comment", b =>
+                {
+                    b.HasOne("Resturant_managment.Models.RestaurantIdentity", "RestaurantUser")
+                        .WithMany()
+                        .HasForeignKey("RestaurantUserId1");
+
+                    b.Navigation("RestaurantUser");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Food", b =>
@@ -321,6 +385,17 @@ namespace Resturant_managment.Migrations
                         .HasForeignKey("Restaurantid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Resturant_managment.Models.Tag", b =>
+                {
+                    b.HasOne("Resturant_managment.Models.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("Restaurantid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Category", b =>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Resturant_managment.Controllers
 {
@@ -61,7 +57,20 @@ namespace Resturant_managment.Controllers
             _db.SaveChangesAsync();
             return Ok(value);
         }
-        
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var t = _db.Foods.Find(id);
+            if (t==null)
+            {
+                return NotFound();
+            }
+
+            _db.Remove(t);
+            _db.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
 
