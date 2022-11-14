@@ -24,16 +24,20 @@ builder.Services
         options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<RmDbContext>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<JwtService>();
 
-builder.Services.AddDbContext<RmDbContext>(options => options.UseSqlite("Data Source=Application.db;Cache=Shared"));
+builder.Services.AddDbContext<RmDbContext>(options => options.
+    UseLazyLoadingProxies().
+    UseSqlite("Data Source=Application.db;Cache=Shared"));
 var config = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(config);  
-
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddCors();
 
 var app = builder.Build();
@@ -50,7 +54,7 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.UseAuthentication();
-
+app.UseStaticFiles();   
 app.UseAuthorization();
 app.UseCors(builder1 =>
 {
