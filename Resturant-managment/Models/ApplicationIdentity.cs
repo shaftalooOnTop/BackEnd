@@ -11,7 +11,7 @@ public class RestaurantIdentity:IdentityUser
 
 
 
-        public string city { get; set; }
+        public virtual City? city { get; set; }
 
         public int Age { get; set; }
 

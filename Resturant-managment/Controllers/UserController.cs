@@ -14,32 +14,46 @@ namespace Resturant_managment.Controllers
         private IConfiguration _conf;
         private readonly UserManager<RestaurantIdentity> _userManager;
         private readonly JwtService _jwtService;
+        private readonly RmDbContext _db;
 
-        public UserController(IConfiguration conf,UserManager<RestaurantIdentity> userManager,JwtService jwtService)
+        public UserController(IConfiguration conf,UserManager<RestaurantIdentity> userManager,JwtService jwtService , RmDbContext db)
         {
             _conf = conf;
             _userManager = userManager;
             _jwtService = jwtService;
+            _db = db;
         }
         [HttpPost("PostUser")]
-        public async Task<ActionResult<UserLogin>> PostUser(UserLogin user)
+        public async Task<ActionResult<UserLogin>> PostUser(UserSignUp user)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            var city = _db.Cities.FirstOrDefault(x=>x.CityName==user.city);
+            if (city == null)
+            {
+                var city1 = new City { CityName = user.city };
+                _db.Cities.Add(city1);
+                _db.SaveChanges();
+            }
             var result = await _userManager.CreateAsync(
-                
+
                 new RestaurantIdentity
                 {
-                    UserName= Guid.NewGuid().ToString(),
-                    PhoneNumber= user.PhoneNumber,
+                    UserName = Guid.NewGuid().ToString(),
+                    PhoneNumber = user.PhoneNumber,
                     Email = user.Email,
-                    FullName = user.FullName
+                    FullName = user.FullName,
+                    city = city,
+                    Age = user.Age,
+                    Gender = user.Gender,
+                    Picture = user.Picture
+
                 },
                 user.Password
-            );
+            ); ;
 
             if (!result.Succeeded)
             {
@@ -91,17 +105,26 @@ namespace Resturant_managment.Controllers
 
         }
         [HttpPut]
-        public async Task<ActionResult<AuthenticationResponse>> UserUpdate(RestaurantIdentity userupdate)
+        public async Task<ActionResult<AuthenticationResponse>> UserUpdate(UserSignUp userupdate)
         {
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
             if (upuser == null)
             {
                 return NotFound();
-
             }
-       userupdate.Id= upuser.Id;
-
-            _userManager.UpdateAsync(userupdate);
+  //          "email": "w@e.k",
+  //"phoneNumber": "091",
+  //"fullName": "ahmad",
+  //"picture": "pic",
+  //"age": 20,
+  //"gender": "jhkgv"
+            upuser.Email = userupdate.Email;
+            upuser.PhoneNumber =userupdate.PhoneNumber;
+            upuser.FullName = userupdate.FullName;
+            upuser.Picture=userupdate.Picture;
+            upuser.Age=userupdate.Age;
+            upuser.Gender = userupdate.Gender;
+            _userManager.UpdateAsync(upuser);
             return Ok(); 
         }
     }
