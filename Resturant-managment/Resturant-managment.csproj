@@ -42,7 +42,6 @@
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Models\Base\" />
   </ItemGroup>
 </Project>

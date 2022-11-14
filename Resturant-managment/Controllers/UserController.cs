@@ -88,6 +88,21 @@ namespace Resturant_managment.Controllers
             var token = _jwtService.CreateToken(user);
             
             return Ok(token);
+
+        }
+        [HttpPut]
+        public async Task<ActionResult<AuthenticationResponse>> UserUpdate(RestaurantIdentity userupdate)
+        {
+            var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
+            if (upuser == null)
+            {
+                return NotFound();
+
+            }
+       userupdate.Id= upuser.Id;
+
+            _userManager.UpdateAsync(userupdate);
+            return Ok(); 
         }
     }
 }

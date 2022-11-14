@@ -5,4 +5,17 @@ namespace Resturant_managment.Models;
 public class RestaurantIdentity:IdentityUser
 {
     public string FullName { get; set; }
+
+
+        public string Picture { get; set; }
+
+
+
+        public string city { get; set; }
+
+        public int Age { get; set; }
+
+        public string Gender { get; set; }
+
+
 }
