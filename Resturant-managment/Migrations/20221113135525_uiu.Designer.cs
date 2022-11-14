@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -10,9 +11,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221113135525_uiu")]
+    partial class uiu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -88,18 +90,14 @@ namespace Resturant_managment.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("MenuId")
+                    b.Property<int?>("Menuid")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("id");
 
-                    b.HasIndex("MenuId");
+                    b.HasIndex("Menuid");
 
                     b.ToTable("Categories");
                 });
@@ -114,9 +112,6 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("id");
 
                     b.ToTable("Cities");
@@ -128,13 +123,7 @@ namespace Resturant_managment.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Rate")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RestaurantId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("RestaurantUserId")
@@ -145,8 +134,6 @@ namespace Resturant_managment.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("id");
-
-                    b.HasIndex("RestaurantId");
 
                     b.HasIndex("RestaurantUserId");
 
@@ -164,9 +151,6 @@ namespace Resturant_managment.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
@@ -195,9 +179,6 @@ namespace Resturant_managment.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -217,9 +198,6 @@ namespace Resturant_managment.Migrations
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("Restaurantid")
                         .HasColumnType("INTEGER");
@@ -241,15 +219,8 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("BackgroundImg")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("Cityid")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -259,7 +230,11 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("backgroundImg")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -344,10 +319,10 @@ namespace Resturant_managment.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("Restaurantid")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("RestaurantId")
+                    b.Property<int>("ResturantId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("value")
@@ -356,7 +331,7 @@ namespace Resturant_managment.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("Restaurantid");
 
                     b.ToTable("Tags");
                 });
@@ -390,28 +365,16 @@ namespace Resturant_managment.Migrations
 
             modelBuilder.Entity("Resturant_managment.Models.Category", b =>
                 {
-                    b.HasOne("Resturant_managment.Models.Menu", "Menu")
+                    b.HasOne("Resturant_managment.Models.Menu", null)
                         .WithMany("Categories")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
+                        .HasForeignKey("Menuid");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Comment", b =>
                 {
-                    b.HasOne("Resturant_managment.Models.Restaurant", "Restaurant")
-                        .WithMany("Comments")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Resturant_managment.Models.RestaurantIdentity", "RestaurantUser")
                         .WithMany()
                         .HasForeignKey("RestaurantUserId");
-
-                    b.Navigation("Restaurant");
 
                     b.Navigation("RestaurantUser");
                 });
@@ -460,9 +423,7 @@ namespace Resturant_managment.Migrations
                 {
                     b.HasOne("Resturant_managment.Models.Restaurant", "Restaurant")
                         .WithMany("Tags")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Restaurantid");
 
                     b.Navigation("Restaurant");
                 });
@@ -489,8 +450,6 @@ namespace Resturant_managment.Migrations
 
             modelBuilder.Entity("Resturant_managment.Models.Restaurant", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Menus");
 
                     b.Navigation("Orders");

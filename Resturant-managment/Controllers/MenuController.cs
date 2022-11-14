@@ -58,7 +58,7 @@ namespace Resturant_managment.Controllers
 
 
         private List<Food> GetCategoryFoods(int catId) => _db.Foods.Where(x => x.Categoryid == catId).ToList();
-        private List<Category> GetMenuCategories(int menuId) => _db.Categories.Where(x => x.Menuid == menuId).ToList();
+        private List<Category> GetMenuCategories(int menuId) => _db.Categories.Where(x => x.MenuId == menuId).ToList();
 
     }
 }

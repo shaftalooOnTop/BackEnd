@@ -30,7 +30,7 @@ namespace Resturant_managment.Controllers
 
         // POST: api/Categories
         [HttpPost]
-        public ActionResult Post([FromBody] Category value)
+        public ActionResult Post(Category value)
         {
             return Ok(_db.Add(value));
         }

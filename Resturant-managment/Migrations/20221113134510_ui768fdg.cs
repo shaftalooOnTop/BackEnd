@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Resturant_managment.Migrations
 {
-    public partial class df5345678 : Migration
+    public partial class ui768fdg : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,18 +36,16 @@ namespace Resturant_managment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Restaurant",
+                name: "Cities",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "TEXT", nullable: false),
-                    Address = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false)
+                    CityName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Restaurant", x => x.id);
+                    table.PrimaryKey("PK_Cities", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,17 +117,40 @@ namespace Resturant_managment.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: false),
                     Rate = table.Column<int>(type: "INTEGER", nullable: false),
-                    RestaurantUserId1 = table.Column<string>(type: "TEXT", nullable: true),
-                    RestaurantUserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    RestaurantUserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_RestaurantUserId1",
-                        column: x => x.RestaurantUserId1,
+                        name: "FK_Comments_AspNetUsers_RestaurantUserId",
+                        column: x => x.RestaurantUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Restaurant",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(type: "TEXT", nullable: false),
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    LogoImg = table.Column<string>(type: "TEXT", nullable: false),
+                    backgroundImg = table.Column<string>(type: "TEXT", nullable: false),
+                    Cityid = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Restaurant", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Restaurant_Cities_Cityid",
+                        column: x => x.Cityid,
+                        principalTable: "Cities",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,7 +199,7 @@ namespace Resturant_managment.Migrations
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ResturantId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Restaurantid = table.Column<int>(type: "INTEGER", nullable: false),
+                    Restaurantid = table.Column<int>(type: "INTEGER", nullable: true),
                     value = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -188,8 +209,7 @@ namespace Resturant_managment.Migrations
                         name: "FK_Tags_Restaurant_Restaurantid",
                         column: x => x.Restaurantid,
                         principalTable: "Restaurant",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -220,7 +240,7 @@ namespace Resturant_managment.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<string>(type: "TEXT", nullable: true),
                     Image = table.Column<string>(type: "TEXT", nullable: true),
-                    Categoryid = table.Column<int>(type: "INTEGER", nullable: false),
+                    Categoryid = table.Column<int>(type: "INTEGER", nullable: true),
                     Count = table.Column<int>(type: "INTEGER", nullable: false),
                     Orderid = table.Column<int>(type: "INTEGER", nullable: true)
                 },
@@ -231,8 +251,7 @@ namespace Resturant_managment.Migrations
                         name: "FK_Foods_Categories_Categoryid",
                         column: x => x.Categoryid,
                         principalTable: "Categories",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Foods_Orders_Orderid",
                         column: x => x.Orderid,
@@ -267,9 +286,9 @@ namespace Resturant_managment.Migrations
                 column: "Menuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_RestaurantUserId1",
+                name: "IX_Comments_RestaurantUserId",
                 table: "Comments",
-                column: "RestaurantUserId1");
+                column: "RestaurantUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Foods_Categoryid",
@@ -290,6 +309,11 @@ namespace Resturant_managment.Migrations
                 name: "IX_Orders_Restaurantid",
                 table: "Orders",
                 column: "Restaurantid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurant_Cityid",
+                table: "Restaurant",
+                column: "Cityid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_Restaurantid",
@@ -331,6 +355,9 @@ namespace Resturant_managment.Migrations
 
             migrationBuilder.DropTable(
                 name: "Restaurant");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
         }
     }
 }
