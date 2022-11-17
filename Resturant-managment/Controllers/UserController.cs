@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 using Resturant_managment.Services;
@@ -10,13 +12,13 @@ namespace Resturant_managment.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        
+
         private IConfiguration _conf;
         private readonly UserManager<RestaurantIdentity> _userManager;
         private readonly JwtService _jwtService;
         private readonly RmDbContext _db;
 
-        public UserController(IConfiguration conf,UserManager<RestaurantIdentity> userManager,JwtService jwtService , RmDbContext db)
+        public UserController(IConfiguration conf, UserManager<RestaurantIdentity> userManager, JwtService jwtService, RmDbContext db)
         {
             _conf = conf;
             _userManager = userManager;
@@ -31,7 +33,7 @@ namespace Resturant_managment.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var city = _db.Cities.FirstOrDefault(x=>x.CityName==user.city);
+            var city = _db.Cities.FirstOrDefault(x => x.CityName == user.city);
             if (city == null)
             {
                 var city1 = new City { CityName = user.city };
@@ -100,7 +102,7 @@ namespace Resturant_managment.Controllers
             }
 
             var token = _jwtService.CreateToken(user);
-            
+
             return Ok(token);
 
         }
@@ -112,20 +114,35 @@ namespace Resturant_managment.Controllers
             {
                 return NotFound();
             }
-  //          "email": "w@e.k",
-  //"phoneNumber": "091",
-  //"fullName": "ahmad",
-  //"picture": "pic",
-  //"age": 20,
-  //"gender": "jhkgv"
+            //          "email": "w@e.k",
+            //"phoneNumber": "091",
+            //"fullName": "ahmad",
+            //"picture": "pic",
+            //"age": 20,
+            //"gender": "jhkgv"
             upuser.Email = userupdate.Email;
-            upuser.PhoneNumber =userupdate.PhoneNumber;
+            upuser.PhoneNumber = userupdate.PhoneNumber;
             upuser.FullName = userupdate.FullName;
-            upuser.Picture=userupdate.Picture;
-            upuser.Age=userupdate.Age;
+            upuser.Picture = userupdate.Picture;
+            upuser.Age = userupdate.Age;
             upuser.Gender = userupdate.Gender;
             _userManager.UpdateAsync(upuser);
-            return Ok(); 
+            return Ok();
+        }
+        [HttpPut("changpass")]
+        public async Task<ActionResult<UserLogin>> ChangePasswoerd(UserLogin userupdate,  string newpass)
+        {
+            var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
+            if (upuser == null)
+            {
+                return NotFound();
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(upuser);
+            var r = await _userManager.ResetPasswordAsync(upuser, token, newpass);
+            _userManager.UpdateAsync(upuser);
+            _db.Update(upuser);
+            _db.SaveChanges();
+            return Ok();
         }
     }
 }
