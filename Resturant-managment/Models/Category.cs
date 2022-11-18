@@ -10,7 +10,7 @@ namespace Resturant_managment.Models
         public int RestaurantId { get; set; }
         public virtual List<Food>? Foods { get; set; }
         [JsonIgnore]
-        [ForeignKey("MenuId")]
+        [ForeignKey("RestaurantId")]
         public virtual Restaurant? Restaurant { get; set; }
       
     }

@@ -13,7 +13,11 @@ public class Restaurant:BaseClass
     public string Description { get; set; }
     public string LogoImg { get; set; }
     public string BackgroundImg { get; set; }
+    public virtual int CityId { get; set; }
+
+    [ForeignKey("CityId")]
     public virtual City? City { get; set; }
+    
     public virtual ICollection<Comment>? Comments { get; set; }
     public double Avg { get; set; }
 
