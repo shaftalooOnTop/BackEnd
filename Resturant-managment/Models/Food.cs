@@ -11,7 +11,7 @@ namespace Resturant_managment.Models
         public int? Categoryid { get; set; }
         public int Count { get; set; }
         // public int? Orderid { get; set; }
-        
+        public string FoodDescription { get; set; }
         public virtual Category? Category { get; set; }
 	}
 }
