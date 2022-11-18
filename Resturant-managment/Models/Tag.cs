@@ -11,7 +11,7 @@ namespace Resturant_managment.Models
 		public int  RestaurantId { get; set; }
 		[ForeignKey("RestaurantId")]
 		[JsonIgnore]
-		public virtual Restaurant Restaurant { get; set; }
+		public virtual Restaurant? Restaurant { get; set; }
         public string value { get; set; }
 
     }

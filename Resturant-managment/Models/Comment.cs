@@ -7,11 +7,12 @@ namespace Resturant_managment.Models;
 public class Comment:BaseClass
 {
     public string Value { get; set; }
-    public int Rate { get; set; } 
-    public virtual RestaurantIdentity RestaurantUser { get; set; }
+    public int Rate { get; set; }
     [JsonIgnore]
-    public virtual Restaurant Restaurant { get; set; }
+    public virtual RestaurantIdentity? RestaurantUser { get; set; }
     [JsonIgnore]
-    [ForeignKey("Restaurant")]
+    [ForeignKey("RestaurantId")]
+    public virtual Restaurant? Restaurant { get; set; }
+    
     public int RestaurantId { get; set; }
 }

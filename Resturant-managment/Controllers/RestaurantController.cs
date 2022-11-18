@@ -34,10 +34,11 @@ namespace Resturant_managment.Controllers;
         [HttpGet("{id}")]
         public ActionResult<Restaurant> Get(int id)
         {
-            
-         
-        var r = _db.Restaurant.Include("Tags").Where(x=>x.id==id);
-            return Ok(r.FirstOrDefault());
+
+        var restaurants = _db.Restaurant.ToList().FirstOrDefault(x => x.id == id);
+        restaurants.Avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5; 
+
+        return Ok(restaurants);
         }
         [HttpGet("JustRestaurants")]
         public ActionResult<List<Restaurant>> GetJustRestaurantList()
@@ -57,15 +58,7 @@ namespace Resturant_managment.Controllers;
             return Ok(value);
         }
 
-        [HttpGet("GetRestaurantsCardData")]
-        public IEnumerable<Restaurant> GetRestaurantsCardData()
-        {
-            var res = new List<Restaurant>();
-            var restaurants = _db.Restaurant.ToList().Select(x=>x.Avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5);
-      
 
-            return res;
-        }
 [HttpGet("MakeFakeData")]
         public ActionResult MakeFakeData()
         {

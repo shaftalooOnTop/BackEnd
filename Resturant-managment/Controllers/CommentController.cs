@@ -36,7 +36,8 @@ namespace Resturant_managment.Controllers
         public ActionResult Post([FromBody] Comment value)
         {
             _db.Add(value);
-            _db.SaveChangesAsync();
+            int n=_db.SaveChanges();
+            Console.Write(n);
             return Created("", value);
         }
 
