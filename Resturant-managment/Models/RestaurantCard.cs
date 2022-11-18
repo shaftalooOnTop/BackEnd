@@ -4,4 +4,5 @@ public class RestaurantCard:Restaurant
 {
  public double Avg;
  
+ 
 }
