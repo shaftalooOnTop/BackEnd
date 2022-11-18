@@ -67,7 +67,7 @@ namespace Resturant_managment.Controllers
             return Created("", user);
         }
         [HttpGet("{emailOrPhoneNumber}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<UserLogin>> GetUser(string emailOrPhoneNumber)
         {
             IdentityUser user = await _userManager.FindByEmailAsync(emailOrPhoneNumber);
@@ -82,7 +82,7 @@ namespace Resturant_managment.Controllers
             };
         }
         [HttpPost("BearerToken")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(UserLogin request)
         {
             if (!ModelState.IsValid)

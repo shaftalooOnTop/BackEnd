@@ -32,7 +32,7 @@ public class RestaurantController : ControllerBase
         restaurantList.All(x => { x.Comments = null; return true; });
         if (tag == "all")
             return Ok(restaurantList);
-        restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag)); ;
+        restaurantList=restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag)); 
         return Ok(restaurantList);
     }
 
@@ -51,7 +51,7 @@ public class RestaurantController : ControllerBase
         var justRestaurantList = _db.Restaurant.ToList();
         foreach (var item in justRestaurantList)
         {
-            item.Menus = null;
+            item.Menu = null;
         }
         return justRestaurantList;
     }

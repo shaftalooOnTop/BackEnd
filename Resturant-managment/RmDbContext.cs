@@ -18,7 +18,6 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
 
     public DbSet<Category> Categories { get; set; }
     public DbSet<Food> Foods { get; set; }
-    public DbSet<Menu> Menus { get; set; }
     public DbSet<Restaurant> Restaurant { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Order> Orders { get; set; }

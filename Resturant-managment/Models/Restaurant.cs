@@ -7,9 +7,8 @@ public class Restaurant:BaseClass
 {
     public string Name { get; set; }
     public string Address { get; set; }
-    public virtual List<Menu>? Menus { get; set; }
+    public virtual List<Category>? Menu { get; set; }
     public virtual List<Order>? Orders { get;set; }
-    // [ForeignKey("RestaurantId")]
     public virtual ICollection<Tag>? Tags { get;set; }
     public string Description { get; set; }
     public string LogoImg { get; set; }
