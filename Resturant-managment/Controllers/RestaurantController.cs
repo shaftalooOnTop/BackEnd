@@ -25,14 +25,14 @@ public class RestaurantController : ControllerBase
         _mapper = mapper;
     }
     [HttpGet]
-    public ActionResult<List<Restaurant>> Get(string tag="", int size = 10, int number = 0)
+    public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0)
     {
 
         var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
         restaurantList.All(x => { x.Comments = null; return true; });
-        if (tag == null || tag == "")
+        if (tag == "all")
             return Ok(restaurantList);
-        restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(x => x.value == tag)); ;
+        restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag)); ;
         return Ok(restaurantList);
     }
 
