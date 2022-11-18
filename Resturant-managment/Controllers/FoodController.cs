@@ -49,13 +49,13 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpPut]
-        public ActionResult<Food> Put(Food value)
+        public ActionResult<Food> Put(Food val)
         {
-            if (value.id == 0) return NotFound();
+            if (val.id == 0) return NotFound();
             
-            _db.Foods.Update(value);
+            _db.Foods.Update(val);
             _db.SaveChangesAsync();
-            return Ok(value);
+            return Ok(val);
         }
 
         [HttpDelete]

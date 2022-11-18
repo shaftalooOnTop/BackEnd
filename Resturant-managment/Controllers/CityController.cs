@@ -21,7 +21,7 @@ namespace Resturant_managment.Controllers
         }
 
         // GET: api/City/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{name}")]
         public City Get(string name)
         {
             return _db.Cities.FirstOrDefault(x=>x.CityName==name);
@@ -52,7 +52,8 @@ namespace Resturant_managment.Controllers
             var city = _db.Cities.Find(id);
             if (city == null) return NotFound();
             _db.Remove(city);
-            return Ok(1);
+            _db.SaveChangesAsync();
+            return Ok(city);
 
         }
     }

@@ -31,8 +31,11 @@ namespace Resturant_managment.Controllers
         // POST: api/Categories
         [HttpPost]
         public ActionResult Post(Category value)
+
         {
-            return Ok(_db.Add(value));
+            _db.Add(value);
+            _db.SaveChanges();
+            return Ok(value);
         }
 
         // PUT: api/Categories/5

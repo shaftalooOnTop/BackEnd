@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Resturant_managment.Models.Base;
 namespace Resturant_managment.Models
@@ -6,7 +6,7 @@ namespace Resturant_managment.Models
 	public class Food:BaseClass
 	{
 		public string? Name { get; set; }
-        public string? Price { get; set; }
+        public int ? Price { get; set; }
         public string? Image { get; set; }
         public int? Categoryid { get; set; }
         public int Count { get; set; }

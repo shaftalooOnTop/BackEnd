@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -66,6 +67,7 @@ namespace Resturant_managment.Controllers
             return Created("", user);
         }
         [HttpGet("{emailOrPhoneNumber}")]
+        [Authorize]
         public async Task<ActionResult<UserLogin>> GetUser(string emailOrPhoneNumber)
         {
             IdentityUser user = await _userManager.FindByEmailAsync(emailOrPhoneNumber);
@@ -80,6 +82,7 @@ namespace Resturant_managment.Controllers
             };
         }
         [HttpPost("BearerToken")]
+        [Authorize]
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(UserLogin request)
         {
             if (!ModelState.IsValid)
@@ -107,6 +110,7 @@ namespace Resturant_managment.Controllers
 
         }
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult<AuthenticationResponse>> UserUpdate(UserSignUp userupdate)
         {
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
@@ -130,6 +134,7 @@ namespace Resturant_managment.Controllers
             return Ok();
         }
         [HttpPut("changpass")]
+        [Authorize]
         public async Task<ActionResult<UserLogin>> ChangePasswoerd(UserLogin userupdate,  string newpass)
         {
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
@@ -143,6 +148,16 @@ namespace Resturant_managment.Controllers
             _db.Update(upuser);
             _db.SaveChanges();
             return Ok();
+        }
+        [Authorize]
+        [HttpGet("GetUserData")]
+        public async Task<ActionResult<RestaurantIdentity>> GetUserData()
+        {
+
+            var email = User.FindFirst("sub")?.Value;
+            var user=await _userManager.FindByEmailAsync(email);
+            if (user == null) return NotFound();
+            return user;
         }
     }
 }
