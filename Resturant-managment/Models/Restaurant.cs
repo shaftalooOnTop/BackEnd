@@ -16,4 +16,6 @@ public class Restaurant:BaseClass
     public string BackgroundImg { get; set; }
     public virtual City? City { get; set; }
     public virtual ICollection<Comment>? Comments { get; set; }
+    public double Avg { get; set; }
+
 }

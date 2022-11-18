@@ -58,31 +58,11 @@ namespace Resturant_managment.Controllers;
         }
 
         [HttpGet("GetRestaurantsCardData")]
-        public IEnumerable<RestaurantCard> GetRestaurantsCardData()
+        public IEnumerable<Restaurant> GetRestaurantsCardData()
         {
-            var res = new List<RestaurantCard>(1);
-            var restaurants = _db.Restaurant.ToList();
-            foreach (var i in restaurants)
-            {
-                
-                var avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5;
-                var card = new RestaurantCard
-                {
-                    Avg = avg,
-                    Address = i.Address,
-                    id = i.id,
-                    Name = i.Name,
-                    Menus = i.Menus,
-                    Orders = null,
-                    BackgroundImg=i.BackgroundImg,
-                    City=i.City,
-                    DateCreated=i.DateCreated,
-                    Description=i.Description,
-                    LogoImg=i.LogoImg,
-                    Tags=i.Tags
-                };
-                res.Add(card);
-            }
+            var res = new List<Restaurant>();
+            var restaurants = _db.Restaurant.ToList().Select(x=>x.Avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5);
+      
 
             return res;
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Resturant_managment.Models.Base;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Resturant_managment.Models
 {
@@ -9,8 +9,10 @@ namespace Resturant_managment.Models
 	{
 		public string Name { get; set; }
 		public virtual List<Category>? Categories { get; set; }
+		[JsonIgnore]
 		public int Restaurantid { get; set; }
-		// public virtual Restaurant Restaurant { get; set; }
+		[JsonIgnore]
+		public virtual Restaurant Restaurant { get; set; }
 	}
 }
 
