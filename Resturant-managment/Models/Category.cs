@@ -9,7 +9,7 @@ namespace Resturant_managment.Models
         public string CategoryName { get; set; }
         public int RestaurantId { get; set; }
         public virtual List<Food>? Foods { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         [ForeignKey("RestaurantId")]
         public virtual Restaurant? Restaurant { get; set; }
       

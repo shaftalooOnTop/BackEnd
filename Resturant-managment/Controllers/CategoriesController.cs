@@ -18,7 +18,15 @@ namespace Resturant_managment.Controllers
         [HttpGet]
         public IEnumerable<Category> Get()
         {
-            return _db.Categories.ToList();
+            var t = _db.Categories.ToList();
+            t.All(x => { x.Restaurant = null; return true; });
+            return t;
+        }
+
+        [HttpGet("GetMenu")]
+        public List<Category> GetMenu(int restaurantid)
+        {
+           return _db.Categories.Where(x => x.RestaurantId == restaurantid).ToList();
         }
 
         // GET: api/Categories/5

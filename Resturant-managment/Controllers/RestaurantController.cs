@@ -28,7 +28,7 @@ public class RestaurantController : ControllerBase
     public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0)
     {
 
-        var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
+            var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
         restaurantList.All(x => { x.Comments = null; return true; });
         if (tag == "all")
             return Ok(restaurantList);
