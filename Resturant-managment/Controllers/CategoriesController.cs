@@ -22,7 +22,7 @@ namespace Resturant_managment.Controllers
         }
 
         // GET: api/Categories/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public Category? Get(int id)
         {
             return _db.Categories.Find(id);

@@ -12,22 +12,26 @@ using Resturant_managment.Models.HTTPModels;
 
 namespace Resturant_managment.Controllers;
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RestaurantController : ControllerBase
-    {
-        private readonly RmDbContext _db;
-        private readonly IMapper _mapper;
+[Route("api/[controller]")]
+[ApiController]
+public class RestaurantController : ControllerBase
+{
+    private readonly RmDbContext _db;
+    private readonly IMapper _mapper;
 
-        public RestaurantController(RmDbContext db,IMapper mapper)
+    public RestaurantController(RmDbContext db, IMapper mapper)
+    {
+        _db = db;
+        _mapper = mapper;
+    }
+    [HttpGet]
+        public ActionResult<List<Restaurant>> Get(string tag,  int size=10,  int number=0)
         {
-            _db = db;
-            _mapper = mapper;
-        }
-        [HttpGet]
-        public ActionResult<List<Restaurant>> Get()
-        {
-            var restaurantList = _db.Restaurant.ToList();
+
+        var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
+            restaurantList.All(x=> { x.Comments = null;return true; });
+
+        restaurantList.Where(x => x.Tags == null ?false: x.Tags.Any(x => x.value == tag)); ;
             return Ok(restaurantList);
         }
 
