@@ -24,4 +24,5 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     public DbSet<Comment> Comments { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<RestaurantTable> RestaurantTables { get; set; }
+    public DbSet<resrvetime> Resrvetimes { get; set; }
 }

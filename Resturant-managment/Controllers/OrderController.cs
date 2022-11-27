@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
 
@@ -33,7 +34,27 @@ namespace Resturant_managment.Controllers
             var result = _db.Orders.Find(id);
             return Ok(result);
         }
-        
 
-}
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            var o = _db.Orders.Find(id);
+            if (o == null) return NotFound();
+            _db.Remove(o);
+            _db.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut]
+        public ActionResult Put(Order o)
+        {
+            if (o.id == 0) return NotFound();
+            _db.Update(o);
+            _db.SaveChangesAsync();
+            return Ok();
+        }
+
+       
+
+    }
 }
