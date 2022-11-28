@@ -12,7 +12,7 @@ public class Order:BaseClass
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("RestaurantId")]
     public virtual Restaurant? Restaurant { get; set; }
-
+    public virtual Payment Payment { get; set; }
 
     public int UserId { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]

@@ -15,4 +15,5 @@ public class Comment:BaseClass
     public virtual Restaurant? Restaurant { get; set; }
     
     public int RestaurantId { get; set; }
+    public string ManagerComment { get; set; }
 }
