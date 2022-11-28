@@ -4,6 +4,7 @@ namespace Resturant_managment.Models;
 
 public class UserLogin
 {
+    public string Id { get; set; }
     [Required]
     public string PhoneNumber { get; set; }
     [Required]
