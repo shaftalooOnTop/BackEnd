@@ -6,4 +6,5 @@ public class Order:BaseClass
 {
     public virtual List<Food> Foods { get; set; }
     public int Restaurantid { get; set; }
+    public virtual List<Payment> Payments { get; set; }
 }
