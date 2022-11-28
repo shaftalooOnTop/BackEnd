@@ -6,7 +6,8 @@ namespace Resturant_managment.Models;
 
 public class Order:BaseClass
 {
-    public virtual List<Food> Foods { get; set; }
+    public int trackingCode { get; set; }
+    public virtual ICollection<Food> Foods { get; set; }
     public int Restaurantid { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("RestaurantId")]
