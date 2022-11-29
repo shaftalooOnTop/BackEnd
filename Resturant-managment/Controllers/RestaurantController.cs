@@ -62,7 +62,11 @@ public class RestaurantController : ControllerBase
         _db.SaveChangesAsync();
         return Ok(value);
     }
-
+    [HttpGet("GetRestaurantMenu")]
+    public ActionResult<List<Category>> GetRestaurantMenu(int id)
+    {
+       return _db.Categories.Where(c => c.RestaurantId == id).ToList();
+    }
 
     [HttpGet("MakeFakeData")]
     public ActionResult MakeFakeData()
