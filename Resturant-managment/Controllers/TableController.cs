@@ -54,7 +54,7 @@ namespace Resturant_managment.Controllers
             return Ok();
         }
 
-        [HttpGet(" ")]
+        [HttpGet("emptyTable")]
         public async Task<string> Tablereserve(int tableid)
         {
             var t = _db.RestaurantTables.Find(tableid);
