@@ -77,7 +77,7 @@ namespace Resturant_managment.Controllers
             return result.ToList();
         }
 
-        [HttpPut]
+        [HttpPut("changeByStatus")]
         public async Task<IActionResult> ChangeOrder(string status)
         {
             var o = _db.Orders.Find(status);
@@ -87,8 +87,8 @@ namespace Resturant_managment.Controllers
 
         }
 
-        [HttpPut]
-        public async Task<IActionResult> ChangeOrder(int orderid)
+        [HttpPut("ChangeOrderByOrderId")]
+        public async Task<IActionResult> ChangeOrderByOrderId(int orderid)
         {
             var o = _db.Orders.Find(orderid);
             _db.Update(o);

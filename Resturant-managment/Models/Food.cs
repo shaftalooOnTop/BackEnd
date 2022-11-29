@@ -14,6 +14,7 @@ namespace Resturant_managment.Models
         public string FoodDescription { get; set; }
         public virtual Category? Category { get; set; }
         public virtual ICollection<Order> orders { get; set; }
+        public virtual List<FoodOrder> FoodOrders { get; set; }
 	}
 }
 

@@ -13,6 +13,7 @@ public class Order:BaseClass
    
 
     public virtual ICollection<Food> Foods { get; set; }
+    public virtual List<FoodOrder> FoodOrders { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("RestaurantIdentityId")]
