@@ -11,11 +11,8 @@ public class UserModel : BaseClass
     public string EmailAddress { get; set; }
     public string Role { get; set; }
 
-    public List<resrvetime> restimes { get; set; }
+    public List<ReserveTable> restable { get; set; }
 
-    public int restimesid { get; set; }
-    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    [ForeignKey("restimesid")]
-    public virtual resrvetime? Resrvetime { get; set; }
+    
 
 }

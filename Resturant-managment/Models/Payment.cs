@@ -22,6 +22,11 @@ namespace Resturant_managment.Models
         public virtual RestaurantIdentity Identity { get; set; }
         public string IdentityId { get; set; }
 
+        public int ReserveTableId { get; set; }
+        [JsonIgnore]
+        [ForeignKey("ReserveTableId")]
+        public virtual ReserveTable ReserveTable { get; set; }
+        
 
     }
 }
