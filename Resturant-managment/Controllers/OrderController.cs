@@ -25,7 +25,7 @@ namespace Resturant_managment.Controllers
         {
             _db.Orders.Add(order);
             _db.SaveChangesAsync();
-            return Ok(order.trackingCode);
+            return Ok(order.id);
         }
 
         [HttpGet("{id}")]
@@ -51,7 +51,7 @@ namespace Resturant_managment.Controllers
             if (o.id == 0) return NotFound();
             _db.Update(o);
             _db.SaveChangesAsync();
-            return Ok(o.trackingCode);
+            return Ok(o.id);
         }
 
        
