@@ -13,7 +13,7 @@ namespace Resturant_managment.Models
         // public int? Orderid { get; set; }
         public string FoodDescription { get; set; }
         public virtual Category? Category { get; set; }
-        public virtual ICollection<Order> ordered { get; set; }
+        public virtual ICollection<Order> orders { get; set; }
 	}
 }
 

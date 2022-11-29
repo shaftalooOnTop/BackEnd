@@ -14,6 +14,19 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<FoodOrder>()
+            .HasKey(bc => new { bc.FoodId, bc.OrderId });
+
+        modelBuilder.Entity<FoodOrder>()
+            .HasOne(bc => bc.food)
+            .WithMany(b => b.FoodOrders)
+            .HasForeignKey(bc => bc.FoodId);
+
+        modelBuilder.Entity<FoodOrder>()
+            .HasOne(bc => bc.order)
+            .WithMany(c => c.FoodOrders)
+            .HasForeignKey(bc => bc.OrderId);
     }
 
     public DbSet<Category> Categories { get; set; }
@@ -26,4 +39,7 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     public DbSet<RestaurantTable> RestaurantTables { get; set; }
     public DbSet<resrvetime> Resrvetimes { get; set; }
     public DbSet<ReserveTable> ReserveTables { get; set; }
+    public DbSet<FoodOrder> FoodOrders { get; set; }
+
+   
 }

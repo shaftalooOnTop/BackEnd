@@ -54,5 +54,24 @@ namespace Resturant_managment.Controllers
             return Ok();
         }
 
+        [HttpGet(" ")]
+        public async Task<string> Tablereserve(int tableid)
+        {
+            var t = _db.RestaurantTables.Find(tableid);
+            var result = _db.ReserveTables.Where(x => x.TableId == t.id)
+               .Where(x =>
+
+               (x.ReserveTime.ReserveTime.AddHours(x.ExpireHours) >= DateTime.Now))
+          ;
+            if (result == null)
+            {
+                return "this table is not reserved";
+
+            }
+            else
+            {
+                return "this table is reserved";
+            }
+        }
     }
 }

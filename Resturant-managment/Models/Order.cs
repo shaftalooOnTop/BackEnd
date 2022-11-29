@@ -6,13 +6,19 @@ namespace Resturant_managment.Models;
 
 public class Order:BaseClass
 {
+    public enum status
+    {
+        finished, inProcess , accepted
+    }
    
 
     public virtual ICollection<Food> Foods { get; set; }
-    public int Restaurantid { get; set; }
+
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    [ForeignKey("RestaurantId")]
-    public virtual Restaurant? Restaurant { get; set; }
+    [ForeignKey("RestaurantIdentityId")]
+    public virtual RestaurantIdentity RestaurantIdentity { get; set; }
+    public virtual string RestaurantIdentityId { get; set; }
+
     public virtual Payment Payment { get; set; }
 
     public int UserId { get; set; }
