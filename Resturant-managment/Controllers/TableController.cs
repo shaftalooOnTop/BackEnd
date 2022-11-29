@@ -54,23 +54,6 @@ namespace Resturant_managment.Controllers
             return Ok();
         }
 
-        [HttpGet("emptyTable")]
-        public ActionResult Tablereserve(int tableid)
-        {
-            var result = _db.ReserveTables.Where(x => x.TableId == tableid)
-               .Where(x =>
 
-               (x.ReserveTime.ReserveTime.AddHours(x.ExpireHours) >= DateTime.Now))
-          ;
-            if (result == null)
-            {
-                return ;
-
-            }
-            else
-            {
-                return "this table is reserved";
-            }
-        }
     }
 }
