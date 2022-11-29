@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Resturant_managment.Models;
-
+public enum Orderstatus
+{
+    finished, inProcess, accepted
+}
 public class Order:BaseClass
 {
-    public enum status
-    {
-        finished, inProcess , accepted
-    }
    
-
+   
+    public Orderstatus stat { get; set; }
     public virtual ICollection<Food> Foods { get; set; }
     public virtual List<FoodOrder> FoodOrders { get; set; }
 

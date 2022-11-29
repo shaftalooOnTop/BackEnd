@@ -78,9 +78,10 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpPut("changeByStatus")]
-        public async Task<IActionResult> ChangeOrder(string status)
+        public async Task<IActionResult> ChangeOrder(Orderstatus status , int orderid)
         {
-            var o = _db.Orders.Find(status);
+            var o = _db.Orders.Find(orderid);
+            o.stat = status;
             _db.Update(o);
             _db.SaveChangesAsync();
             return Ok();
