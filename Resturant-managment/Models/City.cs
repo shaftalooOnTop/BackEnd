@@ -10,11 +10,7 @@ namespace Resturant_managment.Models
         public string CityName { get; set; }
         [JsonIgnore]
         public virtual ICollection<Restaurant>? Restaurants { get; set; }
-        [ForeignKey("IdentityId")]
-        [JsonIgnore]
-        public virtual List<RestaurantIdentity>? Identity { get; set; }
-        [JsonIgnore]
-        public virtual int IdentityId { get; set; }
+        
     }
 }
 

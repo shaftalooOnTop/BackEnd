@@ -25,7 +25,7 @@ namespace Resturant_managment.Controllers
         public Profit GetProfits(int restaurantId)
         {
             var prof = new Profit();
-            var orders = _db.Orders.Where(x => x.RestaurantId == restaurantId).ToList();
+            var orders = _db.Orders.Where(x => x.restaurantId == restaurantId).ToList();
             var d = DateTime.Now;
 
             DateTime StartOfTheDay = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0);
