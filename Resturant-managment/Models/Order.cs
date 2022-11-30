@@ -1,4 +1,4 @@
-using Resturant_managment.Models.Base;
+susing Resturant_managment.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,8 +8,7 @@ public enum Orderstatus
     finished, inProcess, accepted
 }
 public class Order:BaseClass
-{
-   
+{  
    
     public Orderstatus stat { get; set; }
     public virtual ICollection<Food>? Foods { get; set; }

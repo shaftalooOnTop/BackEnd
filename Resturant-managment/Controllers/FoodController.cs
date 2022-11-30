@@ -11,7 +11,7 @@ namespace Resturant_managment.Controllers
 
         public FoodController(RmDbContext db)
         {
-           _db = db;
+            _db = db;
         }
         [HttpGet]
         public List<Food> Get()
@@ -44,7 +44,7 @@ namespace Resturant_managment.Controllers
                 _db.SaveChangesAsync();
                 return Ok(value);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return NoContent();
             }
@@ -54,7 +54,7 @@ namespace Resturant_managment.Controllers
         public ActionResult<Food> Put(Food val)
         {
             if (val.id == 0) return NotFound();
-            
+
             _db.Foods.Update(val);
             _db.SaveChangesAsync();
             return Ok(val);
@@ -64,7 +64,7 @@ namespace Resturant_managment.Controllers
         public ActionResult Delete(int id)
         {
             var t = _db.Foods.Find(id);
-            if (t==null)
+            if (t == null)
             {
                 return NotFound();
             }
@@ -72,6 +72,33 @@ namespace Resturant_managment.Controllers
             _db.Remove(t);
             _db.SaveChangesAsync();
             return Ok();
+        }
+        [HttpGet("RestaurantFoodList{RestaurantId}")]
+        public List<Food> RestaurantFoodList(int RestaurantId)
+        {
+            return _db.Foods.Where(x => x.Category != null ? x.Category.RestaurantId == RestaurantId : false).ToList();
+        }
+        [HttpGet("RestaurantFoodListByOrder")]
+        public List<Food> RestaurantFoodListByOrder(int RestaurantId, DateTime from, DateTime to)
+        {
+            Dictionary<int, int> foodDict = new();
+
+            _db.Orders.Where(x => x.id == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to)
+                .Select(x => x.Foods).ToList()
+                .ForEach(delegate (ICollection<Food> x)
+                 {
+                     FlatenList(foodDict, x);
+                 });
+
+            var foodsList = _db.Foods.Where(x => foodDict.ContainsKey(x.id)).ToList();
+            foodsList.Sort((x, y) => foodDict[x.id] - foodDict[y.id]);
+            return foodsList;
+        }
+
+        private void FlatenList(Dictionary<int, int> foodDict, IEnumerable<Food> foods)
+        {
+            foreach (var i in foods)
+                foodDict[i.id] += 1;
         }
     }
 }

@@ -44,8 +44,10 @@
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
     <None Remove="DbContext\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
+    <None Remove="Models\Managment\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Base\" />
+    <Folder Include="Models\Managment\" />
   </ItemGroup>
 </Project>
