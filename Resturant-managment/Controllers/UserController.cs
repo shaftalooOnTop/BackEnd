@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -81,9 +82,15 @@ namespace Resturant_managment.Controllers
                 Email = user.Email
             };
         }
+        public class BeareeTokenModel
+        {
+            [EmailAddress(ErrorMessage = "Invalid Email Address")]
+            public string Email { get; set; }
+            public string Password { get; set; }
+        }
         [HttpPost("BearerToken")]
         //[Authorize]
-        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(UserLogin request)
+        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(BeareeTokenModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -153,8 +160,9 @@ namespace Resturant_managment.Controllers
         [HttpGet("GetUserData")]
         public async Task<ActionResult<RestaurantIdentity>> GetUserData()
         {
+            //var i=User.Claims;
 
-            var email = User.FindFirst("sub")?.Value;
+            var email = User.Claims.FirstOrDefault(c => c.Type =="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user=await _userManager.FindByEmailAsync(email);
             if (user == null) return NotFound();
             return user;
