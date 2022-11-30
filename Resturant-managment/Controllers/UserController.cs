@@ -28,6 +28,8 @@ namespace Resturant_managment.Controllers
             _db = db;
         }
         [HttpPost("PostUser")]
+        [AllowAnonymous]
+
         public async Task<ActionResult<UserLogin>> PostUser(UserSignUp user)
         {
 
@@ -69,6 +71,8 @@ namespace Resturant_managment.Controllers
         }
         [HttpGet("{emailOrPhoneNumber}")]
         //[Authorize]
+        [AllowAnonymous]
+
         public async Task<ActionResult<UserLogin>> GetUser(string emailOrPhoneNumber)
         {
             IdentityUser user = await _userManager.FindByEmailAsync(emailOrPhoneNumber);
@@ -89,7 +93,7 @@ namespace Resturant_managment.Controllers
             public string Password { get; set; }
         }
         [HttpPost("BearerToken")]
-        //[Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(BeareeTokenModel request)
         {
             if (!ModelState.IsValid)
