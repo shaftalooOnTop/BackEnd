@@ -56,12 +56,12 @@ builder.Services
             )
         };
     });
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
