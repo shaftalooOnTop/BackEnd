@@ -10,7 +10,6 @@ public class Order:BaseClass
     {
         finished, inProcess , accepted
     }
-   
 
     public virtual ICollection<Food> Foods { get; set; }
     public virtual List<FoodOrder> FoodOrders { get; set; }
@@ -26,4 +25,9 @@ public class Order:BaseClass
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("UserId")]
     public virtual UserModel? UserModel { get; set; }
+    public virtual int RestaurantId { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+    [ForeignKey("RestaurantId")]
+    public virtual Restaurant Restaurant { get; set; }
+
 }
