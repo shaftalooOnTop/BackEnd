@@ -15,12 +15,12 @@ namespace Resturant_managment.Controllers
         {
             _db = db;
         }
-        [HttpGet("{id}")]
+        [HttpGet("id")]
         public RestaurantTable? Get(int id)
         {
             return _db.RestaurantTables.Find(id);
         }
-        [HttpGet("{restaurantid}")]
+        [HttpGet("by restaurant")]
         public List<RestaurantTable> Gett(int restaurantid)
         {
             return _db.RestaurantTables.Where(x => x.RestaurantId == restaurantid).ToList();
@@ -54,24 +54,6 @@ namespace Resturant_managment.Controllers
             return Ok();
         }
 
-        [HttpGet("emptyTable")]
-        public async Task<string> Tablereserve(int tableid)
-        {
-            var t = _db.RestaurantTables.Find(tableid);
-            var result = _db.ReserveTables.Where(x => x.TableId == t.id)
-               .Where(x =>
 
-               (x.ReserveTime.ReserveTime.AddHours(x.ExpireHours) >= DateTime.Now))
-          ;
-            if (result == null)
-            {
-                return "this table is not reserved";
-
-            }
-            else
-            {
-                return "this table is reserved";
-            }
-        }
     }
 }
