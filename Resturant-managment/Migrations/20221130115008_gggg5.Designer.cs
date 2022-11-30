@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -10,9 +11,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221130115008_gggg5")]
+    partial class gggg5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -132,6 +134,9 @@ namespace Resturant_managment.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("IdentityId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("id");
 
                     b.ToTable("Cities");
@@ -241,10 +246,10 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("restaurantId")
+                    b.Property<int?>("Restaurantid")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("restuarantId")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("stat")
@@ -254,7 +259,9 @@ namespace Resturant_managment.Migrations
 
                     b.HasIndex("RestaurantIdentityId");
 
-                    b.HasIndex("restuarantId");
+                    b.HasIndex("Restaurantid");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -316,6 +323,9 @@ namespace Resturant_managment.Migrations
                     b.Property<int>("TableId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("UserModelid")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("id");
 
                     b.HasIndex("ReserveTimeId");
@@ -323,6 +333,8 @@ namespace Resturant_managment.Migrations
                     b.HasIndex("RestaurantIdentityId");
 
                     b.HasIndex("TableId");
+
+                    b.HasIndex("UserModelid");
 
                     b.ToTable("ReserveTables");
                 });
@@ -361,7 +373,7 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("CityId")
+                    b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateCreated")
@@ -422,6 +434,9 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("IdentityId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -459,10 +474,9 @@ namespace Resturant_managment.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("cityid")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("IdentityId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -470,8 +484,6 @@ namespace Resturant_managment.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("cityid");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -522,6 +534,36 @@ namespace Resturant_managment.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("Resturant_managment.Models.UserModel", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("FoodOrder", b =>
@@ -630,13 +672,19 @@ namespace Resturant_managment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Resturant_managment.Models.Restaurant", "Restaurant")
+                    b.HasOne("Resturant_managment.Models.Restaurant", null)
                         .WithMany("Orders")
-                        .HasForeignKey("restuarantId");
+                        .HasForeignKey("Restaurantid");
 
-                    b.Navigation("Restaurant");
+                    b.HasOne("Resturant_managment.Models.UserModel", "UserModel")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("RestaurantIdentity");
+
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Payment", b =>
@@ -675,7 +723,7 @@ namespace Resturant_managment.Migrations
                         .IsRequired();
 
                     b.HasOne("Resturant_managment.Models.RestaurantIdentity", "RestaurantIdentity")
-                        .WithMany("restable")
+                        .WithMany()
                         .HasForeignKey("RestaurantIdentityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -685,6 +733,10 @@ namespace Resturant_managment.Migrations
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Resturant_managment.Models.UserModel", null)
+                        .WithMany("restable")
+                        .HasForeignKey("UserModelid");
 
                     b.Navigation("ReserveTime");
 
@@ -697,7 +749,9 @@ namespace Resturant_managment.Migrations
                 {
                     b.HasOne("Resturant_managment.Models.City", "City")
                         .WithMany("Restaurants")
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("City");
                 });
@@ -705,8 +759,8 @@ namespace Resturant_managment.Migrations
             modelBuilder.Entity("Resturant_managment.Models.RestaurantIdentity", b =>
                 {
                     b.HasOne("Resturant_managment.Models.City", "city")
-                        .WithMany()
-                        .HasForeignKey("cityid");
+                        .WithMany("Identity")
+                        .HasForeignKey("IdentityId");
 
                     b.Navigation("city");
                 });
@@ -740,6 +794,8 @@ namespace Resturant_managment.Migrations
 
             modelBuilder.Entity("Resturant_managment.Models.City", b =>
                 {
+                    b.Navigation("Identity");
+
                     b.Navigation("Restaurants");
                 });
 
@@ -778,7 +834,10 @@ namespace Resturant_managment.Migrations
             modelBuilder.Entity("Resturant_managment.Models.RestaurantIdentity", b =>
                 {
                     b.Navigation("Payments");
+                });
 
+            modelBuilder.Entity("Resturant_managment.Models.UserModel", b =>
+                {
                     b.Navigation("restable");
                 });
 #pragma warning restore 612, 618

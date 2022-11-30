@@ -59,7 +59,7 @@ public class RestaurantController : ControllerBase
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
         _db.Restaurant.Add(value);
-        _db.SaveChangesAsync();
+        _db.SaveChanges();
         return Ok(value);
     }
     [HttpGet("GetRestaurantMenu/{id}")]

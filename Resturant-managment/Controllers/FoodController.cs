@@ -28,10 +28,12 @@ namespace Resturant_managment.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Food value)
+        public Food Post([FromBody]Food value)
         {
             _db.Foods.Add(value);
             _db.SaveChangesAsync();
+            return value;
+
         }
         [HttpPost("PostRange")]
         public ActionResult<List<Food>> PostRange([FromBody] List<Food> value)

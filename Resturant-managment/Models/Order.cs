@@ -12,18 +12,19 @@ public class Order:BaseClass
    
    
     public Orderstatus stat { get; set; }
-    public virtual ICollection<Food> Foods { get; set; }
-    public virtual List<FoodOrder> FoodOrders { get; set; }
+    public virtual ICollection<Food>? Foods { get; set; }
+    public virtual List<FoodOrder>? FoodOrders { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("RestaurantIdentityId")]
-    public virtual RestaurantIdentity RestaurantIdentity { get; set; }
+    public virtual RestaurantIdentity? RestaurantIdentity { get; set; }
     public virtual string RestaurantIdentityId { get; set; }
 
-    public virtual Payment Payment { get; set; }
+    public virtual Payment? Payment { get; set; }
 
-    public int UserId { get; set; }
+    
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    [ForeignKey("UserId")]
-    public virtual UserModel? UserModel { get; set; }
+    [ForeignKey("restuarantId")]
+    public virtual Restaurant? Restaurant { get; set; }
+    public virtual int restaurantId { get; set; }
 }
