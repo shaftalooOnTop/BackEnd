@@ -9,7 +9,7 @@ namespace Resturant_managment.Services;
 
 public class JwtService
 {
-    private const int EXPIRATION_MINUTES = 40;
+    private const int EXPIRATION_MINUTES = 60*24*7;
 
     private readonly IConfiguration _configuration;
 
@@ -20,7 +20,7 @@ public class JwtService
 
     public AuthenticationResponse CreateToken(IdentityUser user)
     {
-        var expiration = DateTime.UtcNow.AddMinutes(user.UserName=="admin"?1000000:EXPIRATION_MINUTES);
+        var expiration = DateTime.UtcNow.AddMinutes(user.UserName=="admin"?10000000:EXPIRATION_MINUTES);
 
         var token = CreateJwtToken(
             CreateClaims(user),
