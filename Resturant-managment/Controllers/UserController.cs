@@ -30,7 +30,7 @@ namespace Resturant_managment.Controllers
         [HttpPost("PostUser")]
         [AllowAnonymous]
 
-        public async Task<ActionResult<UserLogin>> PostUser(UserSignUp user)
+        public async Task<ActionResult<ReturnData>> PostUser(UserSignUp user)
         {
 
             if (!ModelState.IsValid)
@@ -65,8 +65,18 @@ namespace Resturant_managment.Controllers
             {
                 return BadRequest(result.Errors);
             }
+            var BearerData = GetBearerToken(
+    new UserLogin { Email = user.Email, FullName = user.FullName, Password = user.Password, PhoneNumber = user.PhoneNumber }
 
+    );
             user.Password = null;
+
+
+            var d = new ReturnData
+            {
+                Email = user.Email,
+                Expiration = to
+            };
             return Created("", user);
         }
         [HttpGet("{emailOrPhoneNumber}")]
@@ -86,15 +96,40 @@ namespace Resturant_managment.Controllers
                 Email = user.Email
             };
         }
-        public class BeareeTokenModel
+
+        private async Task<ActionResult<ReturnData>> GetBearerToken(UserLogin userIdentity)
         {
-            [EmailAddress(ErrorMessage = "Invalid Email Address")]
-            public string Email { get; set; }
-            public string Password { get; set; }
+            var user = await _userManager.FindByEmailAsync(userIdentity.Email);
+
+            if (user == null)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, userIdentity.Password);
+
+            if (!isPasswordValid)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var token = _jwtService.CreateToken(user);
+
+            var result = new ReturnData
+            {
+                Email = userIdentity.Email,
+                Expiration = token.Expiration,
+                FullName = userIdentity.FullName,
+                Id = userIdentity.Id,
+                Password = null,
+                PhoneNumber = userIdentity.PhoneNumber,
+                Token = token.Token
+            };
+            return (result);
         }
         [HttpPost("BearerToken")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(BeareeTokenModel request)
+        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(BearerTokenModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -122,31 +157,24 @@ namespace Resturant_managment.Controllers
         }
         [HttpPut]
         [Authorize]
-        public async Task<ActionResult<AuthenticationResponse>> UserUpdate(UserSignUp userupdate)
+        public async Task<ActionResult<ReturnData>> UserUpdate(UserSignUp userupdate)
         {
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
             if (upuser == null)
-            {
                 return NotFound();
-            }
-            //          "email": "w@e.k",
-            //"phoneNumber": "091",
-            //"fullName": "ahmad",
-            //"picture": "pic",
-            //"age": 20,
-            //"gender": "jhkgv"
             upuser.Email = userupdate.Email;
             upuser.PhoneNumber = userupdate.PhoneNumber;
             upuser.FullName = userupdate.FullName;
             upuser.Picture = userupdate.Picture;
             upuser.Age = userupdate.Age;
             upuser.Gender = userupdate.Gender;
-            _userManager.UpdateAsync(upuser);
-            return Ok();
+            var u = new UserLogin { Email = upuser.Email, FullName = upuser.FullName, Id = upuser.Id, PhoneNumber = upuser.PhoneNumber, Password = null };
+            await _userManager.UpdateAsync(upuser);
+            return Ok(GetBearerToken(u));
         }
         [HttpPut("changpass")]
         [Authorize]
-        public async Task<ActionResult<UserLogin>> ChangePasswoerd(UserLogin userupdate,  string newpass)
+        public async Task<ActionResult<UserLogin>> ChangePasswoerd(UserLogin userupdate, string newpass)
         {
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
             if (upuser == null)
@@ -166,10 +194,22 @@ namespace Resturant_managment.Controllers
         {
             //var i=User.Claims;
 
-            var email = User.Claims.FirstOrDefault(c => c.Type =="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            var user=await _userManager.FindByEmailAsync(email);
+            var email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return NotFound();
             return user;
         }
+    }
+    public class BearerTokenModel
+    {
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    public class ReturnData : UserLogin
+    {
+        public string Token { get; set; }
+
+        public DateTime Expiration { get; set; }
     }
 }

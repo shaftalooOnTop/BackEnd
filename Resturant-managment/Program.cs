@@ -18,7 +18,7 @@ builder.Services
         options.SignIn.RequireConfirmedAccount = false;
         options.Password.RequireDigit = false;
         options.Password.RequiredLength = 6;
-        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireNonAlphanumeric = fafcorlse;
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
         options.User.RequireUniqueEmail = true;
