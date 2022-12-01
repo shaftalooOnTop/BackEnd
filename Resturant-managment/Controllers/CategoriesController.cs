@@ -47,12 +47,12 @@ namespace Resturant_managment.Controllers
         }
 
         // PUT: api/Categories/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public ActionResult Put(Category value)
         {
             if (value.id == 0) return NotFound();
             _db.Update(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 

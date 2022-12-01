@@ -50,7 +50,7 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpPut]
-        public ActionResult<Food> Put(Food food)
+        public ActionResult<Food> Put([FromBody]Food food)
         {
             if (food.id == 0) return NotFound();
 
