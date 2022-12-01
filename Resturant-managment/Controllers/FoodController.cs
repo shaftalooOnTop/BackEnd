@@ -30,7 +30,7 @@ namespace Resturant_managment.Controllers
         public Food Post([FromBody] Food value)
         {
             _db.Foods.Add(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return value;
 
         }
@@ -40,7 +40,7 @@ namespace Resturant_managment.Controllers
             try
             {
                 _db.Foods.AddRange(value);
-                _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return Ok(value);
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace Resturant_managment.Controllers
             if (food.id == 0) return NotFound();
 
             _db.Foods.Update(food);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok(food);
         }
 
@@ -69,7 +69,7 @@ namespace Resturant_managment.Controllers
             }
 
             _db.Remove(t);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
         [HttpGet("RestaurantFoodList{RestaurantId}")]

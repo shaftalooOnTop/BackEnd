@@ -41,7 +41,7 @@ namespace Resturant_managment.Controllers
             var t = _db.RestaurantTables.Find(id);
             if (t == null) return NotFound();
             _db.Remove(t);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 
@@ -50,7 +50,7 @@ namespace Resturant_managment.Controllers
         {
             if (t.id == 0) return NotFound();
             _db.Update(t);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 

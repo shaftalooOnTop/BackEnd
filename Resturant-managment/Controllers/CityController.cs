@@ -32,7 +32,7 @@ namespace Resturant_managment.Controllers
         public ActionResult<City> Post([FromBody] City value)
         {
             _db.Add(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok(value);
         }
 
@@ -41,7 +41,7 @@ namespace Resturant_managment.Controllers
         public ActionResult Put( [FromBody] City value)
         {
             _db.Update(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 
@@ -52,7 +52,7 @@ namespace Resturant_managment.Controllers
             var city = _db.Cities.Find(id);
             if (city == null) return NotFound();
             _db.Remove(city);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok(city);
 
         }

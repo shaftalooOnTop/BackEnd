@@ -37,7 +37,7 @@ namespace Resturant_managment.Controllers
         public ActionResult Post([FromBody]Tag value)
         {
             _db.Add(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Created("",value);
         }
 
@@ -46,7 +46,7 @@ namespace Resturant_managment.Controllers
         public Tag Put( [FromBody]Tag value)
         {
             _db.Update(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return value;
         }
 
