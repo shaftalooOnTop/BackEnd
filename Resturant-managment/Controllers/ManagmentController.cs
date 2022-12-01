@@ -74,11 +74,55 @@ namespace Resturant_managment.Controllers
             r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
             return r.Select(x => x.Key).ToList();
         }
+
         private long ProfitByDate(List<Order> orders, DateTime from, DateTime to)
         {
             long result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price));
             return result;
         }
 
+        [HttpGet("GetFoodSellByFoods")]
+        public ActionResult<Dictionary<Food,int>> GetFoodSellByFoods(int restaurantId,DateTime from,DateTime to)
+        {
+            var restaurantOrders = _db.Orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Select(x => x.Foods);
+            if (restaurantOrders == null) return NotFound();
+            var f = FlatenList(restaurantOrders).GroupBy(x => x.id).ToDictionary(x => x.Key, y => y.Count());
+            var restaurantFoods = _db.Foods.Where(x => x.Category==null?false:x.Category.RestaurantId == restaurantId).ToDictionary(x=>x.id,y=>y);
+            return Ok(
+                f.Select(x =>new KeyValuePair<Food, int>(restaurantFoods[x.Key],x.Value))
+                );
+
+        }
+
+        [HttpGet("RestaurantFoodListByOrder")]
+        public List<Food> RestaurantFoodListByOrder(int RestaurantId, DateTime from, DateTime to)
+        {
+            Dictionary<int, int> foodDict = new();
+
+            _db.Orders.Where(x => x.id == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to)
+                .Select(x => x.Foods).ToList()
+                .ForEach(delegate (ICollection<Food> x)
+                {
+                    if (x == null) return;
+                    FlatenList(foodDict, x);
+                });
+
+            var foodsList = _db.Foods.Where(x => foodDict.ContainsKey(x.id)).ToList();
+            foodsList.Sort((x, y) => foodDict[x.id] - foodDict[y.id]);
+            return foodsList;
+        }
+
+        private void FlatenList(Dictionary<int, int> foodDict, IEnumerable<Food> foods)
+        {
+            foreach (var i in foods)
+                foodDict[i.id]++;
+        }
+        private List<Food> FlatenList(IEnumerable<IEnumerable<Food>> foods)
+        {
+            List<Food> foods1 = new();
+            foreach (var i in foods)foreach (var j in i) foods1.Add(j);
+            return foods1;
+       
+        }
     }
 }

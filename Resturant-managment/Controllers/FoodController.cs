@@ -77,28 +77,7 @@ namespace Resturant_managment.Controllers
         {
             return _db.Foods.Where(x => x.Category != null ? x.Category.RestaurantId == RestaurantId : false).ToList();
         }
-        [HttpGet("RestaurantFoodListByOrder")]
-        public List<Food> RestaurantFoodListByOrder(int RestaurantId, DateTime from, DateTime to)
-        {
-            Dictionary<int, int> foodDict = new();
-
-            _db.Orders.Where(x => x.id == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to)
-                .Select(x => x.Foods).ToList()
-                .ForEach(delegate (ICollection<Food> x)
-                 {if (x == null) return;
-                     FlatenList(foodDict, x);
-                 });
-
-            var foodsList = _db.Foods.Where(x => foodDict.ContainsKey(x.id)).ToList();
-            foodsList.Sort((x, y) => foodDict[x.id] - foodDict[y.id]);
-            return foodsList;
-        }
-
-        private void FlatenList(Dictionary<int, int> foodDict, IEnumerable<Food> foods)
-        {
-            foreach (var i in foods)
-                foodDict[i.id] += 1;
-        }
+        
     }
 }
 

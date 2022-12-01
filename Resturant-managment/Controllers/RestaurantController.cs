@@ -67,28 +67,42 @@ public class RestaurantController : ControllerBase
     {
        return _db.Categories.Where(c => c.RestaurantId == id).ToList();
     }
+    [HttpPut]
+    public ActionResult<Restaurant> Put(Restaurant restaurant)
+    {
+        _db.Update(restaurant);
+        _db.SaveChanges();
+        return restaurant;
+    }
+    [HttpDelete]
+    public ActionResult Delete(int id)
+    {
+        var obj=_db.Restaurant.Find(id);
+        if (obj == null) return NotFound();
+        _db.Remove(obj);
+        return  Ok(id);
+    }
 
     [HttpGet("MakeFakeData")]
     public ActionResult MakeFakeData()
     {
         var c1 = new City
         {
-            id = 1,
+          
             CityName = "Zanjan",
         };
         var c2 = new City
         {
-            id = 2,
+         
             CityName = "Tehran"
         };
         var tag1 = new Tag
         {
-            id = 1,
+            
             value = "Chicken"
         };
         var tag2 = new Tag
         {
-            id = 2,
             value = "cheap"
         };
         var r1 = new HttpRestaurant
