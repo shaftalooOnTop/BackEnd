@@ -26,24 +26,25 @@ namespace Resturant_managment.Controllers
         public ActionResult Post(Order order)
         {
             _db.Orders.Add(order);
-            _db.SaveChangesAsync();
-            return Ok(order.id);
+            _db.SaveChanges();
+            return Ok(order);
         }
 
-        [HttpGet("{id}")]
+
+        [HttpGet("id")]
         public ActionResult<Order> Get(int id)
         {
             var result = _db.Orders.Find(id);
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("id")]
         public ActionResult Delete(int id)
         {
             var o = _db.Orders.Find(id);
             if (o == null) return NotFound();
             _db.Remove(o);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 
@@ -52,13 +53,13 @@ namespace Resturant_managment.Controllers
         {
             if (o.id == 0) return NotFound();
             _db.Update(o);
-            _db.SaveChangesAsync();
-            return Ok(o.id);
+            _db.SaveChanges();
+            return Ok(o);
         }
 
         [Authorize]
         [HttpGet("GetUserActiveOrder")]
-        public async Task<List<Order>> GetOrder()
+        public async  Task<List<Order>> GetOrder()
         {
 
             var email = User.FindFirst("sub")?.Value;
@@ -69,7 +70,7 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpGet("RestaurantOrders")]
-        public async Task<List<Order>> RestaurantOrders(string RestaurantId)
+        public  List<Order> RestaurantOrders(string RestaurantId)
         {
             var result = _db.Orders.Where(x => x.RestaurantIdentityId == RestaurantId);
                 
@@ -78,23 +79,23 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpPut("changeByStatus")]
-        public async Task<IActionResult> ChangeOrder(Orderstatus status , int orderid)
+        public  ActionResult<List<Order>> ChangeOrder(Orderstatus status , int orderid)
         {
             var o = _db.Orders.Find(orderid);
             o.stat = status;
             _db.Update(o);
-            _db.SaveChangesAsync();
-            return Ok();
+            _db.SaveChanges();
+            return Ok(o);
 
         }
 
         [HttpPut("ChangeOrderByOrderId")]
-        public async Task<IActionResult> ChangeOrderByOrderId(int orderid)
-        {
+        public  ActionResult ChangeOrderByOrderId(int orderid)
+        { 
             var o = _db.Orders.Find(orderid);
             _db.Update(o);
-            _db.SaveChangesAsync();
-            return Ok();
+            _db.SaveChanges();
+            return Ok(o);
 
         }
         
