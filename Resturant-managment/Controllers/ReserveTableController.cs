@@ -24,7 +24,7 @@ namespace Resturant_managment.Controllers
         public ActionResult Post(ReserveTable r)
         {
             _db.Add(r);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok(r.id);
         }
 
@@ -41,7 +41,7 @@ namespace Resturant_managment.Controllers
             var o = _db.ReserveTables.Find(id);
             if (o == null) return NotFound();
             _db.Remove(o);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 
@@ -50,7 +50,7 @@ namespace Resturant_managment.Controllers
         {
             if (r.id == 0) return NotFound();
             _db.Update(r);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok(r.id);
         }
         [Authorize]
@@ -58,7 +58,7 @@ namespace Resturant_managment.Controllers
         public async Task<List<ReserveTable>> GetReserveTable()
         {
 
-            var email = User.FindFirst("sub")?.Value;
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user = await _userManager.FindByEmailAsync(email);
              var result=_db.ReserveTables.Where(x => x.RestaurantIdentityId == user.Id)
                 .Where(x =>
@@ -73,7 +73,7 @@ namespace Resturant_managment.Controllers
         public async Task<List<ReserveTable>> GetUserReserveTableByRestaurant(int restaurantid)
         {
 
-            var email = User.FindFirst("sub")?.Value;
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user = await _userManager.FindByEmailAsync(email);
             var result = _db.ReserveTables.Where(x => x.RestaurantIdentityId == user.Id)
                .Where(x =>
@@ -104,7 +104,7 @@ namespace Resturant_managment.Controllers
         public async Task<List<ReserveTable>> GetUserReserveTableHistory()
         {
 
-            var email = User.FindFirst("sub")?.Value;
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user = await _userManager.FindByEmailAsync(email);
             var result = _db.ReserveTables.Where(x => x.RestaurantIdentityId == user.Id)
 

@@ -33,7 +33,7 @@ namespace Resturant_managment.Controllers
             var rt = _db.Resrvetimes.Find(id);
             if (rt == null) return NotFound();
             _db.Remove(rt);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
 
@@ -52,7 +52,7 @@ namespace Resturant_managment.Controllers
             if (rt.id == 0) return NotFound();
 
             _db.Resrvetimes.Update(rt);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok(rt);
         }
 
