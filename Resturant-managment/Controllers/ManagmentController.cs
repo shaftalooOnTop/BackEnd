@@ -35,19 +35,50 @@ namespace Resturant_managment.Controllers
             DateTime StartOfTheMonth = new DateTime(d.Year, d.Month, 1, 0, 0, 0);
             var daysInMonth = DateTime.DaysInMonth(d.Year, d.Month);
             DateTime EndOfTheMonth = new DateTime(d.Year, d.Month, daysInMonth, 23, 59, 59);
+            prof.MonthlyProfit = ProfitByDate(orders, StartOfTheDay, EndOfTheDay);
 
             var firstDayOfTheYear = new DateTime(d.Year, 1, 1);
             var lastDayOfTheYear = new DateTime(d.Year, 12, 31);
-
-
-
+            prof.MonthlyProfit = ProfitByDate(orders, firstDayOfTheYear, lastDayOfTheYear);
 
             return prof;
+        }
+        [HttpGet("GetBusyHours")]
+        public BusyHours BusyHours(int restaurantId)
+        {
+            var busy = new BusyHours();
+            var orders = _db.Orders.Where(x => x.restaurantId == restaurantId).ToList();
+            var d = DateTime.Now;
+
+            DateTime StartOfTheDay = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0);
+            DateTime EndOfTheDay = new DateTime(d.Year, d.Month, d.Day, 23, 59, 59);
+            busy.DayHour = OrdersHours(orders, StartOfTheDay, EndOfTheDay);
+
+            DateTime StartOfTheMonth = new DateTime(d.Year, d.Month, 1, 0, 0, 0);
+            var daysInMonth = DateTime.DaysInMonth(d.Year, d.Month);
+            DateTime EndOfTheMonth = new DateTime(d.Year, d.Month, daysInMonth, 23, 59, 59);
+            busy.MonthHour = OrdersHours(orders, StartOfTheDay, EndOfTheDay);
+
+            var firstDayOfTheYear = new DateTime(d.Year, 1, 1);
+            var lastDayOfTheYear = new DateTime(d.Year, 12, 31);
+            busy.WeekHour = OrdersHours(orders, StartOfTheDay, EndOfTheDay);
+
+
+            return busy;
+        }
+        private List<int> OrdersHours(List<Order> orders,DateTime from,DateTime to)
+        {
+            var r=orders.Where(x=>x.DateCreated>=from&&x.DateCreated<=to)
+                  .Select(x => x.DateCreated.Hour)
+                  .GroupBy(x=>x).ToDictionary(x=>x.Key,y=>y.Count()).ToList();
+            r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+            return r.Select(x => x.Key).ToList();
         }
         private long ProfitByDate(List<Order> orders, DateTime from, DateTime to)
         {
             long result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price));
             return result;
         }
+        private 
     }
 }

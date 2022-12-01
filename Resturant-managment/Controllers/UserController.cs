@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
-using Microsoft.CodeAnalysis.Scripting;
-using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 using Resturant_managment.Services;
 
@@ -65,7 +62,7 @@ namespace Resturant_managment.Controllers
             {
                 return BadRequest(result.Errors);
             }
-            var BearerData = GetBearerToken(
+            var BearerData =await GetBearerToken(
     new UserLogin { Email = user.Email, FullName = user.FullName, Password = user.Password, PhoneNumber = user.PhoneNumber }
 
     );
@@ -75,9 +72,13 @@ namespace Resturant_managment.Controllers
             var d = new ReturnData
             {
                 Email = user.Email,
-                Expiration = to
+                Expiration = BearerData.Expiration,
+                FullName=BearerData.FullName,
+                PhoneNumber=BearerData.PhoneNumber,
+                Password=null,
+                Token=BearerData.Token
             };
-            return Created("", user);
+            return Created("", d);
         }
         [HttpGet("{emailOrPhoneNumber}")]
         //[Authorize]
@@ -97,20 +98,21 @@ namespace Resturant_managment.Controllers
             };
         }
 
-        private async Task<ActionResult<ReturnData>> GetBearerToken(UserLogin userIdentity)
+        private async Task<ReturnData> GetBearerToken(UserLogin userIdentity)
         {
             var user = await _userManager.FindByEmailAsync(userIdentity.Email);
 
             if (user == null)
             {
-                return BadRequest("Bad credentials");
+                return null;
             }
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, userIdentity.Password);
 
             if (!isPasswordValid)
             {
-                return BadRequest("Bad credentials");
+                return null;
+
             }
 
             var token = _jwtService.CreateToken(user);
