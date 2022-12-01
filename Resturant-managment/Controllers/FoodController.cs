@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
@@ -28,7 +27,7 @@ namespace Resturant_managment.Controllers
 
         // POST api/values
         [HttpPost]
-        public Food Post([FromBody]Food value)
+        public Food Post([FromBody] Food value)
         {
             _db.Foods.Add(value);
             _db.SaveChangesAsync();
@@ -51,13 +50,13 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpPut]
-        public ActionResult<Food> Put(Food val)
+        public ActionResult<Food> Put(Food food)
         {
-            if (val.id == 0) return NotFound();
+            if (food.id == 0) return NotFound();
 
-            _db.Foods.Update(val);
+            _db.Foods.Update(food);
             _db.SaveChangesAsync();
-            return Ok(val);
+            return Ok(food);
         }
 
         [HttpDelete]
@@ -86,7 +85,7 @@ namespace Resturant_managment.Controllers
             _db.Orders.Where(x => x.id == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to)
                 .Select(x => x.Foods).ToList()
                 .ForEach(delegate (ICollection<Food> x)
-                 {
+                 {if (x == null) return;
                      FlatenList(foodDict, x);
                  });
 
