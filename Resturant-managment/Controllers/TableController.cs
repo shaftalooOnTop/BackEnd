@@ -16,6 +16,7 @@ namespace Resturant_managment.Controllers
             _db = db;
         }
         [HttpGet("id")]
+
         public RestaurantTable? Get(int id)
         {
             return _db.RestaurantTables.Find(id);
