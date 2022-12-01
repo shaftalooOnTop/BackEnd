@@ -20,7 +20,7 @@ public class Order:BaseClass
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("RestaurantIdentityId")]
     public virtual RestaurantIdentity? RestaurantIdentity { get; set; }
-    public virtual string RestaurantIdentityId { get; set; }
+    public virtual string? RestaurantIdentityId { get; set; }
 
     public virtual Payment? Payment { get; set; }
 
