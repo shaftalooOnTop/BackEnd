@@ -66,11 +66,11 @@ namespace Resturant_managment.Controllers
 
             return busy;
         }
-        private List<int> OrdersHours(List<Order> orders,DateTime from,DateTime to)
+        private List<int> OrdersHours(List<Order> orders, DateTime from, DateTime to)
         {
-            var r=orders.Where(x=>x.DateCreated>=from&&x.DateCreated<=to)
+            var r = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to)
                   .Select(x => x.DateCreated.Hour)
-                  .GroupBy(x=>x).ToDictionary(x=>x.Key,y=>y.Count()).ToList();
+                  .GroupBy(x => x).ToDictionary(x => x.Key, y => y.Count()).ToList();
             r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
             return r.Select(x => x.Key).ToList();
         }
@@ -79,6 +79,6 @@ namespace Resturant_managment.Controllers
             long result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price));
             return result;
         }
-        private 
+
     }
 }
