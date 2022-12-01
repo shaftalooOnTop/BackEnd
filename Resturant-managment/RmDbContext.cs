@@ -27,6 +27,7 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
             .HasOne(bc => bc.order)
             .WithMany(c => c.FoodOrders)
             .HasForeignKey(bc => bc.OrderId);
+
     }
 
     public DbSet<Category> Categories { get; set; }

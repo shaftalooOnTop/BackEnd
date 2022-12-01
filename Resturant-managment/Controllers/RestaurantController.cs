@@ -41,6 +41,7 @@ public class RestaurantController : ControllerBase
     {
 
         var restaurants = _db.Restaurant.ToList().FirstOrDefault(x => x.id == id);
+        if (restaurants == null) return NotFound();
         restaurants.Avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5;
 
         return Ok(restaurants);

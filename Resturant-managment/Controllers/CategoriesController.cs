@@ -61,9 +61,9 @@ namespace Resturant_managment.Controllers
         public ActionResult Delete(int id)
         {
             var t=_db.Categories.Find(id);
-if (t==null)return NotFound();
+        if (t==null)return NotFound();
             _db.Remove(t);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
             return Ok();
         }
     }

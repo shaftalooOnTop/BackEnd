@@ -17,6 +17,8 @@ namespace Resturant_managment.Models
         public virtual Category? Category { get; set; }
         public virtual ICollection<Order>? orders { get; set; }
         public virtual List<FoodOrder>? FoodOrders { get; set; }
-	}
+        [NotMapped]
+        public int FoodCnt { get; set; } = 0;
+    }
 }
 
