@@ -9,8 +9,8 @@ public class RestaurantIdentity:IdentityUser
 
 
         public string Picture { get; set; }
-    public virtual int CityId { get; set; }
-    [ForeignKey("CityId")]
+        public virtual int CityId { get; set; }
+        [ForeignKey("CityId")]
         public virtual City? city { get; set; }
 
         public int Age { get; set; }

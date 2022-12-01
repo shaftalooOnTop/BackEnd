@@ -6,7 +6,9 @@ namespace Resturant_managment.Models
 {
     public class ReserveTable : BaseClass
     {
-       public virtual Payment Payment { get; set; }
+        public int? PaymentId { get; set; }
+        [ForeignKey("PaymentId")]
+       public virtual Payment ?Payment { get; set; }
         
         
         public int ExpireHours { get; set; } = 2;

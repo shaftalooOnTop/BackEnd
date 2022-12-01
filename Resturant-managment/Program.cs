@@ -34,7 +34,7 @@ builder.Services.AddScoped<JwtService>();
 
 builder.Services.AddDbContext<RmDbContext>(options => options.
     UseLazyLoadingProxies().
-    UseSqlite("Data Source=Application.db;Cache=Shared"));
+    UseSqlServer("Data Source=efc4055b-632b-4cd9-8b5d-e1a9aaf42e5b.hsvc.ir,32284;Database=shaftalooV1;Application Name=app;Integrated Security=false;User ID=sa;Password=iTd8ldXElyXXFu0rWWITWCqQqpOEs153;"));
 var config = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(config);  
 builder.Services.AddAutoMapper(typeof(Program));

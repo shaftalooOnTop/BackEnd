@@ -31,6 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +46,7 @@
     <None Remove="DbContext\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
     <None Remove="Models\Managment\" />
+    <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Base\" />
