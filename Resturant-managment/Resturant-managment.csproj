@@ -50,4 +50,10 @@
     <Folder Include="Models\Base\" />
     <Folder Include="Models\Managment\" />
   </ItemGroup>
+    <ItemGroup>
+    <Content Include="Application.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -199,6 +199,7 @@ namespace Resturant_managment.Controllers
             var email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return NotFound();
+            user.PasswordHash = null;
             return user;
         }
     }
