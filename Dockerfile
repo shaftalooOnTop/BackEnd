@@ -22,8 +22,6 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
 COPY . .
 RUN dotnet restore "./Resturant-managment/Resturant-managment.csproj" --disable-parallel
-RUN dotnet ef migrations add InitialCreate
-RUN dotnet ef database update
 RUN dotnet publish "./Resturant-managment/Resturant-managment.csproj" -c release -o /app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
