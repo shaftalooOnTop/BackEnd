@@ -16,8 +16,8 @@ public class RestaurantIdentity:IdentityUser
         public int Age { get; set; }
 
         public string Gender { get; set; }
-
+        
         public virtual List<Payment> Payments { get; set; }
 
-    public virtual List<ReserveTable> restable { get; set; }
+        public virtual List<ReserveTable> restable { get; set; }
 }

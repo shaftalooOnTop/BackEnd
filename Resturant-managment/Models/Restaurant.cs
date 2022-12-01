@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Resturant_managment.Models.Base;
 
 namespace Resturant_managment.Models;
@@ -19,7 +20,7 @@ public class Restaurant:BaseClass
     public DateTime EndWorkingHour { get; set; }
     public virtual List<RestaurantTable>? tables { get; set; }
 
-
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("CityId")]
     public virtual City? City { get; set; }
     
