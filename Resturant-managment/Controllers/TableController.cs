@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Castle.Core.Internal;
+using MessagePack;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
 
@@ -35,6 +37,25 @@ namespace Resturant_managment.Controllers
             _db.SaveChanges();
             return Ok(t);
         }
+
+        [HttpPost("AddTableForRestaurant")]
+        public ActionResult AddTableForRestaurant( int num , RestaurantTable t , int restid)
+
+        {
+            var a = _db.RestaurantTables.Where(x => ( x.RestaurantId == restid && x.number == num) );
+            if(a.IsNullOrEmpty() == true    )
+            {
+                _db.Add(t);
+                _db.SaveChanges();
+                return Ok(t);
+            }
+            else
+            {
+                return Ok(a);
+            }
+
+        }
+
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
