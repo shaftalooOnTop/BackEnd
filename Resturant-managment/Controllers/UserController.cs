@@ -24,6 +24,11 @@ namespace Resturant_managment.Controllers
             _jwtService = jwtService;
             _db = db;
         }
+        private RestaurantIdentity GetUser()
+        {
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            return _userManager.FindByEmailAsync(email).Result;
+        }
         [HttpPost("PostUser")]
         [AllowAnonymous]
 
@@ -176,8 +181,9 @@ namespace Resturant_managment.Controllers
         }
         [HttpPut("changpass")]
         [Authorize]
-        public async Task<ActionResult<UserLogin>> ChangePasswoerd(UserLogin userupdate, string newpass)
+        public async Task<ActionResult<UserLogin>> ChangePassword( string newpass)
         {
+            var userupdate = GetUser();
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
             if (upuser == null)
             {
@@ -185,10 +191,10 @@ namespace Resturant_managment.Controllers
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(upuser);
             var r = await _userManager.ResetPasswordAsync(upuser, token, newpass);
-            //_userManager.UpdateAsync(upuser);
-            //_db.Update(upuser);
-            //_db.SaveChanges();
-            return Ok(upuser);
+
+            if (r.Succeeded)
+                return Ok(upuser);
+             return  BadRequest(r.Errors);
         }
 
 

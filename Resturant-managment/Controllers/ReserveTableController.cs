@@ -78,6 +78,7 @@ namespace Resturant_managment.Controllers
 
             return result.ToList();
         }
+        [AllowAnonymous]
 
         [HttpGet("GetUserActiveReserveTablesByRestaurant")]
         public List<ReserveTable> GetUserReserveTableByRestaurant(int restaurantid)
@@ -93,7 +94,7 @@ namespace Resturant_managment.Controllers
 
             return result.ToList();
         }
-
+        [AllowAnonymous]
         [HttpGet("GetReserveTablesByRestaurant")]
         public List<ReserveTable> GetReserveTableByRestaurant(int restaurantid)
         {
@@ -101,12 +102,13 @@ namespace Resturant_managment.Controllers
                 .Where(x => check(x));
             return result.ToList();
         }
+        [AllowAnonymous]
         [HttpGet("GetActiveReserveTablesByRestaurant")]
         public ActionResult<List<RestaurantTable>> GetActiveReserveTablesByRestaurant(int restauranId, DateTime from ,DateTime to) {
             var result = _db.RestaurantTables.Where(x => x.ReserveTables
               .All(y => y.ReserveTime.ReserveTime > from
               &&
-              y.ReserveTime.ReserveTime.AddHours(y.ExpireHours) < to)).ToList();
+              y.ReserveTime.ReserveTime.AddHours(y.ExpireHours) < to)).Where(x=>x.Restaurant.id==restauranId).ToList();
             return result;
 
         }

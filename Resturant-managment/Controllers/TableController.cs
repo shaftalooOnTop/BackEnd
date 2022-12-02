@@ -31,7 +31,6 @@ namespace Resturant_managment.Controllers
 
         [HttpPost]
         public ActionResult Post(RestaurantTable t)
-
         {
             var a = _db.RestaurantTables.Where(x => (x.RestaurantId == t.RestaurantId && x.number == t.number));
             if (a.IsNullOrEmpty() == true)
