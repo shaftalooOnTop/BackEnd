@@ -28,34 +28,39 @@ public class RestaurantController : ControllerBase
     public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0)
     {
 
-            var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
+        var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
         restaurantList.All(x => { x.Comments = null; return true; });
         if (tag == "all")
             return Ok(restaurantList);
-        restaurantList=restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag)); 
+        restaurantList = restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag));
         return Ok(restaurantList);
+    }
+
+    [HttpGet("findbycity")]
+    public ActionResult<List<Restaurant>> FindByCity(int cityid)
+    {
+        if (cityid == -1)
+        {
+            return _db.Restaurant.ToList();
+        }
+        else
+        {
+            var rest = _db.Restaurant.ToList().Where(x => x.CityId == cityid);
+            return Ok(rest);
+        }
     }
 
     [HttpGet("{id}")]
     public ActionResult<Restaurant> Get(int id)
     {
-
+        
         var restaurants = _db.Restaurant.ToList().FirstOrDefault(x => x.id == id);
         if (restaurants == null) return NotFound();
         restaurants.Avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5;
 
         return Ok(restaurants);
     }
-    [HttpGet("JustRestaurants")]
-    public ActionResult<List<Restaurant>> GetJustRestaurantList()
-    {
-        var justRestaurantList = _db.Restaurant.ToList();
-        foreach (var item in justRestaurantList)
-        {
-            item.Menu = null;
-        }
-        return justRestaurantList;
-    }
+
     [HttpPost]
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
