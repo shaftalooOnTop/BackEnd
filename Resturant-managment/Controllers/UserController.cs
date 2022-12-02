@@ -190,6 +190,8 @@ namespace Resturant_managment.Controllers
             _db.SaveChanges();
             return Ok();
         }
+
+
         [Authorize]
         [HttpGet("GetUserData")]
         public async Task<ActionResult<RestaurantIdentity>> GetUserData()
