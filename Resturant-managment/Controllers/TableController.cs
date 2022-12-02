@@ -33,17 +33,8 @@ namespace Resturant_managment.Controllers
         public ActionResult Post(RestaurantTable t)
 
         {
-            _db.Add(t);
-            _db.SaveChanges();
-            return Ok(t);
-        }
-
-        [HttpPost("AddTableForRestaurant")]
-        public ActionResult AddTableForRestaurant( int num , RestaurantTable t , int restid)
-
-        {
-            var a = _db.RestaurantTables.Where(x => ( x.RestaurantId == restid && x.number == num) );
-            if(a.IsNullOrEmpty() == true    )
+            var a = _db.RestaurantTables.Where(x => (x.RestaurantId == t.RestaurantId && x.number == t.number));
+            if (a.IsNullOrEmpty() == true)
             {
                 _db.Add(t);
                 _db.SaveChanges();
@@ -53,8 +44,9 @@ namespace Resturant_managment.Controllers
             {
                 return Ok(a);
             }
-
         }
+
+       
 
 
         [HttpDelete("{id}")]
