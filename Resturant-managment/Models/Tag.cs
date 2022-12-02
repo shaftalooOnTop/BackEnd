@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 //using System.Text.Json.Serialization;
@@ -11,7 +12,8 @@ namespace Resturant_managment.Models
 	{        
 		public int  RestaurantId { get; set; }
 		[ForeignKey("RestaurantId")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+		[IgnoreDataMember]
+		[JsonIgnore(Condition = JsonIgnoreCondition.Always)]
 		public virtual Restaurant? Restaurant { get; set; }
         public string value { get; set; }
 
