@@ -106,7 +106,7 @@ namespace Resturant_managment.Controllers
             var result = _db.RestaurantTables.Where(x => x.ReserveTables
               .All(y => y.ReserveTime.ReserveTime > from
               &&
-              y.ReserveTime.ReserveTime.AddHours(y.ExpireHours) < to)).ToList();
+              y.ReserveTime.ReserveTime.AddHours(y.ExpireHours) < to)).Where(x=>x.Restaurant.id==restauranId).ToList();
             return result;
 
         }
