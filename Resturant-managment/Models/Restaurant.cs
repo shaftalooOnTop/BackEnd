@@ -20,7 +20,6 @@ public class Restaurant:BaseClass
     public  DateTime StartWorkingHour { get; set; }
     public DateTime EndWorkingHour { get; set; }
     public virtual List<RestaurantTable>? tables { get; set; }
-    [IgnoreDataMember]
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("CityId")]
     public virtual City? City { get; set; }
