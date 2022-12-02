@@ -31,7 +31,6 @@ namespace Resturant_managment.Controllers
 
         [HttpPost]
         public ActionResult Post(RestaurantTable t)
-
         {
             _db.Add(t);
             _db.SaveChanges();
