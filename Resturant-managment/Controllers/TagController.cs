@@ -57,6 +57,7 @@ namespace Resturant_managment.Controllers
             var t = _db.Tags.Find(id);
             if (t == null) return NotFound();
             _db.Remove(t);
+            _db.SaveChanges();
             return Ok(t);
         }
     }

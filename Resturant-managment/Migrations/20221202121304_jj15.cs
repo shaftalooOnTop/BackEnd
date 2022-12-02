@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Resturant_managment.Migrations
 {
-    public partial class sqlserver : Migration
+    public partial class jj15 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

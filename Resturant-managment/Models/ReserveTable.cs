@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Resturant_managment.Models
 {
+
     public class ReserveTable : BaseClass
     {
         public int? PaymentId { get; set; }
@@ -17,6 +18,7 @@ namespace Resturant_managment.Models
         [ForeignKey("RestaurantIdentityId")]
         [IgnoreDataMember]
         public virtual RestaurantIdentity RestaurantIdentity { get; set; }
+        [IgnoreDataMember]
         public virtual string RestaurantIdentityId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         [ForeignKey("TableId")]

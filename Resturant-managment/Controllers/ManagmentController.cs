@@ -43,6 +43,7 @@ namespace Resturant_managment.Controllers
 
             return prof;
         }
+
         [HttpGet("GetBusyHours")]
         public BusyHours BusyHours(int restaurantId)
         {
@@ -65,20 +66,6 @@ namespace Resturant_managment.Controllers
 
 
             return busy;
-        }
-        private List<int> OrdersHours(List<Order> orders, DateTime from, DateTime to)
-        {
-            var r = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to)
-                  .Select(x => x.DateCreated.Hour)
-                  .GroupBy(x => x).ToDictionary(x => x.Key, y => y.Count()).ToList();
-            r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
-            return r.Select(x => x.Key).ToList();
-        }
-
-        private long ProfitByDate(List<Order> orders, DateTime from, DateTime to)
-        {
-            long result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price));
-            return result;
         }
 
         [HttpGet("GetFoodSellByFoods")]
@@ -112,6 +99,16 @@ namespace Resturant_managment.Controllers
             return foodsList;
         }
 
+        [HttpGet("getTaxes")]
+        public Tax TotalTax(int restaurantId)
+        {
+            var d = DateTime.Now;
+            var firstDayOfTheYear = new DateTime(d.Year, 1, 1);
+            var lastDayOfTheYear = new DateTime(d.Year, 12, 31);
+            GetFoodSellByFoods(restaurantId, firstDayOfTheYear, lastDayOfTheYear);
+            return new Tax();
+        }
+
         private void FlatenList(Dictionary<int, int> foodDict, IEnumerable<Food> foods)
         {
             foreach (var i in foods)
@@ -124,5 +121,20 @@ namespace Resturant_managment.Controllers
             return foods1;
        
         }
+        private long ProfitByDate(List<Order> orders, DateTime from, DateTime to)
+        {
+            long result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price));
+            return result;
+        }
+        private List<int> OrdersHours(List<Order> orders, DateTime from, DateTime to)
+        {
+            var r = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to)
+                  .Select(x => x.DateCreated.Hour)
+                  .GroupBy(x => x).ToDictionary(x => x.Key, y => y.Count()).ToList();
+            r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+            return r.Select(x => x.Key).ToList();
+        }
+
+
     }
 }

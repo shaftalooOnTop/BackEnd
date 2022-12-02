@@ -14,6 +14,7 @@ namespace Resturant_managment.Models
         // public int? Orderid { get; set; }
         public string FoodDescription { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        [ForeignKey("Categoryid")]
         public virtual Category? Category { get; set; }
         public virtual ICollection<Order>? orders { get; set; }
         public virtual List<FoodOrder>? FoodOrders { get; set; }

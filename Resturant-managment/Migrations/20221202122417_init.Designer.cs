@@ -12,8 +12,8 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    [Migration("20221201134655_sqlserver")]
-    partial class sqlserver
+    [Migration("20221202122417_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -787,8 +787,7 @@ namespace Resturant_managment.Migrations
 
             modelBuilder.Entity("Resturant_managment.Models.Payment", b =>
                 {
-                    b.Navigation("ReserveTable")
-                        .IsRequired();
+                    b.Navigation("ReserveTable");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Restaurant", b =>
