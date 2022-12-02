@@ -11,7 +11,6 @@ namespace Resturant_managment.Models
         public string CityName { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-
         public virtual ICollection<Restaurant>? Restaurants { get; set; }
         
     }

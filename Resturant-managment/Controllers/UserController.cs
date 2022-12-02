@@ -185,17 +185,15 @@ namespace Resturant_managment.Controllers
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(upuser);
             var r = await _userManager.ResetPasswordAsync(upuser, token, newpass);
-            _userManager.UpdateAsync(upuser);
-            _db.Update(upuser);
-            _db.SaveChanges();
-            return Ok();
+            //_userManager.UpdateAsync(upuser);
+            //_db.Update(upuser);
+            //_db.SaveChanges();
+            return Ok(upuser);
         }
         [Authorize]
         [HttpGet("GetUserData")]
         public async Task<ActionResult<RestaurantIdentity>> GetUserData()
         {
-            //var i=User.Claims;
-
             var email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return NotFound();

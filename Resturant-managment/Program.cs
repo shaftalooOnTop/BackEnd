@@ -64,8 +64,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerUI();
-}
-app.UseSwagger();
+//app.UseSwagger();__
+}//                  |
+app.UseSwagger();//<-|
 
 app.UseHttpsRedirection();
 
