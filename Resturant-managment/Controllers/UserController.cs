@@ -169,7 +169,6 @@ namespace Resturant_managment.Controllers
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
             if (upuser == null)
                 return NotFound();
-            upuser.Email = userupdate.Email;
             upuser.PhoneNumber = userupdate.PhoneNumber;
             upuser.FullName = userupdate.FullName;
             upuser.Picture = userupdate.Picture;
