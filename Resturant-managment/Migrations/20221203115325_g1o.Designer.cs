@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -11,9 +12,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221203115325_g1o")]
+    partial class g1o
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace Resturant_managment.Migrations
 
                     b.HasIndex("Ordersid");
 
-                    b.ToTable("FoodOrders", (string)null);
+                    b.ToTable("FoodOrder");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -220,6 +222,27 @@ namespace Resturant_managment.Migrations
                     b.HasIndex("Categoryid");
 
                     b.ToTable("Foods");
+                });
+
+            modelBuilder.Entity("Resturant_managment.Models.FoodOrder", b =>
+                {
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("id")
+                        .HasColumnType("int");
+
+                    b.HasKey("FoodId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("FoodOrders");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Order", b =>
@@ -612,6 +635,25 @@ namespace Resturant_managment.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Resturant_managment.Models.FoodOrder", b =>
+                {
+                    b.HasOne("Resturant_managment.Models.Food", "food")
+                        .WithMany("FoodOrders")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Resturant_managment.Models.Order", "order")
+                        .WithMany("FoodOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("food");
+
+                    b.Navigation("order");
+                });
+
             modelBuilder.Entity("Resturant_managment.Models.Order", b =>
                 {
                     b.HasOne("Resturant_managment.Models.RestaurantIdentity", "RestaurantIdentity")
@@ -731,8 +773,15 @@ namespace Resturant_managment.Migrations
                     b.Navigation("Restaurants");
                 });
 
+            modelBuilder.Entity("Resturant_managment.Models.Food", b =>
+                {
+                    b.Navigation("FoodOrders");
+                });
+
             modelBuilder.Entity("Resturant_managment.Models.Order", b =>
                 {
+                    b.Navigation("FoodOrders");
+
                     b.Navigation("Payment");
                 });
 

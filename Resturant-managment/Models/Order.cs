@@ -14,8 +14,10 @@ public class Order:BaseClass
 {  
    
     public Orderstatus stat { get; set; }
-    public virtual ICollection<Food>? Foods { get; set; }
-    public virtual List<FoodOrder>? FoodOrders { get; set; }
+   
+    //public virtual List<FoodOrder>? FoodOrders { get; set; }
+    public virtual List<Food>? Foods { get; set; }
+
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("RestaurantIdentityId")]
