@@ -88,7 +88,7 @@ namespace Resturant_managment.Controllers
 
             _db.Orders.Where(x => x.id == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to)
                 .Select(x => x.Foods).ToList()
-                .ForEach(delegate (ICollection<Food> x)
+                .ForEach(delegate (List<Food> x)
                 {
                     if (x == null) return;
                     FlatenList(foodDict, x);

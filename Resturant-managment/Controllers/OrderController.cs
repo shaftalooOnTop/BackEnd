@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
@@ -25,6 +26,16 @@ namespace Resturant_managment.Controllers
         [HttpPost]
         public ActionResult Post(Order order)
         {
+            var foods = order.Foods;
+            order.Foods = new List<Food>();
+            int index = 0;
+            foreach(var i in foods) { 
+
+                order.Foods.Add(_db.Foods.FirstOrDefault(x => x.id == i.id));
+                _db.Entry<Food>(order.Foods[index]).State = EntityState.Detached;
+                index++;
+            }
+            
             _db.Orders.Add(order);
             _db.SaveChanges();
             return Ok(order);
