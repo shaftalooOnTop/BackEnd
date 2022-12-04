@@ -1,7 +1,8 @@
 ﻿ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
+ using System.Runtime.Serialization;
+ using System.Text.Json.Serialization;
 using Resturant_managment.Models.Base;
 namespace Resturant_managment.Models
 {
@@ -16,8 +17,11 @@ namespace Resturant_managment.Models
         public string? FoodDescription { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         [ForeignKey("Categoryid")]
+        [IgnoreDataMember]
         public virtual Category? Category { get; set; }
         //public virtual List<FoodOrder>? FoodOrders { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual List<Order>? Orders { get; set; }
         [NotMapped]
         public int? FoodCnt { get; set; } = 0;

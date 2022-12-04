@@ -24,6 +24,7 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Post(Order order)
         {
             if(order.Foods!=null){
