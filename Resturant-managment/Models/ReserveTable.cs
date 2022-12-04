@@ -17,13 +17,13 @@ namespace Resturant_managment.Models
         public int ExpireHours { get; set; } = 2;
         [ForeignKey("RestaurantIdentityId")]
         [IgnoreDataMember]
-        public virtual RestaurantIdentity RestaurantIdentity { get; set; }
+        public virtual RestaurantIdentity? RestaurantIdentity { get; set; }
         [IgnoreDataMember]
-        public virtual string RestaurantIdentityId { get; set; }
+        public virtual string? RestaurantIdentityId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         [ForeignKey("TableId")]
         [IgnoreDataMember]
-        public virtual RestaurantTable Table { get; set; }
+        public virtual RestaurantTable? Table { get; set; }
         public virtual int TableId { get; set; }
 
         [ForeignKey("ReserveTimeId")]

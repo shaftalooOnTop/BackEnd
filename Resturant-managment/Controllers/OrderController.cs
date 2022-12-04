@@ -26,16 +26,16 @@ namespace Resturant_managment.Controllers
         [HttpPost]
         public ActionResult Post(Order order)
         {
-            var foods = order.Foods;
-            order.Foods = new List<Food>();
-            int index = 0;
-            foreach(var i in foods) { 
-
-                order.Foods.Add(_db.Foods.FirstOrDefault(x => x.id == i.id));
-                _db.Entry<Food>(order.Foods[index]).State = EntityState.Detached;
-                index++;
+            if(order.Foods!=null){
+                var foods = order.Foods;
+                order.Foods = new List<Food>();
+                foreach (var i in foods)
+                    _db.Attach(_db.Foods.FirstOrDefault(x => x.id == i.id));
+                foreach (var i in foods)
+                    order.Foods.Add(_db.Foods.Local.Single(x => x.id == i.id));
             }
-            
+
+     
             _db.Orders.Add(order);
             _db.SaveChanges();
             return Ok(order);

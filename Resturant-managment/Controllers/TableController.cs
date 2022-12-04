@@ -32,17 +32,15 @@ namespace Resturant_managment.Controllers
         [HttpPost]
         public ActionResult Post(RestaurantTable t)
         {
-            var a = _db.RestaurantTables.Where(x => (x.RestaurantId == t.RestaurantId && x.number == t.number));
-            if (a.IsNullOrEmpty() == true)
+            var a = _db.RestaurantTables.Any(x => (x.RestaurantId == t.RestaurantId && x.number == t.number));
+            if (!a)
             {
                 _db.Add(t);
                 _db.SaveChanges();
                 return Ok(t);
-            }
-            else
-            {
-                return Ok(a);
-            }
+            } 
+            return new BadRequestResult();
+            
         }
 
        

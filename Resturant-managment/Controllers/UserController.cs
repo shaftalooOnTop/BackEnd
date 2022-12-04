@@ -174,7 +174,7 @@ namespace Resturant_managment.Controllers
             upuser.Picture = userupdate.Picture;
             upuser.Age = userupdate.Age;
             upuser.Gender = userupdate.Gender;
-            var u = new UserLogin { Email = upuser.Email, FullName = upuser.FullName, Id = upuser.Id, PhoneNumber = upuser.PhoneNumber, Password = null };
+            var u = new UserLogin { Email = upuser.Email, FullName = upuser.FullName, Id = upuser.Id, PhoneNumber = upuser.PhoneNumber, Password = userupdate.Password };
             await _userManager.UpdateAsync(upuser);
             return Ok(GetBearerToken(u));
         }

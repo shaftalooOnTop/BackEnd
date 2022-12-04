@@ -17,6 +17,8 @@ namespace Resturant_managment.Models
         [ForeignKey("RestaurantId")]
         [IgnoreDataMember]
         public virtual Restaurant? Restaurant { get; set; }
+        [IgnoreDataMember]
+
         public virtual List<ReserveTable>? ReserveTables { get; set; }
 
         

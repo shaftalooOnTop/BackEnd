@@ -106,9 +106,9 @@ namespace Resturant_managment.Controllers
         [HttpGet("GetActiveReserveTablesByRestaurant")]
         public ActionResult<List<RestaurantTable>> GetActiveReserveTablesByRestaurant(int restauranId, DateTime from ,DateTime to) {
             var result = _db.RestaurantTables.Where(x => x.ReserveTables
-              .All(y => y.ReserveTime.ReserveTime > from
-              &&
-              y.ReserveTime.ReserveTime.AddHours(y.ExpireHours) < to)).Where(x=>x.Restaurant.id==restauranId).ToList();
+              .All(y => y.ReserveTime.ReserveTime > to
+              ||
+              y.ReserveTime.ReserveTime.AddHours(y.ExpireHours) < from)).Where(x=>x.Restaurant.id==restauranId).ToList();
             return result;
 
         }

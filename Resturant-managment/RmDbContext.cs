@@ -15,19 +15,6 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<FoodOrder>()
-        //    .HasKey(bc => new { bc.FoodId, bc.OrderId });
-
-        //modelBuilder.Entity<FoodOrder>()
-        //    .HasOne(bc => bc.food)
-        //    .WithMany(b => b.FoodOrders)
-        //    .HasForeignKey(bc => bc.FoodId);
-
-        //modelBuilder.Entity<FoodOrder>()
-        //    .HasOne(bc => bc.order)
-        //    .WithMany(c => c.FoodOrders)
-        //    .HasForeignKey(bc => bc.OrderId);
-
         modelBuilder.Entity<Food>()
             .HasMany(p => p.Orders)
             .WithMany(p => p.Foods)
