@@ -32,6 +32,7 @@ namespace Resturant_managment.Controllers
             _db.Foods.Add(value);
             _db.SaveChanges();
             return value;
+           
 
         }
         [HttpPost("PostRange")]
@@ -53,10 +54,11 @@ namespace Resturant_managment.Controllers
         public ActionResult<Food> Put([FromBody]Food food)
         {
             if (food.id == 0) return NotFound();
-
+           
             _db.Foods.Update(food);
             _db.SaveChanges();
             return Ok(food);
+            
         }
 
         [HttpDelete]

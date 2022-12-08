@@ -6,9 +6,18 @@ using System.Text.Json.Serialization;
 
 namespace Resturant_managment.Models
 {
-
+    public enum theme
+    {
+        casual,
+       birthday,
+       anniversary,
+       meeting,
+       funeral,
+       other
+    }
     public class ReserveTable : BaseClass
     {
+        public theme theme { get; set; }
         public int? PaymentId { get; set; }
         [ForeignKey("PaymentId")]
        public virtual Payment ?Payment { get; set; }
