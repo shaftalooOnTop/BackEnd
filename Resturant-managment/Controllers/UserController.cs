@@ -16,13 +16,24 @@ namespace Resturant_managment.Controllers
         private readonly UserManager<RestaurantIdentity> _userManager;
         private readonly JwtService _jwtService;
         private readonly RmDbContext _db;
-
-        public UserController(IConfiguration conf, UserManager<RestaurantIdentity> userManager, JwtService jwtService, RmDbContext db)
+        private RestaurantIdentity _RestaurantUser=null;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private RestaurantIdentity  RestaurantUser
+        {
+            get
+            {
+                if (_RestaurantUser == null) return GetUser();
+                else return _RestaurantUser;
+            }
+        } 
+        public UserController(RoleManager<IdentityRole> roleManager,IConfiguration conf, UserManager<RestaurantIdentity> userManager, JwtService jwtService, RmDbContext db)
         {
             _conf = conf;
             _userManager = userManager;
             _jwtService = jwtService;
             _db = db;
+            _roleManager = roleManager;
+           
         }
         private RestaurantIdentity GetUser()
         {
@@ -67,7 +78,7 @@ namespace Resturant_managment.Controllers
             {
                 return BadRequest(result.Errors);
             }
-            var BearerData =await GetBearerToken(
+            var BearerData = await GetBearerToken(
     new UserLogin { Email = user.Email, FullName = user.FullName, Password = user.Password, PhoneNumber = user.PhoneNumber }
 
     );
@@ -78,11 +89,12 @@ namespace Resturant_managment.Controllers
             {
                 Email = user.Email,
                 Expiration = BearerData.Expiration,
-                FullName=BearerData.FullName,
-                PhoneNumber=BearerData.PhoneNumber,
-                Password=null,
-                Token=BearerData.Token
+                FullName = BearerData.FullName,
+                PhoneNumber = BearerData.PhoneNumber,
+                Password = null,
+                Token = BearerData.Token
             };
+            RegisterRole("User");
             return Created("", d);
         }
         [HttpGet("{emailOrPhoneNumber}")]
@@ -180,9 +192,9 @@ namespace Resturant_managment.Controllers
         }
         [HttpPut("changpass")]
         [Authorize]
-        public async Task<ActionResult<UserLogin>> ChangePassword( string newpass)
+        public async Task<ActionResult<UserLogin>> ChangePassword(string newpass)
         {
-            var userupdate = GetUser();
+            var userupdate = _RestaurantUser;
             var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
             if (upuser == null)
             {
@@ -193,7 +205,7 @@ namespace Resturant_managment.Controllers
 
             if (r.Succeeded)
                 return Ok(upuser);
-             return  BadRequest(r.Errors);
+            return BadRequest(r.Errors);
         }
 
 
@@ -207,6 +219,26 @@ namespace Resturant_managment.Controllers
             user.PasswordHash = null;
             return user;
         }
+
+        [HttpPost("RegisterRole")]
+        [Authorize]
+        public async Task<ActionResult> RegisterRole(string roleName)
+        {
+            var roleExist = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                //create the roles and seed them to the database: Question 2
+                var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
+                if (!roleResult.Succeeded) throw new Exception("error");
+            }
+           var e= await _userManager.AddToRoleAsync(RestaurantUser, roleName);
+
+            if (e.Succeeded)
+            
+                return Ok(RestaurantUser);
+            return BadRequest(RestaurantUser);
+        }
+
     }
     public class BearerTokenModel
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
@@ -21,7 +22,8 @@ namespace Resturant_managment.Controllers
             _db = db;
         }
         // GET: api/Managment
-        [HttpGet("GetDailyProfit{restaurantId}")]
+        [Authorize(Roles ="Manager")]
+        [HttpGet("GetProfit/{restaurantId}")]
         public Profit GetProfits(int restaurantId)
         {
             var prof = new Profit();
@@ -134,7 +136,7 @@ namespace Resturant_managment.Controllers
             r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
             return r.Select(x => x.Key).ToList();
         }
-
+       
 
     }
 }

@@ -20,4 +20,5 @@ public class RestaurantIdentity:IdentityUser
         public virtual List<Payment> Payments { get; set; }
 
         public virtual List<ReserveTable> restable { get; set; }
+        
 }

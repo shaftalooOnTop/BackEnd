@@ -10,16 +10,17 @@ namespace Resturant_managment.Models
 	{
 		public string? Name { get; set; }
         public int ? Price { get; set; }
+        [NotMapped]
         public string? Image { get; set; }
+        [IgnoreDataMember]
+        public virtual Photo Photo { get; set; }
         public int? Categoryid { get; set; }
         public int? Count { get; set; }
-        // public int? Orderid { get; set; }
         public string? FoodDescription { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         [ForeignKey("Categoryid")]
         [IgnoreDataMember]
         public virtual Category? Category { get; set; }
-        //public virtual List<FoodOrder>? FoodOrders { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
         public virtual List<Order>? Orders { get; set; }

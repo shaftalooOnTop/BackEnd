@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
@@ -62,7 +63,10 @@ namespace Resturant_managment.Controllers
         {
             var t=_db.Categories.Find(id);
         if (t==null)return NotFound();
-            _db.Remove(t);
+        t.Foods = null;
+        var del=_db.Foods.IgnoreAutoIncludes().Where(x => x.Categoryid == id).ToList();
+        _db.RemoveRange(del);
+        _db.Remove(t);
             _db.SaveChanges();
             return Ok();
         }

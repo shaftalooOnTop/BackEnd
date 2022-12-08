@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -11,9 +12,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221204152229_d")]
+    partial class d
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,11 +207,11 @@ namespace Resturant_managment.Migrations
                     b.Property<string>("FoodDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Photoid")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Price")
                         .HasColumnType("int");
@@ -217,8 +219,6 @@ namespace Resturant_managment.Migrations
                     b.HasKey("id");
 
                     b.HasIndex("Categoryid");
-
-                    b.HasIndex("Photoid");
 
                     b.ToTable("Foods");
                 });
@@ -284,26 +284,6 @@ namespace Resturant_managment.Migrations
                         .IsUnique();
 
                     b.ToTable("Payment");
-                });
-
-            modelBuilder.Entity("Resturant_managment.Models.Photo", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImgName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.ReserveTable", b =>
@@ -629,15 +609,7 @@ namespace Resturant_managment.Migrations
                         .WithMany("Foods")
                         .HasForeignKey("Categoryid");
 
-                    b.HasOne("Resturant_managment.Models.Photo", "Photo")
-                        .WithMany()
-                        .HasForeignKey("Photoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.Order", b =>

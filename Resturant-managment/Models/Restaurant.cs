@@ -26,7 +26,7 @@ public class Restaurant:BaseClass
     
     public virtual ICollection<Comment>? Comments { get; set; }
     public double Avg { get; set; }
-
-
+    [NotMapped]
+    public List<Food> Favorites { get; set; } = new List<Food>();
 
 }
