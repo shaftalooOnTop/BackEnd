@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -23,9 +24,10 @@ builder.Services
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
         options.User.RequireUniqueEmail = true;
-    })
+    }).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<RmDbContext>();
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,7 +40,6 @@ builder.Services.AddDbContext<RmDbContext>(options => options.
     UseSqlServer("Data Source=efc4055b-632b-4cd9-8b5d-e1a9aaf42e5b.hsvc.ir,32284;Database=shaftalooV1;Application Name=app;Integrated Security=false;User ID=sa;Password=iTd8ldXElyXXFu0rWWITWCqQqpOEs153;MultipleActiveResultSets=True"));
 var config = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(config);  
-builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddCors();
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -57,7 +58,6 @@ builder.Services
             )
         };
     });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

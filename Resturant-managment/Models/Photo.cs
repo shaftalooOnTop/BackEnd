@@ -6,5 +6,4 @@ namespace Resturant_managment.Models;
 public class Photo:BaseClass
 {
     public string ImgName { get; set; }
-    public IFormFile Image { get; set; }
 }

@@ -33,6 +33,7 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     public DbSet<resrvetime> Resrvetimes { get; set; }
     public DbSet<ReserveTable> ReserveTables { get; set; }
     //public DbSet<FoodOrder> FoodOrders { get; set; }
+    public DbSet<Photo> Photos { get; set; }
 
-   
+
 }

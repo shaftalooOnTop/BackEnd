@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Net.Http.Headers;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
 using Resturant_managment.Models;
@@ -25,39 +27,46 @@ public class RestaurantController : ControllerBase
         _mapper = mapper;
     }
     [HttpGet]
-    public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0)
+    public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0, int cityid = -1)
     {
 
         var restaurantList = _db.Restaurant.ToList().Skip(size * number).Take(size);
         restaurantList.All(x => { x.Comments = null; return true; });
-        if (tag == "all")
-            return Ok(restaurantList);
-        restaurantList = restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag));
+        if (tag != "all")
+            restaurantList = restaurantList.Where(x => x.Tags == null ? false : x.Tags.Any(y => y.value == tag)).ToList();
+        if (cityid == -1)
+            restaurantList = restaurantList.Where(c => cityid == cityid).ToList();
         return Ok(restaurantList);
     }
 
-    [HttpGet("findbycity")]
-    public ActionResult<List<Restaurant>> FindByCity(int cityid)
-    {
-        if (cityid == -1)
-        {
-            return _db.Restaurant.ToList();
-        }
-        else
-        {
-            var rest = _db.Restaurant.ToList().Where(x => x.CityId == cityid);
-            return Ok(rest);
-        }
-    }
+
 
     [HttpGet("{id}")]
     public ActionResult<Restaurant> Get(int id)
     {
-        
-        var restaurants = _db.Restaurant.ToList().FirstOrDefault(x => x.id == id);
-        if (restaurants == null) return NotFound();
-        restaurants.Avg = _db.Comments.Any() ? _db.Comments.Average(x => x.Rate) : 3.5;
 
+        var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == id);
+        if (restaurants == null) return NotFound();
+        restaurants.Avg = _db.Comments.Where(x => x.RestaurantId == id).Any() ? _db.Comments.Where(x => x.RestaurantId == id).Average(x => x.Rate) : 3.5;
+        var result = _db.Foods.Where(x => x.Category.RestaurantId == id);
+
+        var t = _db.Orders.Where(r => r.restaurantId == id)
+            .SelectMany((arg) => arg.Foods).ToList()
+            .GroupBy(x => x.id)
+            .ToDictionary(x => x.Key, x => x.Count());
+
+        //t.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+        var ls = new List<KeyValuePair<Food, int>>();
+        result
+            .ToList();
+        foreach(var i in result)
+        {
+            if (!t.ContainsKey(i.id)) continue;
+            var tmp = new KeyValuePair<Food,int>(i,t[i.id]);
+            ls.Add(tmp);
+        }
+        ls.Sort((x, y) => x.Value - y.Value);
+        restaurants.Favorites = ls.Select(x=>x.Key).Take(5).ToList();
         return Ok(restaurants);
     }
 
@@ -94,17 +103,17 @@ public class RestaurantController : ControllerBase
     {
         var c1 = new City
         {
-          
+
             CityName = "Zanjan",
         };
         var c2 = new City
         {
-         
+
             CityName = "Tehran"
         };
         var tag1 = new Tag
         {
-            
+
             value = "Chicken"
         };
         var tag2 = new Tag
@@ -133,6 +142,19 @@ public class RestaurantController : ControllerBase
 
         return Ok(new List<Restaurant> { r1Norm });
     }
+    [HttpGet("fake")]
+    public ActionResult getFake()
+    {
+        var img = _db.Foods.FirstOrDefault().Image;
+        if (img == "" || img == null) return NotFound();
+        var type = "";
+        if (img.StartsWith("data:image/jpeg;base64,")) type=("image/jpeg");
+        if (img.StartsWith("data:image/png;base64,")) type="image/ong";
 
+
+        //res.Value=img;
+        //var o = new OkObjectResult(img);
+        return Content(img, type);
+    }
 }
 
