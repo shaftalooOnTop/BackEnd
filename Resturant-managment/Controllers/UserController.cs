@@ -42,7 +42,6 @@ namespace Resturant_managment.Controllers
         }
         [HttpPost("PostUser")]
         [AllowAnonymous]
-
         public async Task<ActionResult<ReturnData>> PostUser(UserSignUp user)
         {
 

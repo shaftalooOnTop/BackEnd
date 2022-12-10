@@ -59,14 +59,14 @@ public class RestaurantController : ControllerBase
         var ls = new List<KeyValuePair<Food, int>>();
         result
             .ToList();
-        foreach(var i in result)
+        foreach (var i in result)
         {
             if (!t.ContainsKey(i.id)) continue;
-            var tmp = new KeyValuePair<Food,int>(i,t[i.id]);
+            var tmp = new KeyValuePair<Food, int>(i, t[i.id]);
             ls.Add(tmp);
         }
         ls.Sort((x, y) => x.Value - y.Value);
-        restaurants.Favorites = ls.Select(x=>x.Key).Take(5).ToList();
+        restaurants.Favorites = ls.Select(x => x.Key).Take(5).ToList();
         return Ok(restaurants);
     }
 
@@ -80,7 +80,7 @@ public class RestaurantController : ControllerBase
     [HttpGet("GetRestaurantMenu/{id}")]
     public ActionResult<List<Category>> GetRestaurantMenu(int id)
     {
-       return _db.Categories.Where(c => c.RestaurantId == id).ToList();
+        return _db.Categories.Where(c => c.RestaurantId == id).ToList();
     }
     [HttpPut]
     public ActionResult<Restaurant> Put(Restaurant restaurant)
@@ -92,10 +92,10 @@ public class RestaurantController : ControllerBase
     [HttpDelete]
     public ActionResult Delete(int id)
     {
-        var obj=_db.Restaurant.Find(id);
+        var obj = _db.Restaurant.Find(id);
         if (obj == null) return NotFound();
         _db.Remove(obj);
-        return  Ok(id);
+        return Ok(id);
     }
 
     [HttpGet("MakeFakeData")]
@@ -148,13 +148,39 @@ public class RestaurantController : ControllerBase
         var img = _db.Foods.FirstOrDefault().Image;
         if (img == "" || img == null) return NotFound();
         var type = "";
-        if (img.StartsWith("data:image/jpeg;base64,")) type=("image/jpeg");
-        if (img.StartsWith("data:image/png;base64,")) type="image/ong";
+        if (img.StartsWith("data:image/jpeg;base64,")) type = ("image/jpeg");
+        if (img.StartsWith("data:image/png;base64,")) type = "image/ong";
 
 
         //res.Value=img;
         //var o = new OkObjectResult(img);
         return Content(img, type);
+    }
+    [HttpGet("FavoriteFood")]
+    public ActionResult<Restaurant> FavoriteFoodByCategory(int RestaurantId)
+    {
+        var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == RestaurantId);
+        if (restaurants == null) return NotFound();
+        var result = _db.Foods.Where(x => x.Category.RestaurantId == RestaurantId);
+        var t = _db.Orders.Where(r => r.restaurantId == RestaurantId)
+           .SelectMany((arg) => arg.Foods).ToList()
+           .GroupBy(x => x.id)
+           .ToDictionary(x => x.Key, x => x.Count());
+        
+        var ls = new List<KeyValuePair<Food, int>>();
+        result
+            .ToList();
+        foreach (var i in result)
+        {
+            if (!t.ContainsKey(i.id)) continue;
+            var tmp = new KeyValuePair<Food, int>( i , t[i.id]);
+            ls.Add(tmp);
+        }
+        ls.GroupBy(x => x.Key.Categoryid);
+        ls.Sort((x, y) => x.Value - y.Value);
+        restaurants.Favorites = ls.Select(x => x.Key).First();
+        return Ok(restaurants);
+        
     }
 }
 
