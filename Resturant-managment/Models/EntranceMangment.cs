@@ -8,14 +8,19 @@ namespace Resturant_managment.Models
 {
     public class EntranceMangment : BaseClass
     {
-        public DateTime enter { get; set; }
-        public DateTime leave { get; set; }
-       
+        public DateTime? enter { get; set; }
+        public DateTime? leave { get; set; }
+
         [JsonIgnore]
         [IgnoreDataMember]
         [ForeignKey("EmployeeId")]
         public string IdentityId { get; set; }
-        public virtual RestaurantIdentity employee { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+
+        public virtual Employee employee { get; set; }
+
+
         
 
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Resturant_managment.Models;
@@ -16,11 +17,12 @@ namespace Resturant_managment.Controllers
             _db = db;
         }
 
-        [HttpGet("employees in the restaurant")]
-        public ActionResult<List<Employee>> PresentToday(int restaurantid , DateTime from, DateTime to )
+        [HttpGet("employeesinthe restaurant")]
+        
+        public ActionResult<List<Employee>> EmployeesPresent(int restaurantid , DateTime from, DateTime to )
         {
-            var result = _db.Employees.Where(x => x.restaurantid == restaurantid && x.entranceMangments != null).ToList();
-            var e = _db.EntranceMangments.Where(x => x.enter >= from && x.leave >= to ).ToList(); 
+            var result = _db.Employees.Where(x => x.restaurantid == restaurantid).
+            Where(x => x.entranceMangments.Any(x => x.enter >= from && (x.leave ?? DateTime.Now) <= to)).ToList();
             
             return Ok(result);
         }
@@ -44,6 +46,10 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpGet("present of a employee")]
+        public ActionResult<EntranceMangment> PresentOfEmployee(int employeeid)
+        {
+
+        }
 
         [HttpPut]
         public ActionResult Put(EntranceMangment entrance)
