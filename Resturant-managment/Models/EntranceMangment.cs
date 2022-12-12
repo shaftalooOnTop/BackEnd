@@ -14,7 +14,7 @@ namespace Resturant_managment.Models
         [JsonIgnore]
         [IgnoreDataMember]
         [ForeignKey("EmployeeId")]
-        public string IdentityId { get; set; }
+        public int IdentityId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
 

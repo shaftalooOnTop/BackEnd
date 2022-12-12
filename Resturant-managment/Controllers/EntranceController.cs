@@ -48,7 +48,8 @@ namespace Resturant_managment.Controllers
         [HttpGet("present of a employee")]
         public ActionResult<EntranceMangment> PresentOfEmployee(int employeeid)
         {
-
+            var p = _db.EntranceMangments.Where(x=>x.IdentityId == employeeid).ToList();
+            return Ok(p);
         }
 
         [HttpPut]
