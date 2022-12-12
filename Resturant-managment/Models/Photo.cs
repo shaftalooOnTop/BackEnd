@@ -10,5 +10,5 @@ public class Photo :BaseClass
     public string ImgName { get; set; }
     [JsonIgnore]
     [IgnoreDataMember]
-    public virtual List<Food> Foods { get; set; }
+    public virtual Food Food { get; set; }
 }

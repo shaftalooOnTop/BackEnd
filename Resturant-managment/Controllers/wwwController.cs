@@ -21,7 +21,7 @@ namespace Resturant_managment.Controllers
         public IEnumerable<string> Get()
         {
             
-            var d=Directory.GetFiles(_appEnvironment.WebRootPath, "*.*", SearchOption.AllDirectories).ToList();
+                var d=Directory.GetFiles(_appEnvironment.WebRootPath, "*.*", SearchOption.AllDirectories).ToList();
             
             return d;
         }
