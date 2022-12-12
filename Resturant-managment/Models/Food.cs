@@ -13,8 +13,10 @@ namespace Resturant_managment.Models
         public int ? Price { get; set; }
         [NotMapped]
         public string? Image { get; set; }
-        [IgnoreDataMember]
-        public virtual Photo Photo { get; set; }
+ 
+        [ForeignKey("PhotoId")]
+        public virtual Photo? Photo { get; set; }
+        public virtual int? PhotoId { get; set; }
         public int? Categoryid { get; set; }
         public int? Count { get; set; }
         public string? FoodDescription { get; set; }

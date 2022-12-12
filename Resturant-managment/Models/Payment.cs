@@ -7,13 +7,19 @@ namespace Resturant_managment.Models
 {
     public enum paymentType
     {
-        prePaid,
-        onlinePaid,
-        inPlacePaid
+        Wallet,
+        Online,
+        InPlace
+    }
+    public enum paymentState
+    {
+        Succeed,
+        Failed
     }
 	public class Payment:BaseClass
 	{
         public paymentType PaymentType { get; set; }
+        public paymentState PaymentState { get; set; }
         [ForeignKey("OrderId")]
         [JsonIgnore]
         [IgnoreDataMember]

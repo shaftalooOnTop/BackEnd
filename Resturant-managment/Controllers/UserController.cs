@@ -12,13 +12,13 @@ namespace Resturant_managment.Controllers
     public class UserController : ControllerBase
     {
 
-        private IConfiguration _conf;
         private readonly UserManager<RestaurantIdentity> _userManager;
         private readonly JwtService _jwtService;
         private readonly RmDbContext _db;
-        private RestaurantIdentity _RestaurantUser = null;
+        private readonly RestaurantIdentity _RestaurantUser = null;
         private readonly RoleManager<IdentityRole> _roleManager;
         private RestaurantIdentity RestaurantUser
+  
         {
             get
             {
@@ -26,9 +26,8 @@ namespace Resturant_managment.Controllers
                 else return _RestaurantUser;
             }
         }
-        public UserController(RoleManager<IdentityRole> roleManager, IConfiguration conf, UserManager<RestaurantIdentity> userManager, JwtService jwtService, RmDbContext db)
+        public UserController(RoleManager<IdentityRole> roleManager, UserManager<RestaurantIdentity> userManager, JwtService jwtService, RmDbContext db)
         {
-            _conf = conf;
             _userManager = userManager;
             _jwtService = jwtService;
             _db = db;
@@ -100,10 +99,10 @@ namespace Resturant_managment.Controllers
             return Created("", d);
         }
 
-        [HttpPost("PostRestaurant")]
+        [HttpPost("PostRestaurantAdmin")]
         [AllowAnonymous]
 
-        public async Task<ActionResult<ReturnData>> PostRestaurant(RestaurantAdminSignup user)
+        public async Task<ActionResult<ReturnData>> PostRestaurantAdmin(RestaurantAdminSignup user)
         {
 
             if (!ModelState.IsValid)
@@ -157,7 +156,6 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpGet("{emailOrPhoneNumber}")]
-        //[Authorize]
         [AllowAnonymous]
 
         public async Task<ActionResult<UserLogin>> GetUser(string emailOrPhoneNumber)

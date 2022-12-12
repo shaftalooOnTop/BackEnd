@@ -28,5 +28,11 @@ public class Restaurant:BaseClass
     public double Avg { get; set; }
     [NotMapped]
     public List<Food> Favorites { get; set; } = new List<Food>();
+    [IgnoreDataMember]
+    [JsonIgnore]
+    [ForeignKey("InventoriesId")]
+    public virtual List<Inventory>? Inventories { get; set; }
+    public virtual int InventoriesId { get; set; }
+
 
 }

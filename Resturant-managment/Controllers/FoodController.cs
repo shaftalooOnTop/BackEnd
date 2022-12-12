@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
-
 namespace Resturant_managment.Controllers
 {
     [Route("api/[controller]")]
@@ -29,7 +28,11 @@ namespace Resturant_managment.Controllers
         [HttpPost]
         public Food Post([FromBody] Food value)
         {
+            var u = new Utils (_db);
+            var p=u.Base64Save(value.Image);
+            value.Photo = p;
             _db.Foods.Add(value);
+
             _db.SaveChanges();
             return value;
            

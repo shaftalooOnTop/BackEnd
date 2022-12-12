@@ -4,7 +4,7 @@
 
 namespace Resturant_managment.Migrations
 {
-    public partial class init : Migration
+    public partial class ggh5o : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
