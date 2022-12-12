@@ -111,6 +111,32 @@ public class RestaurantController : ControllerBase
         //var o = new OkObjectResult(img);
         return Content(img, type);
     }
-  
+    [HttpGet("FavoriteFood")]
+    public ActionResult<Restaurant> FavoriteFoodByCategory(int RestaurantId)
+    {
+        var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == RestaurantId);
+        if (restaurants == null) return NotFound();
+        var result = _db.Foods.Where(x => x.Category.RestaurantId == RestaurantId);
+        var t = _db.Orders.Where(r => r.restaurantId == RestaurantId)
+           .SelectMany((arg) => arg.Foods).ToList()
+           .GroupBy(x => x.id)
+           .ToDictionary(x => x.Key, x => x.Count());
+
+        var ls = new List<KeyValuePair<Food, int>>();
+        result
+            .ToList();
+        foreach (var i in result)
+        {
+            if (!t.ContainsKey(i.id)) continue;
+            var tmp = new KeyValuePair<Food, int>(i, t[i.id]);
+            ls.Add(tmp);
+        }
+        var s = ls.GroupBy(x => x.Key.Categoryid).Select(x => x.MaxBy(y => y.Value)).Select(x => x.Key).ToList();
+        //ls.Sort((x, y) => x.Value - y.Value);
+        restaurants.Favorites = s;
+        return Ok(restaurants);
+
+    }
+
 }
 
