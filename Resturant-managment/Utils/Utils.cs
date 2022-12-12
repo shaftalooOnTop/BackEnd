@@ -1,8 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
+using Resturant_managment.Models;
 
-namespace Resturant_managment.Utils
+namespace Resturant_managment
 {
 	public class Utils
 	{
@@ -11,24 +11,24 @@ namespace Resturant_managment.Utils
         {
 			_db = db;
         }
-		public  void Base64Save(string img)
-			{
-				byte[] bytes = Convert.FromBase64String(img);
-				Image image;
-				using(var mem=new MemoryStream(bytes))
-				{
-					image = Image.FromStream(mem);
-				}
-				var newFileName=_db.Photos.Last().id+1;
+		public Photo Base64Save(string img)
+		{
 			var type = "";
-			ImageFormat encoder=ImageFormat.Png ;
-			if (img.StartsWith("data:image/jpeg;base64,")) {
-				type = ("image/jpeg");
-				encoder = ImageFormat.Jpeg;
-					}
-			if (img.StartsWith("data:image/png;base64,")) { type = "image/png"; encoder = ImageFormat.Png; }
+			if (img.StartsWith("data:image/jpeg;base64,")) { type = "jpeg";
+				img = img.Replace("data:image/jpeg;base64,","");
+			}
+			if (img.StartsWith("data:image/png;base64,")) {type = "png";
+				img = img.Replace("data:image/png;base64,", "");
 
-			image.Save("wwwroot/img_"+type, encoder);
+			}
+			var guid = _db.PhotoTable.OrderBy(x=>x.id).Last().id + 1;
+			var p = new Photo { ImgName= $"{guid}.{type}" };
+				
+			string filePath = $"wwwroot/{guid}.{type}";
+			File.WriteAllBytes(filePath, Convert.FromBase64String(img));
+			_db.Add(p);
+			_db.SaveChanges();
+			return p;
 			}
 	}
 }

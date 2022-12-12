@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Net.Http.Headers;
 using System.Threading.Tasks;
-using AutoMapper;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -19,12 +19,10 @@ namespace Resturant_managment.Controllers;
 public class RestaurantController : ControllerBase
 {
     private readonly RmDbContext _db;
-    private readonly IMapper _mapper;
 
-    public RestaurantController(RmDbContext db, IMapper mapper)
+    public RestaurantController(RmDbContext db)
     {
         _db = db;
-        _mapper = mapper;
     }
     [HttpGet]
     public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0, int cityid = -1)
@@ -98,50 +96,7 @@ public class RestaurantController : ControllerBase
         return  Ok(id);
     }
 
-    [HttpGet("MakeFakeData")]
-    public ActionResult MakeFakeData()
-    {
-        var c1 = new City
-        {
 
-            CityName = "Zanjan",
-        };
-        var c2 = new City
-        {
-
-            CityName = "Tehran"
-        };
-        var tag1 = new Tag
-        {
-
-            value = "Chicken"
-        };
-        var tag2 = new Tag
-        {
-            value = "cheap"
-        };
-        var r1 = new HttpRestaurant
-        {
-
-            Address = "right here 1",
-
-            BackgroundImg = "",
-            Description = "some restaurant1",
-            LogoImg = "",
-            Name = "KFC1"
-        };
-        var r1Norm = _mapper.Map<Restaurant>(r1);
-        try
-        {
-            _db.Restaurant.Add(r1Norm);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e);
-        }
-
-        return Ok(new List<Restaurant> { r1Norm });
-    }
     [HttpGet("fake")]
     public ActionResult getFake()
     {

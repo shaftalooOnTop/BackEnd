@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Resturant_managment.Migrations
 {
-    public partial class jj15 : Migration
+    public partial class ggh5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,19 @@ namespace Resturant_managment.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cities", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhotoTable",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImgName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoTable", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,6 +101,7 @@ namespace Resturant_managment.Migrations
                     StartWorkingHour = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndWorkingHour = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Avg = table.Column<double>(type: "float", nullable: false),
+                    InventoriesId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -212,6 +226,29 @@ namespace Resturant_managment.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inventories",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    InventoriesId = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventories", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Inventories_Restaurant_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Restaurant",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -289,10 +326,10 @@ namespace Resturant_managment.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<int>(type: "int", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoId = table.Column<int>(type: "int", nullable: false),
                     Categoryid = table.Column<int>(type: "int", nullable: true),
-                    Count = table.Column<int>(type: "int", nullable: false),
-                    FoodDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: true),
+                    FoodDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -303,30 +340,37 @@ namespace Resturant_managment.Migrations
                         column: x => x.Categoryid,
                         principalTable: "Categories",
                         principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Foods_PhotoTable_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "PhotoTable",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payment",
+                name: "Payments",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
+                    PaymentState = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     IdentityId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payment", x => x.id);
+                    table.PrimaryKey("PK_Payments", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Payment_AspNetUsers_IdentityId",
+                        name: "FK_Payments_AspNetUsers_IdentityId",
                         column: x => x.IdentityId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Payment_Orders_OrderId",
+                        name: "FK_Payments_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "id",
@@ -338,11 +382,11 @@ namespace Resturant_managment.Migrations
                 columns: table => new
                 {
                     Foodsid = table.Column<int>(type: "int", nullable: false),
-                    ordersid = table.Column<int>(type: "int", nullable: false)
+                    Ordersid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FoodOrder", x => new { x.Foodsid, x.ordersid });
+                    table.PrimaryKey("PK_FoodOrder", x => new { x.Foodsid, x.Ordersid });
                     table.ForeignKey(
                         name: "FK_FoodOrder_Foods_Foodsid",
                         column: x => x.Foodsid,
@@ -350,34 +394,8 @@ namespace Resturant_managment.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FoodOrder_Orders_ordersid",
-                        column: x => x.ordersid,
-                        principalTable: "Orders",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FoodOrders",
-                columns: table => new
-                {
-                    FoodId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    id = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FoodOrders", x => new { x.FoodId, x.OrderId });
-                    table.ForeignKey(
-                        name: "FK_FoodOrders_Foods_FoodId",
-                        column: x => x.FoodId,
-                        principalTable: "Foods",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FoodOrders_Orders_OrderId",
-                        column: x => x.OrderId,
+                        name: "FK_FoodOrder_Orders_Ordersid",
+                        column: x => x.Ordersid,
                         principalTable: "Orders",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -391,7 +409,7 @@ namespace Resturant_managment.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentId = table.Column<int>(type: "int", nullable: true),
                     ExpireHours = table.Column<int>(type: "int", nullable: false),
-                    RestaurantIdentityId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RestaurantIdentityId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TableId = table.Column<int>(type: "int", nullable: false),
                     ReserveTimeId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -403,12 +421,11 @@ namespace Resturant_managment.Migrations
                         name: "FK_ReserveTables_AspNetUsers_RestaurantIdentityId",
                         column: x => x.RestaurantIdentityId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ReserveTables_Payment_PaymentId",
+                        name: "FK_ReserveTables_Payments_PaymentId",
                         column: x => x.PaymentId,
-                        principalTable: "Payment",
+                        principalTable: "Payments",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_ReserveTables_Resrvetimes_ReserveTimeId",
@@ -467,19 +484,24 @@ namespace Resturant_managment.Migrations
                 column: "RestaurantUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FoodOrder_ordersid",
+                name: "IX_FoodOrder_Ordersid",
                 table: "FoodOrder",
-                column: "ordersid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FoodOrders_OrderId",
-                table: "FoodOrders",
-                column: "OrderId");
+                column: "Ordersid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Foods_Categoryid",
                 table: "Foods",
                 column: "Categoryid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Foods_PhotoId",
+                table: "Foods",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inventories_InventoriesId",
+                table: "Inventories",
+                column: "InventoriesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_RestaurantIdentityId",
@@ -492,13 +514,13 @@ namespace Resturant_managment.Migrations
                 column: "restuarantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_IdentityId",
-                table: "Payment",
+                name: "IX_Payments_IdentityId",
+                table: "Payments",
                 column: "IdentityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_OrderId",
-                table: "Payment",
+                name: "IX_Payments_OrderId",
+                table: "Payments",
                 column: "OrderId",
                 unique: true);
 
@@ -558,7 +580,7 @@ namespace Resturant_managment.Migrations
                 name: "FoodOrder");
 
             migrationBuilder.DropTable(
-                name: "FoodOrders");
+                name: "Inventories");
 
             migrationBuilder.DropTable(
                 name: "ReserveTables");
@@ -570,7 +592,7 @@ namespace Resturant_managment.Migrations
                 name: "Foods");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Resrvetimes");
@@ -580,6 +602,9 @@ namespace Resturant_managment.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "PhotoTable");
 
             migrationBuilder.DropTable(
                 name: "Orders");

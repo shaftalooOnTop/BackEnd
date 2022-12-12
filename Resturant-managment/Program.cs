@@ -58,6 +58,7 @@ builder.Services
             )
         };
     });
+builder.Services.AddSingleton(builder.Environment);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

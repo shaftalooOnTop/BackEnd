@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
@@ -35,8 +29,7 @@ namespace Resturant_managment.Controllers
                 foreach (var i in foods)
                     order.Foods.Add(_db.Foods.Local.Single(x => x.id == i.id));
             }
-
-     
+            _db.Foods.UpdateRange();
             _db.Orders.Add(order);
             _db.SaveChanges();
             return Ok(order);
@@ -105,6 +98,7 @@ namespace Resturant_managment.Controllers
         public  ActionResult ChangeOrderByOrderId(int orderid)
         { 
             var o = _db.Orders.Find(orderid);
+           
             _db.Update(o);
             _db.SaveChanges();
             return Ok(o);
