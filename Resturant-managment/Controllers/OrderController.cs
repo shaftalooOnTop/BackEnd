@@ -21,6 +21,7 @@ namespace Resturant_managment.Controllers
         [Authorize]
         public ActionResult Post(Order order)
         {
+
             if(order.Foods!=null){
                 var foods = order.Foods;
                 order.Foods = new List<Food>();
@@ -29,12 +30,35 @@ namespace Resturant_managment.Controllers
                 foreach (var i in foods)
                     order.Foods.Add(_db.Foods.Local.Single(x => x.id == i.id));
             }
-            _db.Foods.UpdateRange();
+            if(order.Payment == null && order.stat == Orderstatus.finished) {
+                return BadRequest("order cant be finished if it hasnt been paid ");
+            }
+            if(order.Payment != null)
+            {
+                order.stat = Orderstatus.finished;
+            }
+     
             _db.Orders.Add(order);
             _db.SaveChanges();
             return Ok(order);
         }
 
+        [HttpGet("Receipt")]
+        public ActionResult<Order> receipt(int orderid)
+        {
+            var order = _db.Orders.FirstOrDefault(x => x.id == orderid);
+            if (order.stat != Orderstatus.finished)
+            {
+                return BadRequest("this order isnt paid yet");
+            }
+            return Ok(order);
+        }
+        [HttpGet("orderstatus")]
+        public ActionResult<Order> orderstatus( Orderstatus statu)
+        {
+            var o =_db.Orders.Where(x => x.stat==statu);
+            return Ok(o);
+        }
 
         [HttpGet("id")]
         public ActionResult<Order> Get(int id)
@@ -57,6 +81,14 @@ namespace Resturant_managment.Controllers
         public ActionResult Put(Order o)
         {
             if (o.id == 0) return NotFound();
+            if (o.Payment == null && o.stat == Orderstatus.finished)
+            {
+                return BadRequest("order cant be finished if it hasnt been paid ");
+            }
+            if (o.Payment != null)
+            {
+                o.stat = Orderstatus.finished;
+            }
             _db.Update(o);
             _db.SaveChanges();
             return Ok(o);
@@ -88,6 +120,14 @@ namespace Resturant_managment.Controllers
         {
             var o = _db.Orders.Find(orderid);
             o.stat = status;
+            if (o.Payment == null && status == Orderstatus.finished)
+            {
+                return BadRequest("order cant be finished if it hasnt been paid ");
+            }
+            if (o.Payment != null)
+            {
+                o.stat = Orderstatus.finished;
+            }
             _db.Update(o);
             _db.SaveChanges();
             return Ok(o);
@@ -98,7 +138,14 @@ namespace Resturant_managment.Controllers
         public  ActionResult ChangeOrderByOrderId(int orderid)
         { 
             var o = _db.Orders.Find(orderid);
-           
+            if (o.Payment== null && o.stat == Orderstatus.finished)
+            {
+                return BadRequest("order cant be finished if it hasnt been paid ");
+            }
+            if (o.Payment != null)
+            {
+                o.stat = Orderstatus.finished;
+            }
             _db.Update(o);
             _db.SaveChanges();
             return Ok(o);

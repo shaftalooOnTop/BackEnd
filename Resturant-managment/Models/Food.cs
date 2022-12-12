@@ -8,6 +8,7 @@ namespace Resturant_managment.Models
 {
 	public class Food:BaseClass
 	{
+       
 		public string? Name { get; set; }
         public int ? Price { get; set; }
         [NotMapped]

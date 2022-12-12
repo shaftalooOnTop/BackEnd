@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Resturant_managment.Models.Base;
 
 namespace Resturant_managment.Models;
 
@@ -17,9 +18,23 @@ public class RestaurantIdentity : IdentityUser
 
     public string Gender { get; set; }
 
-    public virtual List<Payment> Payments { get; set; }
+    public virtual List<Payment>? Payments { get; set; }
 
-    public virtual List<ReserveTable> restable { get; set; }
+    public virtual List<ReserveTable>? restable { get; set; }
+    
     [NotMapped]
     public List<String> RoleName { get; set; }
+
+}
+public class Employee :BaseClass
+{
+    public virtual List<EntranceMangment>? entranceMangments { get; set; }
+    public int restaurantid { get; set; }
+    [ForeignKey("restaurantid")]
+    public virtual Restaurant Restaurant { get; set; }
+
+    
+    public string identityid { get; set; }
+    [ForeignKey("identityid")]
+    public virtual RestaurantIdentity RestaurantIdentity { get; set; }
 }

@@ -18,6 +18,7 @@ namespace Resturant_managment.Controllers
         private readonly RestaurantIdentity _RestaurantUser = null;
         private readonly RoleManager<IdentityRole> _roleManager;
         private RestaurantIdentity RestaurantUser
+  
         {
             get
             {
@@ -40,7 +41,6 @@ namespace Resturant_managment.Controllers
         }
         [HttpPost("PostUser")]
         [AllowAnonymous]
-
         public async Task<ActionResult<ReturnData>> PostUser(UserSignUp user)
         {
 

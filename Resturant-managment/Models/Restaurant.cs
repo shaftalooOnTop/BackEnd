@@ -23,7 +23,7 @@ public class Restaurant:BaseClass
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     [ForeignKey("CityId")]
     public virtual City? City { get; set; }
-    
+    public virtual List<Employee>? Employees { get; set; }
     public virtual ICollection<Comment>? Comments { get; set; }
     public double Avg { get; set; }
     [NotMapped]

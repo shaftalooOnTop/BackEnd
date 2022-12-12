@@ -29,4 +29,7 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     //public DbSet<FoodOrder> FoodOrders { get; set; }
 
 
+    public DbSet<Photo> Photos { get; set; }
+    public DbSet<EntranceMangment> EntranceMangments { get; set; }
+    public DbSet<Employee> Employees { get; set; }
 }
