@@ -56,5 +56,31 @@ namespace Resturant_managment.Controllers
             return Ok(city);
 
         }
+        [HttpGet("FavoriteFood")]
+        public ActionResult<Restaurant> FavoriteFoodByCategory(int RestaurantId)
+        {
+            var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == RestaurantId);
+            if (restaurants == null) return NotFound();
+            var result = _db.Foods.Where(x => x.Category.RestaurantId == RestaurantId);
+            var t = _db.Orders.Where(r => r.restaurantId == RestaurantId)
+               .SelectMany((arg) => arg.Foods).ToList()
+               .GroupBy(x => x.id)
+               .ToDictionary(x => x.Key, x => x.Count());
+
+            var ls = new List<KeyValuePair<Food, int>>();
+            result
+                .ToList();
+            foreach (var i in result)
+            {
+                if (!t.ContainsKey(i.id)) continue;
+                var tmp = new KeyValuePair<Food, int>(i, t[i.id]);
+                ls.Add(tmp);
+            }
+            ls.GroupBy(x => x.Key.Categoryid);
+            ls.Sort((x, y) => x.Value - y.Value);
+            restaurants.Favorites = ls.Select(x => x.Key).First();
+            return Ok(restaurants);
+
+        }
     }
 }

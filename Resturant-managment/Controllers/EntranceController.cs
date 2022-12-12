@@ -21,7 +21,7 @@ namespace Resturant_managment.Controllers
         {
             var result = _db.Employees.Where(x => x.restaurantid == restaurantid && x.entranceMangments != null).ToList();
             var e = _db.EntranceMangments.Where(x => x.enter >= from && x.leave >= to ).ToList(); 
-            ????
+            
             return Ok(result);
         }
         [HttpPost]
