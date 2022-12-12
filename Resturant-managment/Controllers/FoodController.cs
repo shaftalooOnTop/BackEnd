@@ -29,7 +29,8 @@ namespace Resturant_managment.Controllers
         public Food Post([FromBody] Food value)
         {
             var u = new Utils (_db);
-            var p=u.Base64Save(value.Image);
+
+            var p=string.IsNullOrEmpty(value.Image)?null:u.Base64Save(value.Image);
             value.Photo = p;
             _db.Foods.Add(value);
 
@@ -43,6 +44,12 @@ namespace Resturant_managment.Controllers
         {
             try
             {
+                var u = new Utils(_db);
+
+                value.ForEach(x => {
+                    var p = string.IsNullOrEmpty(x.Image) ? null : u.Base64Save(x.Image);
+                    x.Photo = p;
+                });
                 _db.Foods.AddRange(value);
                 _db.SaveChanges();
                 return Ok(value);

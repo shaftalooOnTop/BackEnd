@@ -17,7 +17,7 @@ namespace Resturant_managment.Controllers
             _db = db;
         }
 
-        [HttpGet("employeesinthe restaurant")]
+        [HttpGet("EmployeesInTheRestaurant")]
         
         public ActionResult<List<Employee>> EmployeesPresent(int restaurantid , DateTime from, DateTime to )
         {
@@ -45,7 +45,7 @@ namespace Resturant_managment.Controllers
 
         }
 
-        [HttpGet("present of a employee")]
+        [HttpGet("PresentOfAEmployee")]
         public ActionResult<EntranceMangment> PresentOfEmployee(int employeeid)
         {
             var p = _db.EntranceMangments.Where(x=>x.IdentityId == employeeid).ToList();
