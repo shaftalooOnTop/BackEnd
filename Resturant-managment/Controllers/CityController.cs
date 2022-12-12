@@ -37,7 +37,7 @@ namespace Resturant_managment.Controllers
         }
 
         // PUT: api/City/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public ActionResult Put( [FromBody] City value)
         {
             _db.Update(value);

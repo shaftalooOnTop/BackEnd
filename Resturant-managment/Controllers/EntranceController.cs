@@ -48,7 +48,7 @@ namespace Resturant_managment.Controllers
         [HttpGet("present of a employee")]
         public ActionResult<EntranceMangment> PresentOfEmployee(int employeeid)
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpPut]
