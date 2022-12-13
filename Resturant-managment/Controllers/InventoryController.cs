@@ -24,10 +24,10 @@ namespace Resturant_managment.Controllers
         }
 
         // GET: api/Inventory/5
-        [HttpGet("Get/{id}")]
-        public Inventory Get(int id)
+        [HttpGet("Get/{Restaurantid}")]
+        public List<Inventory> Get(int Restaurantid)
         {
-            return _db.Inventories.Find(id);
+            return _db.Inventories.Where(x=>x.RestaurantId==Restaurantid).ToList();
         }
 
         // POST: api/Inventory
@@ -51,11 +51,13 @@ namespace Resturant_managment.Controllers
 
         // DELETE: api/Inventory/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult<Inventory> Delete(int id)
         {
             var x = _db.
                 Inventories.Find(id);
+            if (x == null) return NotFound();
             _db.Remove(x);
+            _db.SaveChanges();
             return Ok(x);
         }
     }

@@ -43,6 +43,7 @@ namespace Resturant_managment.Controllers
         {
             try
             {
+
                 _db.Foods.AddRange(value);
                 _db.SaveChanges();
                 return Ok(value);

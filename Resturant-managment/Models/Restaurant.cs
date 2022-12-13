@@ -32,7 +32,7 @@ public class Restaurant:BaseClass
     [JsonIgnore]
     [ForeignKey("InventoriesId")]
     public virtual List<Inventory>? Inventories { get; set; }
-    public virtual int InventoriesId { get; set; }
+    public virtual int? InventoriesId { get; set; }
 
 
 }
