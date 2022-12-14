@@ -19,21 +19,25 @@ namespace Resturant_managment.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public Food Get(int id)
+        public ActionResult<Food> Get(int id)
         {
-            return _db.Foods.Find(id);
+            var res = _db.Foods.Find(id);
+            if (res == null) return NotFound();
+            res.Image = null;
+            if(res.Photo!=null)
+            res.Photo.Img = "";
+            return res;
         }
 
         // POST api/values
         [HttpPost]
         public Food Post([FromBody] Food value)
         {
-            var u = new Utils (_db);
 
-            var p=string.IsNullOrEmpty(value.Image)?null:u.Base64Save(value.Image);
+            var p=new Photo { Img=value.Image??""};
+            value.Image = null;
             value.Photo = p;
             _db.Foods.Add(value);
-
             _db.SaveChanges();
             return value;
            
@@ -47,7 +51,8 @@ namespace Resturant_managment.Controllers
                 var u = new Utils(_db);
 
                 value.ForEach(x => {
-                    var p = string.IsNullOrEmpty(x.Image) ? null : u.Base64Save(x.Image);
+                    x.Image = null;
+                    var p = string.IsNullOrEmpty(x.Image) ? null : new Photo { Img = x.Image ?? "" };
                     x.Photo = p;
                 });
                 _db.Foods.AddRange(value);

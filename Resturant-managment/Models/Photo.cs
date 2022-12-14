@@ -7,7 +7,7 @@ namespace Resturant_managment.Models;
 
 public class Photo :BaseClass
 {
-    public string ImgName { get; set; }
+    public string Img { get; set; }
     [JsonIgnore]
     [IgnoreDataMember]
     public virtual Food Food { get; set; }

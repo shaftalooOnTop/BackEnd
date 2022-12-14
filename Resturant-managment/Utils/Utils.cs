@@ -22,7 +22,7 @@ namespace Resturant_managment
 
 			}
 			var guid = _db.PhotoTable.OrderBy(x=>x.id).Last().id + 1;
-			var p = new Photo { ImgName= $"{guid}.{type}" };
+			var p = new Photo { Img= $"{guid}.{type}" };
 				
 			string filePath = $"wwwroot/{guid}.{type}";
 			File.WriteAllBytes(filePath, Convert.FromBase64String(img));
