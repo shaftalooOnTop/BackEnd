@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -11,9 +12,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221212131026_fggu")]
+    partial class fggu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,24 +202,12 @@ namespace Resturant_managment.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("earning")
-                        .HasColumnType("int");
-
                     b.Property<string>("identityid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("jobtype")
-                        .HasColumnType("int");
-
-                    b.Property<string>("position")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("restaurantid")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("start")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("id");
 
@@ -243,7 +233,7 @@ namespace Resturant_managment.Migrations
                     b.Property<int>("IdentityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("employeeid")
+                    b.Property<int>("employeeid")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("enter")
@@ -753,7 +743,9 @@ namespace Resturant_managment.Migrations
                 {
                     b.HasOne("Resturant_managment.Models.RestaurantIdentity", "RestaurantIdentity")
                         .WithMany()
-                        .HasForeignKey("identityid");
+                        .HasForeignKey("identityid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Resturant_managment.Models.Restaurant", "Restaurant")
                         .WithMany("Employees")
@@ -770,7 +762,9 @@ namespace Resturant_managment.Migrations
                 {
                     b.HasOne("Resturant_managment.Models.Employee", "employee")
                         .WithMany("entranceMangments")
-                        .HasForeignKey("employeeid");
+                        .HasForeignKey("employeeid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("employee");
                 });

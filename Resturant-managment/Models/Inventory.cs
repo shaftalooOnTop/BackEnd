@@ -12,7 +12,7 @@ namespace Resturant_managment.Models
         public int RestaurantId { get; set; }
         [IgnoreDataMember]
         [JsonIgnore]
-        public virtual Restaurant Restaurant { get; set; }
+        public virtual Restaurant? Restaurant { get; set; }
 
     }
 }

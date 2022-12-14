@@ -63,7 +63,7 @@ public class RestaurantController : ControllerBase
             var tmp = new KeyValuePair<Food, int>(i, t[i.id]);
             ls.Add(tmp);
         }
-        ls.Sort((x, y) => x.Value - y.Value);
+        ls.Sort((x, y) => -sx.Value + y.Value);
         restaurants.Favorites = ls.Select(x => x.Key).Take(5).ToList();
         return Ok(restaurants);
     }
