@@ -26,15 +26,3 @@ public class RestaurantIdentity : IdentityUser
     public List<String> RoleName { get; set; }
 
 }
-public class Employee :BaseClass
-{
-    public virtual List<EntranceMangment>? entranceMangments { get; set; }
-    public int restaurantid { get; set; }
-    [ForeignKey("restaurantid")]
-    public virtual Restaurant Restaurant { get; set; }
-
-    
-    public string identityid { get; set; }
-    [ForeignKey("identityid")]
-    public virtual RestaurantIdentity RestaurantIdentity { get; set; }
-}

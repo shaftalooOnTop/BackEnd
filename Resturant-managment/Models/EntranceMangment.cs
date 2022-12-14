@@ -17,8 +17,7 @@ namespace Resturant_managment.Models
         public int IdentityId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-
-        public virtual Employee employee { get; set; }
+        public virtual Employee? employee { get; set; }
 
 
         
