@@ -23,8 +23,8 @@ namespace Resturant_managment.Models
         [ForeignKey("OrderId")]
         [JsonIgnore]
         [IgnoreDataMember]
-        public virtual Order Order { get; set; }
-        public int OrderId { get; set; }
+        public virtual Order? Order { get; set; }
+        public int? OrderId { get; set; }
         [JsonIgnore]
         [ForeignKey("IdentityId")]
         [IgnoreDataMember]
