@@ -25,7 +25,10 @@ builder.Services
         options.Password.RequireLowercase = false;
         options.User.RequireUniqueEmail = true;
     }).AddRoles<IdentityRole>()
+                   
+    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddEntityFrameworkStores<RmDbContext>();
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

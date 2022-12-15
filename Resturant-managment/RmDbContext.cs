@@ -13,7 +13,10 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<IdentityUserRole<Guid>>().HasKey(p => new { p.UserId, p.RoleId });
+        //builder.Entity<IdentityUserRole<Guid>>().HasKey(p => new { p.UserId, p.RoleId });
+        //IdentityRole
+        modelBuilder.Entity<IdentityUserRole<string>>().HasKey(p => new { p.UserId, p.RoleId });
+        modelBuilder.Entity<IdentityRole>().HasKey(p => new { p.Id,p.Name});
 
 
     }
@@ -33,7 +36,7 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     public DbSet<Photo> PhotoTable { get; set; }
 
 
-    //public DbSet<FoodOrder> FoodOrders { get; set; }
+    //public DbSet<IdentityRole> IdentityRole { get; set; }
 
 
     public DbSet<Photo> Photos { get; set; }

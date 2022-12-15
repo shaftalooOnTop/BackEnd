@@ -65,11 +65,11 @@ namespace Resturant_managment.Controllers
             DateTime StartOfTheMonth = new DateTime(d.Year, d.Month, 1, 0, 0, 0);
             var daysInMonth = DateTime.DaysInMonth(d.Year, d.Month);
             DateTime EndOfTheMonth = new DateTime(d.Year, d.Month, daysInMonth, 23, 59, 59);
-            busy.MonthHour = OrdersHours(orders, StartOfTheDay, EndOfTheDay);
+            busy.MonthHour = OrdersHours(orders, StartOfTheMonth, EndOfTheMonth);
 
             var firstDayOfTheYear = new DateTime(d.Year, 1, 1);
             var lastDayOfTheYear = new DateTime(d.Year, 12, 31);
-            busy.WeekHour = OrdersHours(orders, StartOfTheDay, EndOfTheDay);
+            busy.WeekHour = OrdersHours(orders, firstDayOfTheYear, lastDayOfTheYear);
 
 
             return busy;
@@ -141,8 +141,7 @@ namespace Resturant_managment.Controllers
             var r = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to)
                   .Select(x => x.DateCreated.Hour)
                   .GroupBy(x => x).ToDictionary(x => x.Key, y => y.Count()).ToList();
-            r.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
-            return r.Select(x => x.Key).ToList();
+            return r.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
         }
        
 
