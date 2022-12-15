@@ -1,6 +1,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
 {
@@ -30,15 +32,49 @@ namespace Resturant_managment.Controllers
         [HttpGet("Get/{name}")]
         public IActionResult Get(string name)
         {
-
             var b = System.IO.File.ReadAllBytes(Path.Combine(_appEnvironment.WebRootPath, name));   // You can use your own method over here.         
             return File(b, "image/*");
         }
 
+
+        [HttpGet("ImgGet/{id}")]
+        public IActionResult Get(int id)
+        {
+            var value = _db.Photos.Find(id);
+            if (value == null) return NotFound();
+            Byte[] b1 ;
+            if (value.Img.Contains(','))
+             b1= Convert.FromBase64String(value.Img.Split(',')[1]);
+            else
+                b1 = Convert.FromBase64String(value.Img);
+            return File(b1, "image/*");
+        }
+
+
         // POST: api/www
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] string value)
         {
+            var b1 = Convert.FromBase64String(value);
+            return File(b1, "image/*");
+
+        }
+        [HttpPost("post2")]
+        public ActionResult Post2([FromBody] FormFile value)
+        {
+            string uploads =_appEnvironment.WebRootPath;
+     
+            
+                if (value.Length > 0)
+                {
+                    string filePath = Path.Combine(uploads, value.FileName);
+                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    value.CopyTo(fileStream);
+                    
+                }
+
+            return Ok();
+           
         }
 
         // PUT: api/www/5
