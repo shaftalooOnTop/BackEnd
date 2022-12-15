@@ -93,15 +93,15 @@ namespace Resturant_managment.Controllers
         {
             Dictionary<int, int> foodDict = new();
 
-            _db.Orders.Where(x => x.id == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to)
-                .Select(x => x.Foods).ToList()
+            var x1 = _db.Orders.Where(x => x.restaurantId == RestaurantId).Where(x => x.DateCreated >= from && x.DateCreated <= to).ToList();
+                x1.Select(x => x.Foods).ToList()
                 .ForEach(delegate (List<Food> x)
                 {
                     if (x == null) return;
                     FlatenList(foodDict, x);
                 });
 
-            var foodsList = _db.Foods.Where(x => foodDict.ContainsKey(x.id)).ToList();
+            var foodsList = _db.Foods.ToList().Where(x => foodDict.ContainsKey(x.id)).ToList();
             foodsList.Sort((x, y) => foodDict[x.id] - foodDict[y.id]);
             return foodsList;
         }
@@ -119,7 +119,10 @@ namespace Resturant_managment.Controllers
         private void FlatenList(Dictionary<int, int> foodDict, IEnumerable<Food> foods)
         {
             foreach (var i in foods)
-                foodDict[i.id]++;
+                if (foodDict.ContainsKey(i.id))
+                    foodDict[i.id]++;
+                else
+                    foodDict[i.id] = 1;
         }
         private List<Food> FlatenList(IEnumerable<IEnumerable<Food>> foods)
         {
