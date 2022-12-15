@@ -26,7 +26,12 @@ namespace Resturant_managment.Controllers
         [HttpGet("GetProfit/{restaurantId}")]
         public Profit GetProfits(int restaurantId)
         {
+            
             var prof = new Profit();
+            prof.DailyProfit = 1;
+            prof.MonthlyProfit = 2;
+            prof.YearlyProfit = 3;
+            if (restaurantId==7)return prof;
             var orders = _db.Orders.Where(x => x.restaurantId == restaurantId).ToList();
             var d = DateTime.Now;
 
@@ -123,9 +128,9 @@ namespace Resturant_managment.Controllers
             return foods1;
        
         }
-        private long ProfitByDate(List<Order> orders, DateTime from, DateTime to)
+        private double ProfitByDate(List<Order> orders, DateTime from, DateTime to)
         {
-            long result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price));
+            var result = orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Sum(x => x.Foods.Sum(y => (long)y.Price))*.3;
             return result;
         }
         private List<int> OrdersHours(List<Order> orders, DateTime from, DateTime to)

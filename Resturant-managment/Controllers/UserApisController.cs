@@ -44,5 +44,13 @@ namespace Resturant_managment.Controllers
             var result = _db.ReserveTables.Where(u => u.RestaurantIdentityId == user.Id).OrderByDescending(x => x.DateCreated).ToList();
             return Ok(result);
         }
+        [Authorize("Admin")]
+        [HttpGet("RestaurantAdmin")]
+        public ActionResult RestaurantAdmin()
+        {
+            var user = GetUser();
+            //var res = _db.Restaurant.Where();
+            return Ok();
+        }
     }
 }

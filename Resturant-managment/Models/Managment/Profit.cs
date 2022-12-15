@@ -3,9 +3,9 @@ namespace Resturant_managment.Models.Managment
 {
 	public class Profit
 	{
-        public long DailyProfit { get; set; }
-        public long MonthlyProfit { get; set; }
-        public long YearlyProfit { get; set; }
+        public double DailyProfit { get; set; }
+        public double MonthlyProfit { get; set; }
+        public double YearlyProfit { get; set; }
     }
 }
 
