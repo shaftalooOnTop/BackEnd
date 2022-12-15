@@ -22,7 +22,7 @@ namespace Resturant_managment.Controllers
             _db = db;
         }
         // GET: api/Managment
-        [Authorize(Roles ="Manager")]
+        [Authorize]
         [HttpGet("GetProfit/{restaurantId}")]
         public Profit GetProfits(int restaurantId)
         {
