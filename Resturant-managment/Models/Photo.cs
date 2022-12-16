@@ -7,6 +7,8 @@ namespace Resturant_managment.Models;
 
 public class Photo :BaseClass
 {
+    [JsonIgnore]
+    [IgnoreDataMember]
     public string Img { get; set; }
     [JsonIgnore]
     [IgnoreDataMember]

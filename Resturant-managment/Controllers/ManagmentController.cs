@@ -127,7 +127,12 @@ namespace Resturant_managment.Controllers
         private List<Food> FlatenList(IEnumerable<IEnumerable<Food>> foods)
         {
             List<Food> foods1 = new();
-            foreach (var i in foods)foreach (var j in i) foods1.Add(j);
+            foreach (var i in foods)
+                foreach (var j in i)
+                    {
+                        j.Image = null;
+                        foods1.Add(j);
+                    }
             return foods1;
        
         }
