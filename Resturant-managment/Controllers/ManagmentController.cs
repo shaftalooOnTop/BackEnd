@@ -78,12 +78,14 @@ namespace Resturant_managment.Controllers
         [HttpGet("GetFoodSellByFoods")]
         public ActionResult<Dictionary<Food,int>> GetFoodSellByFoods(int restaurantId,DateTime from,DateTime to)
         {
-            var restaurantOrders = _db.Orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Select(x => x.Foods);
+            var restaurantOrders = _db.Orders.Where(x => x.DateCreated >= from && x.DateCreated <= to).Where(x=>x.restaurantId==restaurantId).Select(x => x.Foods).ToList();
             if (restaurantOrders == null) return NotFound();
             var f = FlatenList(restaurantOrders).GroupBy(x => x.id).ToDictionary(x => x.Key, y => y.Count());
             var restaurantFoods = _db.Foods.Where(x => x.Category==null?false:x.Category.RestaurantId == restaurantId).ToDictionary(x=>x.id,y=>y);
             return Ok(
-                f.Select(x =>new KeyValuePair<Food, int>(restaurantFoods[x.Key],x.Value))
+                f.
+                Select(x =>new KeyValuePair<Food, int>(restaurantFoods[x.Key],x.Value))
+                .OrderByDescending(x=>x.Value).ToArray()
                 );
 
         }
