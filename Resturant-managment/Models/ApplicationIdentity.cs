@@ -27,11 +27,11 @@ public class RestaurantIdentity : IdentityUser
     [NotMapped]
     public List<string> RoleName { get; set; }
 
-    public int RestaurantId { get; set; }
+    public int? RestaurantId { get; set; }
     [JsonIgnore]
     [IgnoreDataMember]
     [ForeignKey("RestaurantId")]
-    public virtual  Restaurant Restaurant { get; set; }
+    public virtual  Restaurant? Restaurant { get; set; }
 
 
 }

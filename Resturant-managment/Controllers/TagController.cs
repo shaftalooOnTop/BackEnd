@@ -31,6 +31,8 @@ namespace Resturant_managment.Controllers
         {
             return _db.Tags.Find(id);
         }
+        [HttpDelete("GetUniqueTagsByCity/{cityId}")]
+
         public ActionResult<List<string>> GetUniqueTagsByCity(int cityId)
         {
             var result = _db.Tags.Where(r => r == null ? false : r.Restaurant.CityId == cityId).GroupBy(r => r.value).Select(t => t.Key).ToList();
