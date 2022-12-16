@@ -16,6 +16,7 @@ namespace Resturant_managment.Controllers
     {
 
 
+
         private readonly RmDbContext _db;
         public ManagmentController(RmDbContext db)
         {
@@ -50,6 +51,7 @@ namespace Resturant_managment.Controllers
 
             return prof;
         }
+        [Authorize]
 
         [HttpGet("GetBusyHours")]
         public BusyHours BusyHours(int restaurantId)
@@ -74,7 +76,7 @@ namespace Resturant_managment.Controllers
 
             return busy;
         }
-
+        [Authorize]
         [HttpGet("GetFoodSellByFoods")]
         public ActionResult<Dictionary<Food,int>> GetFoodSellByFoods(int restaurantId,DateTime from,DateTime to)
         {
@@ -89,7 +91,7 @@ namespace Resturant_managment.Controllers
                 );
 
         }
-
+        [Authorize]
         [HttpGet("RestaurantFoodListByOrder")]
         public List<Food> RestaurantFoodListByOrder(int RestaurantId, DateTime from, DateTime to)
         {
@@ -107,7 +109,7 @@ namespace Resturant_managment.Controllers
             foodsList.Sort((x, y) => foodDict[x.id] - foodDict[y.id]);
             return foodsList;
         }
-
+        [Authorize]
         [HttpGet("getTaxes")]
         public Tax TotalTax(int restaurantId)
         {
