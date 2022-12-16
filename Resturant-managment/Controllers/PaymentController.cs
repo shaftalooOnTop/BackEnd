@@ -65,6 +65,13 @@ namespace Resturant_managment.Controllers
             if(!ModelState.IsValid)return BadRequest();
             value.Identity = RestaurantUser;
             value.IdentityId = RestaurantUser.Id;
+            var foods = _db.Orders.FirstOrDefault(x => x.id == value.OrderId).Foods;
+            if (foods == null) return BadRequest("bad order ; order without food");
+            foreach(var i in foods)
+            {
+                i.Count--;
+            }
+            _db.Foods.UpdateRange(foods);
             _db.Payments.Add(value);
             _db.SaveChanges();
             var s = _db.Orders.Find(value.OrderId);

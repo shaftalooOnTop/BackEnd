@@ -26,9 +26,13 @@ namespace Resturant_managment.Controllers
                 var foods = order.Foods;
                 order.Foods = new List<Food>();
                 foreach (var i in foods)
-                    _db.Attach(_db.Foods.FirstOrDefault(x => x.id == i.id));
+                {
+                    var f = _db.Foods.Find(i.id);
+                    if (f.Count <= 0) return NotFound("Food not available");
+                    _db.Attach(f);
+                }
                 foreach (var i in foods)
-                    order.Foods.Add(_db.Foods.Local.Single(x => x.id == i.id));
+                    order.Foods.AddRange(_db.Foods.Local.Where(x => x.id == i.id));
             }
             if(order.Payment == null && order.stat == Orderstatus.finished) {
                 return BadRequest("order cant be finished if it hasnt been paid ");
@@ -63,7 +67,7 @@ namespace Resturant_managment.Controllers
         [HttpGet("id")]
         public ActionResult<Order> Get(int id)
         {
-            var result = _db.Orders.Find(id);
+            var result = _db.Orders.FirstOrDefault(x=>x.id==id);
             return Ok(result);
         }
 
