@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Resturant_managment.Models.Base;
 
@@ -23,6 +25,13 @@ public class RestaurantIdentity : IdentityUser
     public virtual List<ReserveTable>? restable { get; set; }
     
     [NotMapped]
-    public List<String> RoleName { get; set; }
+    public List<string> RoleName { get; set; }
+
+    public int RestaurantId { get; set; }
+    [JsonIgnore]
+    [IgnoreDataMember]
+    [ForeignKey("RestaurantId")]
+    public virtual  Restaurant Restaurant { get; set; }
+
 
 }

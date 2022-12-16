@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace Resturant_managment.Models;
 public enum Orderstatus
 {
-    finished, inProcess, accepted
+    finished, inProcess, accepted,paid
 }
 public class Order:BaseClass
 {  

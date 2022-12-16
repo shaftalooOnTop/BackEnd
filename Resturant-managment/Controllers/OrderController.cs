@@ -134,8 +134,8 @@ namespace Resturant_managment.Controllers
 
         }
 
-        [HttpPut("ChangeOrderByOrderId")]
-        public  ActionResult ChangeOrderByOrderId(int orderid)
+        [HttpPut("ChangeOrdertoFinishedByOrderId")]
+        public  ActionResult ChangeOrdertoFinishedByOrderId(int orderid)
         { 
             var o = _db.Orders.Find(orderid);
             if (o.Payment== null && o.stat == Orderstatus.finished)

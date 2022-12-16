@@ -46,7 +46,13 @@ namespace Resturant_managment.Controllers
         public ActionResult<Payment> Post([FromBody] Payment value)
         {
             if(!ModelState.IsValid)return BadRequest();
+
             _db.Payments.Add(value);
+            _db.SaveChanges();
+            var s = _db.Orders.Find(value.OrderId);
+            if (s == null) return BadRequest();
+            s.stat = Orderstatus.paid;
+            _db.Update(s);
             _db.SaveChanges();
             return Ok(value);
         }

@@ -33,6 +33,6 @@ public class Restaurant:BaseClass
     [ForeignKey("InventoriesId")]
     public virtual List<Inventory>? Inventories { get; set; }
     public virtual int? InventoriesId { get; set; }
-
+ 
 
 }
