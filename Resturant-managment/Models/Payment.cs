@@ -31,7 +31,7 @@ namespace Resturant_managment.Models
         public virtual RestaurantIdentity? Identity { get; set; }
         [IgnoreDataMember]
         [JsonIgnore]
-        public string ?IdentityId { get; set; }
+        public string ? IdentityId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
         public virtual ReserveTable ?ReserveTable { get; set; }

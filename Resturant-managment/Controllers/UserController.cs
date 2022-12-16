@@ -26,6 +26,11 @@ namespace Resturant_managment.Controllers
                 else return _RestaurantUser;
             }
         }
+        private RestaurantIdentity GetUser()
+        {
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            return _userManager.FindByEmailAsync(email).Result;
+        }
         public UserController(RoleManager<IdentityRole> roleManager, UserManager<RestaurantIdentity> userManager, JwtService jwtService, RmDbContext db)
         {
             _userManager = userManager;
@@ -34,11 +39,7 @@ namespace Resturant_managment.Controllers
             _roleManager = roleManager;
 
         }
-        private RestaurantIdentity GetUser()
-        {
-            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            return _userManager.FindByEmailAsync(email).Result;
-        }
+   
         [HttpPost("PostUser")]
         [AllowAnonymous]
         public async Task<ActionResult<ReturnData>> PostUser(UserSignUp user)

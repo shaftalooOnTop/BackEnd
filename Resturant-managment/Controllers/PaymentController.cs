@@ -17,7 +17,22 @@ namespace Resturant_managment.Controllers
         // GET: api/Payment
         private readonly RmDbContext _db;
         private readonly UserManager<RestaurantIdentity> _userManager;
+        private RestaurantIdentity _RestaurantUser;
 
+        private RestaurantIdentity RestaurantUser
+
+        {
+            get
+            {
+                if (_RestaurantUser == null) return GetUser();
+                else return _RestaurantUser;
+            }
+        }
+        private RestaurantIdentity GetUser()
+        {
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            return _userManager.FindByEmailAsync(email).Result;
+        }
         public PaymentController(RmDbContext db, UserManager<RestaurantIdentity> userManager)
         {
             _db = db;
@@ -43,10 +58,13 @@ namespace Resturant_managment.Controllers
 
         // POST: api/Payment
         [HttpPost]
+        [Authorize]
         public ActionResult<Payment> Post([FromBody] Payment value)
         {
+           
             if(!ModelState.IsValid)return BadRequest();
-
+            value.Identity = RestaurantUser;
+            value.IdentityId = RestaurantUser.Id;
             _db.Payments.Add(value);
             _db.SaveChanges();
             var s = _db.Orders.Find(value.OrderId);
