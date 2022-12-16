@@ -28,7 +28,7 @@ namespace Resturant_managment.Models
         [JsonIgnore]
         [ForeignKey("IdentityId")]
         [IgnoreDataMember]
-        public virtual RestaurantIdentity Identity { get; set; }
+        public virtual RestaurantIdentity? Identity { get; set; }
         [IgnoreDataMember]
         [JsonIgnore]
         public string ?IdentityId { get; set; }
