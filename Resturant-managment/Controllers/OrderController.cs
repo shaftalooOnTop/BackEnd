@@ -21,8 +21,11 @@ namespace Resturant_managment.Controllers
         [Authorize]
         public ActionResult Post(Order order)
         {
-
-            if(order.Foods!=null){
+            var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            var user =  _userManager.FindByEmailAsync(email).Result;
+            order.RestaurantIdentity = user;
+            order.RestaurantIdentityId = user.Id;
+            if (order.Foods!=null){
                 var foods = order.Foods;
                 order.Foods = new List<Food>();
                 foreach (var i in foods)
@@ -105,8 +108,7 @@ namespace Resturant_managment.Controllers
 
             var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             var user = await _userManager.FindByEmailAsync(email);
-            var result = _db.Orders.Where(x => x.RestaurantIdentityId == user.Id)
-               ;
+            var result = _db.Orders.Where(x => x.RestaurantIdentityId == user.Id).Where(x=>x.stat!=Orderstatus.finished);
             return result.ToList();
         }
 
