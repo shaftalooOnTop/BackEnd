@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
 using Resturant_managment.Models;
 using Resturant_managment.Models.HTTPModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Resturant_managment.Controllers;
 
@@ -19,10 +21,12 @@ namespace Resturant_managment.Controllers;
 public class RestaurantController : ControllerBase
 {
     private readonly RmDbContext _db;
+    private readonly UserManager<RestaurantIdentity> _userManager;
 
-    public RestaurantController(RmDbContext db)
+    public RestaurantController(RmDbContext db, UserManager<RestaurantIdentity> userManager)
     {
         _db = db;
+        _userManager = userManager;
     }
     [HttpGet]
     public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0, int cityid = -1)
@@ -69,8 +73,14 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
+
+        var email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+        var user =  _userManager.FindByEmailAsync(email).Result;
+        value.RestaurantIdentity = user;
+        value.RestaurantIdentityId = user.Id;
         _db.Restaurant.Add(value);
         _db.SaveChanges();
         return Ok(value);
