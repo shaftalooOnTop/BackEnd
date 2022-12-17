@@ -36,8 +36,8 @@ public class Restaurant:BaseClass
     [ForeignKey("RestaurantIdentityId")]
     [JsonIgnore]
     [IgnoreDataMember]
-    public virtual RestaurantIdentity RestaurantIdentity { get; set; }
-    public virtual string RestaurantIdentityId { get; set; }
+    public virtual RestaurantIdentity? RestaurantIdentity { get; set; }
+    public virtual string? RestaurantIdentityId { get; set; }
 
 
 }

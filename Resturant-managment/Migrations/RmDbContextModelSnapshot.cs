@@ -430,7 +430,6 @@ namespace Resturant_managment.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IdentityId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("OrderId")
@@ -583,12 +582,18 @@ namespace Resturant_managment.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RestaurantIdentityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("StartWorkingHour")
                         .HasColumnType("datetime2");
 
                     b.HasKey("id");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("RestaurantIdentityId");
 
                     b.ToTable("Restaurant");
                 });
@@ -650,7 +655,6 @@ namespace Resturant_managment.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Picture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RestaurantId")
@@ -876,9 +880,7 @@ namespace Resturant_managment.Migrations
                 {
                     b.HasOne("Resturant_managment.Models.RestaurantIdentity", "Identity")
                         .WithMany("Payments")
-                        .HasForeignKey("IdentityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdentityId");
 
                     b.HasOne("Resturant_managment.Models.Order", "Order")
                         .WithOne("Payment")
@@ -926,7 +928,15 @@ namespace Resturant_managment.Migrations
                         .WithMany("Restaurants")
                         .HasForeignKey("CityId");
 
+                    b.HasOne("Resturant_managment.Models.RestaurantIdentity", "RestaurantIdentity")
+                        .WithMany()
+                        .HasForeignKey("RestaurantIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("City");
+
+                    b.Navigation("RestaurantIdentity");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.RestaurantIdentity", b =>
