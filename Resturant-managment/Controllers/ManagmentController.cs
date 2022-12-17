@@ -47,7 +47,7 @@ namespace Resturant_managment.Controllers
 
             var firstDayOfTheYear = new DateTime(d.Year, 1, 1);
             var lastDayOfTheYear = new DateTime(d.Year, 12, 31);
-            prof.MonthlyProfit = ProfitByDate(orders, firstDayOfTheYear, lastDayOfTheYear);
+            prof.YearlyProfit = ProfitByDate(orders, firstDayOfTheYear, lastDayOfTheYear);
 
             return prof;
         }
