@@ -13,4 +13,8 @@ public class Photo :BaseClass
     [JsonIgnore]
     [IgnoreDataMember]
     public virtual Food Food { get; set; }
+
+    [ForeignKey("landingpageid")]
+    public int? landingpageid { get; set; }
+    public virtual LandingPage? LandingPage { get; set; }
 }

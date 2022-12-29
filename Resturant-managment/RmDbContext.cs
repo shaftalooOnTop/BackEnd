@@ -43,4 +43,6 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     public DbSet<EntranceMangment> EntranceMangments { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Images> Images { get; set; }
+    public DbSet<LandingPage> LandingPages { get; set; }
+    public DbSet<ThemeOfTable> themeOfTables { get; set; }
 }

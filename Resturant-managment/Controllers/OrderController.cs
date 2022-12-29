@@ -157,7 +157,14 @@ namespace Resturant_managment.Controllers
             return Ok(o);
 
         }
-        
+
+        [HttpGet("TotalNumberOfOrders")]
+        public ActionResult<List<Order>> TotalNumberOfOrders(int restaurantid)
+        {
+            return Ok( _db.Orders.Where(x=>x.restaurantId == restaurantid).ToList().Count());
+        }
+
+
 
     }
 
