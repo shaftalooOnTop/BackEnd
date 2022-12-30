@@ -15,6 +15,29 @@ namespace Resturant_managment.Controllers
         {
             _db = db;
         }
+
+        [HttpGet("question")]
+        public List<string> question()
+        {
+            string description = "please rate this fild whith number 1 to 5 in order :very bad , bad, medium , good or very good, 1 means very bad and goes on ";
+            string title1 = "service quality";
+            string title2 = "food quality";
+            string title3 = "Personnel Behavior";
+            string title4 = "How long have you waited until you could find an empty table (Don't answer if you had already booked)  from very much to very quickly";
+            string title5 = "restaurant atmosphere";
+            string title6 = "find room in parking lot";
+            string title7 = "cleanliness of restaurant";
+            List<string> q = new List<string>();
+            q.Add(description);
+            q.Add(title1);
+            q.Add(title2);
+            q.Add(title3);
+            q.Add(title4);
+            q.Add(title5);
+            q.Add(title6);
+            q.Add(title7);
+            return q;
+        }
         [HttpGet("ByRestauntId")]
         public ActionResult<List<Poll>> get(int restaurantid)
         {
@@ -69,10 +92,6 @@ namespace Resturant_managment.Controllers
             r[6] = r7;
             return Ok(r);
         }
-        [HttpGet("recommendations")]
-        public ActionResult<List<Poll>> recommendations(int restuantid)
-        {
-            return Ok(_db.Polls.Where(x=>x.restaurantid==restuantid).Select(x=>x.recommendation).ToList());
-        }
+       
     }
 }

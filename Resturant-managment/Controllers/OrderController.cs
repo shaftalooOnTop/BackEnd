@@ -105,7 +105,7 @@ namespace Resturant_managment.Controllers
             _db.SaveChanges();
             return Ok(o);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "RestaurantAdmin")]
         [HttpPut("SetDelivaryTime")]
         public ActionResult<Order> SetDelivaryTime(int id,DateTime delivary)
         {
