@@ -17,7 +17,7 @@ public class Restaurant:BaseClass
     public string BackgroundImg { get; set; }
     public virtual int? CityId { get; set; }
     public virtual List<ThemeOfTable>?  ThemeOfTable { get; set; }
-
+    public virtual List<Poll> Polls { get; set; }
     public  DateTime StartWorkingHour { get; set; }
     public DateTime EndWorkingHour { get; set; }
     public virtual List<RestaurantTable>? tables { get; set; }

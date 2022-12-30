@@ -1,3 +1,4 @@
+using Castle.Core.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -44,11 +45,14 @@ namespace Resturant_managment.Controllers
             {
                 order.stat = Orderstatus.finished;
             }
+
+            order.delivary = null;
      
             _db.Orders.Add(order);
             _db.SaveChanges();
             return Ok(order);
         }
+
 
         [HttpGet("Receipt")]
         public ActionResult<Order> receipt(int orderid)
@@ -96,6 +100,17 @@ namespace Resturant_managment.Controllers
             {
                 o.stat = Orderstatus.finished;
             }
+            o.delivary = null;
+            _db.Update(o);
+            _db.SaveChanges();
+            return Ok(o);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPut("SetDelivaryTime")]
+        public ActionResult<Order> SetDelivaryTime(int id,DateTime delivary)
+        {
+            var o = _db.Orders.Find(id);
+            o.delivary=delivary;
             _db.Update(o);
             _db.SaveChanges();
             return Ok(o);

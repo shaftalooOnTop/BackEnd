@@ -131,7 +131,7 @@ namespace Resturant_managment.Controllers
         [HttpGet("ThemeOfRestaurant")]
         public ActionResult<List<Restaurant>> ThemeOfRestaurant(int restid)
         {
-            var th = _db.themeOfTables.Where(x=>x.restaurantid==restid).ToList();
+            var th = _db.ThemeOfTables.Where(x=>x.restaurantid==restid).ToList();
             return Ok(th);
         }
 
