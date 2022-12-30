@@ -59,8 +59,15 @@ namespace Resturant_managment.Controllers
             var r5 = _db.Polls.Where(x => x.restaurantid == restaurantid).ToList().Average(x => x.score5);
             var r6 = _db.Polls.Where(x => x.restaurantid == restaurantid).ToList().Average(x => x.score6);
             var r7 = _db.Polls.Where(x => x.restaurantid == restaurantid).ToList().Average(x => x.score7);
-            var r = "";
-            return Ok();
+            double[] r = new double[7];
+            r[0] = r1;
+            r[1] = r2;
+            r[2] = r3;
+            r[3] = r4;
+            r[4] = r5;
+            r[5] = r6;
+            r[6] = r7;
+            return Ok(r);
         }
         [HttpGet("recommendations")]
         public ActionResult<List<Poll>> recommendations(int restuantid)
