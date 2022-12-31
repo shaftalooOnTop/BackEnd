@@ -2,6 +2,7 @@
 using MessagePack;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
@@ -65,6 +66,12 @@ namespace Resturant_managment.Controllers
             return Ok();
         }
 
+        [HttpGet("tablerank")]
+        public ActionResult<List<RestaurantTable>> rank(int restaurantid)
+        {
+            var t = _db.RestaurantTables.Where(x => x.RestaurantId == restaurantid).OrderBy(x=>x.rank).Take(5).ToList();
+            return Ok();
+        }
 
     }
 }

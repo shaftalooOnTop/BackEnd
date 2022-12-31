@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -11,9 +12,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221229115345_g1o33pdsaql")]
+    partial class g1o33pdsaql
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -425,9 +427,6 @@ namespace Resturant_managment.Migrations
                     b.Property<string>("RestaurantIdentityId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("delivary")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("restaurantId")
                         .HasColumnType("int");
 
@@ -505,49 +504,6 @@ namespace Resturant_managment.Migrations
                     b.HasIndex("landingpageid");
 
                     b.ToTable("Photo");
-                });
-
-            modelBuilder.Entity("Resturant_managment.Models.Poll", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("restaurantid")
-                        .HasColumnType("int");
-
-                    b.Property<double>("score1")
-                        .HasColumnType("float");
-
-                    b.Property<double>("score2")
-                        .HasColumnType("float");
-
-                    b.Property<double>("score3")
-                        .HasColumnType("float");
-
-                    b.Property<double>("score4")
-                        .HasColumnType("float");
-
-                    b.Property<double>("score5")
-                        .HasColumnType("float");
-
-                    b.Property<double>("score6")
-                        .HasColumnType("float");
-
-                    b.Property<double>("score7")
-                        .HasColumnType("float");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("restaurantid");
-
-                    b.ToTable("Polls");
                 });
 
             modelBuilder.Entity("Resturant_managment.Models.ReserveTable", b =>
@@ -846,7 +802,7 @@ namespace Resturant_managment.Migrations
 
                     b.HasIndex("restaurantid");
 
-                    b.ToTable("ThemeOfTables");
+                    b.ToTable("themeOfTables");
                 });
 
             modelBuilder.Entity("FoodOrder", b =>
@@ -1008,17 +964,6 @@ namespace Resturant_managment.Migrations
                     b.Navigation("LandingPage");
                 });
 
-            modelBuilder.Entity("Resturant_managment.Models.Poll", b =>
-                {
-                    b.HasOne("Resturant_managment.Models.Restaurant", "Restaurant")
-                        .WithMany("Polls")
-                        .HasForeignKey("restaurantid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
-                });
-
             modelBuilder.Entity("Resturant_managment.Models.ReserveTable", b =>
                 {
                     b.HasOne("Resturant_managment.Models.Payment", "Payment")
@@ -1160,8 +1105,6 @@ namespace Resturant_managment.Migrations
                     b.Navigation("Menu");
 
                     b.Navigation("Orders");
-
-                    b.Navigation("Polls");
 
                     b.Navigation("Tags");
 

@@ -12,7 +12,7 @@ public enum Orderstatus
 }
 public class Order:BaseClass
 {  
-   
+    public DateTime? delivary { get; set; }
     public Orderstatus stat { get; set; }
    
     //public virtual List<FoodOrder>? FoodOrders { get; set; }

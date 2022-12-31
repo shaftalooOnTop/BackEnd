@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resturant_managment;
 
@@ -11,9 +12,10 @@ using Resturant_managment;
 namespace Resturant_managment.Migrations
 {
     [DbContext(typeof(RmDbContext))]
-    partial class RmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221229200433_g1o33pdsaqlk")]
+    partial class g1o33pdsaqlk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -519,29 +521,32 @@ namespace Resturant_managment.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("recommendation")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("restaurantid")
                         .HasColumnType("int");
 
-                    b.Property<double>("score1")
-                        .HasColumnType("float");
+                    b.Property<int>("score1")
+                        .HasColumnType("int");
 
-                    b.Property<double>("score2")
-                        .HasColumnType("float");
+                    b.Property<int>("score2")
+                        .HasColumnType("int");
 
-                    b.Property<double>("score3")
-                        .HasColumnType("float");
+                    b.Property<int>("score3")
+                        .HasColumnType("int");
 
-                    b.Property<double>("score4")
-                        .HasColumnType("float");
+                    b.Property<int>("score4")
+                        .HasColumnType("int");
 
-                    b.Property<double>("score5")
-                        .HasColumnType("float");
+                    b.Property<int>("score5")
+                        .HasColumnType("int");
 
-                    b.Property<double>("score6")
-                        .HasColumnType("float");
+                    b.Property<int>("score6")
+                        .HasColumnType("int");
 
-                    b.Property<double>("score7")
-                        .HasColumnType("float");
+                    b.Property<int>("score7")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
