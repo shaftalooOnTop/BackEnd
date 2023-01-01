@@ -13,7 +13,7 @@ namespace Resturant_managment.Models
         public double score5 { get; set; }
         public double score6 { get; set; }
         public double score7 { get; set; }
-       
+       public double restaurantrate { get; set; }
 
         public int restaurantid { get; set; }
         [ForeignKey("restaurantid")]

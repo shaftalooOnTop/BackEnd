@@ -26,7 +26,7 @@ public class Restaurant:BaseClass
     public virtual City? City { get; set; }
     public virtual List<Employee>? Employees { get; set; }
     public virtual ICollection<Comment>? Comments { get; set; }
-    public double Avg { get; set; }
+    public double rate { get; set; }
     [NotMapped]
     public List<Food> Favorites { get; set; } = new List<Food>();
     [IgnoreDataMember]
