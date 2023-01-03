@@ -179,5 +179,26 @@ namespace Resturant_managment.Controllers
             }
             return l;
         }
+        [HttpGet("ExportRestaurant/{id}")]
+        [Authorize]
+        public Restaurant ExportRestaurant(int id)
+        {
+            return _db.Restaurant.Find(id);
+        }
+        [HttpGet("ExportUser/{id}")]
+        [Authorize]
+        public RestaurantIdentity ExportUser(string id)
+        {
+            return _db.Users.Find(id);
+        }
+        [HttpGet("getOrdersByStatus")]
+        [Authorize]
+        public List<Order> GetOrdersByStatus(DateTime From ,DateTime To ,Orderstatus stat)
+        {
+            return
+                _db.Orders
+                .Where(c => c.DateCreated >= From && c.DateCreated <= To && c.stat == stat)
+                .ToList();
+        }
     }
 }

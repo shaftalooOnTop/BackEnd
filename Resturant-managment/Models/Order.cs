@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-
 using Resturant_managment.Models.Base;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+
 
 namespace Resturant_managment.Models;
 public enum Orderstatus

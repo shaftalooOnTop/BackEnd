@@ -18,18 +18,18 @@ namespace Resturant_managment.Controllers
     {
         // GET: api/Mailing
         private readonly string key = "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";
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET: api/Mailing/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST: api/Mailing
         [HttpPost]
@@ -48,13 +48,14 @@ namespace Resturant_managment.Controllers
         public void Delete(int id)
         {
         }
-        public async Task<ActionResult> SendTest(string To)
+        [HttpGet("SendTest")]
+        public async Task<ActionResult> SendTest(string To= "mohamadnematpoor@outlook.com")
         {
             var apiKey =key;
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("mohamadnematpoor@outlook.com", "Example User");
+            var from = new EmailAddress("mohamadnematpoor@gmail.com", "Example User");
             var subject = "Sending with SendGrid is Fun";
-            var to = new EmailAddress("mohamadnematpoor@outlook.com", "Example User");
+            var to = new EmailAddress(To, "Example User");
             var plainTextContent = "and easy to do anywhere, even with C#";
             var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
