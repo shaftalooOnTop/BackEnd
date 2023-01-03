@@ -24,7 +24,7 @@ namespace Resturant_managment.Controllers
             string title1 = "service quality";
             string title2 = "food quality";
             string title3 = "Personnel Behavior";
-            string title4 = "How long have you waited until you could find an empty table (Don't answer if you had already booked)  from very much to very quickly";
+            string title4 = "order accuracy";
             string title5 = "restaurant atmosphere";
             string title6 = "find room in parking lot";
             string title7 = "cleanliness of restaurant";
