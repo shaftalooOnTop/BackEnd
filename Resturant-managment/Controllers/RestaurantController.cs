@@ -49,7 +49,7 @@ public class RestaurantController : ControllerBase
 
         var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == id);
         if (restaurants == null) return NotFound();
-        restaurants.Avg = _db.Comments.Where(x => x.RestaurantId == id).Any() ? _db.Comments.Where(x => x.RestaurantId == id).Average(x => x.Rate) : 3.5;
+        restaurants.rate = _db.Polls.FirstOrDefault(x => x.restaurantid == id).restaurantrate;
         var result = _db.Foods.Where(x => x.Category.RestaurantId == id);
 
         var t = _db.Orders.Where(r => r.restaurantId == id)

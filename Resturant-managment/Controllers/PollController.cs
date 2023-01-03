@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Resturant_managment.Models;
 
 namespace Resturant_managment.Controllers
@@ -90,6 +91,16 @@ namespace Resturant_managment.Controllers
             r[4] = r5;
             r[5] = r6;
             r[6] = r7;
+            var d = r.Average(r => r);
+            var p = _db.Polls.Where(x => x.restaurantid == restaurantid).ToList();
+            foreach(var x in p)
+            {
+                x.restaurantrate = d;
+            }
+            var a = _db.Restaurant.Find(restaurantid);
+            a.rate = d;
+            _db.Update(a);
+            _db.SaveChanges();
             return Ok(r);
         }
        
