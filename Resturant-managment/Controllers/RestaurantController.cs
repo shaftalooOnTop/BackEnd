@@ -49,8 +49,7 @@ public class RestaurantController : ControllerBase
 
         var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == id);
         if (restaurants == null) return NotFound();
-        restaurants.rate = _db.Polls.FirstOrDefault(x => x.restaurantid == id).restaurantrate;
-        var result = _db.Foods.Where(x => x.Category.RestaurantId == id);
+       var result = _db.Foods.Where(x => x.Category.RestaurantId == id);
 
         var t = _db.Orders.Where(r => r.restaurantId == id)
             .SelectMany((arg) => arg.Foods).ToList()
