@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Resturant_managment;
 using Resturant_managment.Models;
+using Resturant_managment.Models.Interfaces;
 using Resturant_managment.Services;
 
 
@@ -63,6 +64,8 @@ builder.Services
         };
     });
 builder.Services.AddSingleton(builder.Environment);
+builder. Services.AddTransient<IMailService, Resturant_managment.Services.MailService>();
+
 
 var app = builder.Build();
 

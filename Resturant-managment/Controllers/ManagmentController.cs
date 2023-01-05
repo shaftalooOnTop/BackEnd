@@ -151,33 +151,75 @@ namespace Resturant_managment.Controllers
 
         [Authorize]
         [HttpGet("GetFoodSellChartData/{restaurantId}")]
-        public List<DayFoodSell> GetFoodSellChartData(int restaurantId)
+        public List<FoodSell> GetFoodSellChartDataDay(int restaurantId)
         {
             var d = DateTime.Now;
-            var firstDayOfTheYear = new DateTime(d.Year, 1, 1);
-            var lastDayOfTheYear = new DateTime(d.Year, 12, 31);
-            var t = _db.Orders.Where(c => c.restaurantId == restaurantId).ToArray()
-                .Where(x => x.DateCreated >= firstDayOfTheYear && x.DateCreated <= lastDayOfTheYear)
-                .Select(x => new { x.DateCreated, x.Foods })
-                .GroupBy(x => x.DateCreated.DayOfYear);
-            var l = new List<DayFoodSell>
-           ();
-            var foodList = _db.Foods.ToArray();
+
+            DateTime StartOfTheDay = new DateTime(d.Year, d.Month, d.Day, 0, 0, 0);
+            DateTime EndOfTheDay = new DateTime(d.Year, d.Month, d.Day, 23, 59, 59);
+            var t=_db.Orders.Where(x => x.restaurantId == restaurantId)
+               .Where(x => x.DateCreated >= StartOfTheDay && x.DateCreated <= EndOfTheDay)
+               .ToArray()
+               .SelectMany(x => x.Foods).GroupBy(x => x.id)
+               .ToDictionary(x => x.Key, x => x.Count()).ToList();
+          
+            var foodDic = _db.Foods.Select(x => new { x.id, x.Name }).ToDictionary(x => x.id, x => x.Name);
+            var l = new List<FoodSell>();
             foreach (var i in t)
             {
-                var tmp2 =
-                i.ToArray().SelectMany(x => x.Foods).GroupBy(x => x.id)
-                    .Select(x => new { x.Key, cnt = x.Count() }).ToArray()
-                    .Select(x => new FoodSell
-                    {
-                        Food = foodList.FirstOrDefault(f => f.id == x.Key),
-                        SellNubmer = x.cnt
-                    }).ToList();
-
-                var tmp = new DayFoodSell { Day = new DateTime(d.Year).AddDays(i.Key), SellList = tmp2 };
+                var tmp = new FoodSell { FoodName=foodDic[i.Key],SellNubmer=i.Value};
                 l.Add(tmp);
             }
             return l;
+        }
+        [Authorize]
+        [HttpGet("GetFoodSellChartData/{restaurantId}")]
+        public List<FoodSell> GetFoodSellChartDataWeek(int restaurantId)
+        {
+            var baseDate = DateTime.Now;
+            var thisWeekStart = baseDate.AddDays(-(int)baseDate.DayOfWeek);
+            var thisWeekEnd = thisWeekStart.AddDays(7).AddSeconds(-1);
+            var t = _db.Orders.Where(x => x.restaurantId == restaurantId)
+               .Where(x => x.DateCreated >= thisWeekStart && x.DateCreated <= thisWeekEnd)
+               .ToArray()
+               .SelectMany(x => x.Foods).GroupBy(x => x.id)
+               .ToDictionary(x => x.Key, x => x.Count()).ToList();
+
+            var foodDic = _db.Foods.Select(x => new { x.id, x.Name }).ToDictionary(x => x.id, x => x.Name);
+            var l = new List<FoodSell>();
+            foreach (var i in t)
+            {
+                var tmp = new FoodSell { FoodName = foodDic[i.Key], SellNubmer = i.Value };
+                l.Add(tmp);
+            }
+            return l;
+
+        }
+        [Authorize]
+        [HttpGet("GetFoodSellChartData/{restaurantId}")]
+        public List<FoodSell> GetFoodSellChartDataMonth(int restaurantId)
+        {
+            var d = DateTime.Now;
+
+            DateTime StartOfTheMonth = new DateTime(d.Year, d.Month, 1, 0, 0, 0);
+            var daysInMonth = DateTime.DaysInMonth(d.Year, d.Month);
+            DateTime EndOfTheMonth = new DateTime(d.Year, d.Month, daysInMonth, 23, 59, 59);
+
+            var t = _db.Orders.Where(x => x.restaurantId == restaurantId)
+               .Where(x => x.DateCreated >= StartOfTheMonth && x.DateCreated <= EndOfTheMonth)
+               .ToArray()
+               .SelectMany(x => x.Foods).GroupBy(x => x.id)
+               .ToDictionary(x => x.Key, x => x.Count()).ToList();
+
+            var foodDic = _db.Foods.Select(x => new { x.id, x.Name }).ToDictionary(x => x.id, x => x.Name);
+            var l = new List<FoodSell>();
+            foreach (var i in t)
+            {
+                var tmp = new FoodSell { FoodName = foodDic[i.Key], SellNubmer = i.Value };
+                l.Add(tmp);
+            }
+            return l;
+
         }
         [HttpGet("ExportRestaurant/{id}")]
         [Authorize]
