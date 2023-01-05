@@ -46,6 +46,12 @@ namespace Resturant_managment.Controllers
             return Ok(p);
         }
 
+        [HttpGet("id")]
+        public Poll? Get(int id)
+        {
+            return _db.Polls.Find(id);
+        }
+
         [HttpPost]
         public ActionResult Post(Poll value)
         {
@@ -55,7 +61,7 @@ namespace Resturant_managment.Controllers
         }
        
         [HttpPut]
-        public ActionResult Put(Category value)
+        public ActionResult Put(Poll value)
         {
             if (value.id == 0) return NotFound();
             _db.Update(value);
