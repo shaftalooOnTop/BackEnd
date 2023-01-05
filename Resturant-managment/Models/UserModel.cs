@@ -8,4 +8,6 @@ public class UserModel : BaseClass
     public string Password { get; set; }
     public string EmailAddress { get; set; }
     public string Role { get; set; }
+    public  virtual List<ReserveTable> restable { get; set; }
+    public virtual List<EntranceMangment> entranceMangment { get; set; }
 }

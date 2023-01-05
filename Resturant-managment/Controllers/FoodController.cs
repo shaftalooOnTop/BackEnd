@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Resturant_managment.Models;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Resturant_managment.Controllers
 {
     [Route("api/[controller]")]
@@ -15,7 +9,7 @@ namespace Resturant_managment.Controllers
 
         public FoodController(RmDbContext db)
         {
-           _db = db;
+            _db = db;
         }
         [HttpGet]
         public List<Food> Get()
@@ -25,41 +19,80 @@ namespace Resturant_managment.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public Food Get(int id)
+        public ActionResult<Food> Get(int id)
         {
-            return _db.Foods.Find(id);
+            var res = _db.Foods.Find(id);
+            if (res == null) return NotFound();
+            res.Image = null;
+            if(res.Photo!=null)
+            res.Photo.Img = "";
+            return res;
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Food value)
+        public Food Post([FromBody] Food value)
         {
+
+            var p=new Photo { Img=value.Image??""};
+            value.Image = null;
+            value.Photo = p;
             _db.Foods.Add(value);
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
+            return value;
+           
+
         }
         [HttpPost("PostRange")]
-        public ActionResult< List<Food>> PostRange([FromBody] List<Food> value)
+        public ActionResult<List<Food>> PostRange([FromBody] List<Food> value)
         {
             try
             {
+                var u = new Utils(_db);
+
+                value.ForEach(x => {
+                    x.Image = null;
+                    var p = string.IsNullOrEmpty(x.Image) ? null : new Photo { Img = x.Image ?? "" };
+                    x.Photo = p;
+                });
                 _db.Foods.AddRange(value);
-                _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return Ok(value);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return NoContent();
             }
         }
 
         [HttpPut]
-        public ActionResult<Food> Put(Food value)
+        public ActionResult<Food> Put([FromBody]Food food)
         {
-            if (value.id == 0) return NotFound();
+            if (food.id == 0) return NotFound();
+           
+            _db.Foods.Update(food);
+            _db.SaveChanges();
+            return Ok(food);
             
-            _db.Foods.Update(value);
-            _db.SaveChangesAsync();
-            return Ok(value);
+        }
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var t = _db.Foods.Find(id);
+            if (t == null)
+            {
+                return NotFound();
+            }
+
+            _db.Remove(t);
+            _db.SaveChanges();
+            return Ok();
+        }
+        [HttpGet("RestaurantFoodList{RestaurantId}")]
+        public List<Food> RestaurantFoodList(int RestaurantId)
+        {
+            return _db.Foods.Where(x => x.Category != null ? x.Category.RestaurantId == RestaurantId : false).ToList();
         }
         
     }
