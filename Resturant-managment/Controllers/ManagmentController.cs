@@ -150,7 +150,7 @@ namespace Resturant_managment.Controllers
         }
 
         [Authorize]
-        [HttpGet("GetFoodSellChartData/{restaurantId}")]
+        [HttpGet("GetFoodSellChartDataDay/{restaurantId}")]
         public List<FoodSell> GetFoodSellChartDataDay(int restaurantId)
         {
             var d = DateTime.Now;
@@ -173,7 +173,7 @@ namespace Resturant_managment.Controllers
             return l;
         }
         [Authorize]
-        [HttpGet("GetFoodSellChartData/{restaurantId}")]
+        [HttpGet("GetFoodSellChartDataWeek/{restaurantId}")]
         public List<FoodSell> GetFoodSellChartDataWeek(int restaurantId)
         {
             var baseDate = DateTime.Now;
@@ -196,7 +196,7 @@ namespace Resturant_managment.Controllers
 
         }
         [Authorize]
-        [HttpGet("GetFoodSellChartData/{restaurantId}")]
+        [HttpGet("GetFoodSellChartDataMonth/{restaurantId}")]
         public List<FoodSell> GetFoodSellChartDataMonth(int restaurantId)
         {
             var d = DateTime.Now;
