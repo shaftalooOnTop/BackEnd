@@ -237,7 +237,7 @@ namespace Resturant_managment.Controllers
         [Authorize]
         public async Task<ActionResult<ReturnData>> UserUpdate(UserSignUp userupdate)
         {
-            var upuser = await _userManager.FindByEmailAsync(userupdate.Email);
+            var upuser = RestaurantUser;
             if (upuser == null)
                 return NotFound();
             upuser.PhoneNumber = userupdate.PhoneNumber;
