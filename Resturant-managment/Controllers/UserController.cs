@@ -246,7 +246,8 @@ namespace Resturant_managment.Controllers
             upuser.Gender = userupdate.Gender;
             var u = new UserLogin { Email = upuser.Email, FullName = upuser.FullName, Id = upuser.Id, PhoneNumber = upuser.PhoneNumber, Password = userupdate.Password };
             await _userManager.UpdateAsync(upuser);
-            return Ok(GetBearerToken(u));
+            var t = await GetBearerToken(u);
+            return Ok(t);
         }
         [HttpPut("changpass")]
         [Authorize]
