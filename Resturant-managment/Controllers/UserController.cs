@@ -38,6 +38,7 @@ namespace Resturant_managment.Controllers
             _db = db;
             _roleManager = roleManager;
 
+
         }
    
         [HttpPost("PostUser")]
@@ -272,12 +273,12 @@ namespace Resturant_managment.Controllers
         [HttpGet("GetUserData")]
         public async Task<ActionResult<RestaurantIdentity>> GetUserData()
         {
-            var email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            var user = await _userManager.FindByEmailAsync(email);
+            //var email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            var user = RestaurantUser;
             if (user == null) return NotFound();
             user.PasswordHash = null;
             var IRoles = await _userManager.GetRolesAsync(user);
-            var roles = new List<String>(IRoles);
+            var roles = new List<string>(IRoles);
             user.RoleName = roles;
             return user;
         }
