@@ -128,11 +128,10 @@ namespace Resturant_managment.Controllers
         }
 
         [HttpGet("RestaurantOrders")]
-        public  List<Order> RestaurantOrders(string RestaurantId)
+        public  List<Order> RestaurantOrders(int RestaurantId)
         {
-            var result = _db.Orders.Where(x => x.RestaurantIdentityId == RestaurantId);
+            var result = _db.Orders.Where(x => x.restaurantId == RestaurantId);
                 
-
             return result.ToList();
         }
 
