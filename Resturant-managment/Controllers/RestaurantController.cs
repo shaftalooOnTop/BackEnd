@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Resturant_managment.Controllers;
-//[Authorize(Roles = "RestaurantAdmin")]
+[Authorize(Roles = "RestaurantAdmin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RestaurantController : ControllerBase
@@ -29,7 +29,7 @@ public class RestaurantController : ControllerBase
         _userManager = userManager;
     }
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0, int cityid = -1)
     {
 
@@ -45,7 +45,7 @@ public class RestaurantController : ControllerBase
 
 
     [HttpGet("{id}")]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public ActionResult<Restaurant> Get(int id)
     {
 
@@ -74,7 +74,7 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "RestaurantAdmin")]
+    [Authorize(Roles = "RestaurantAdmin")]
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
 
@@ -87,7 +87,7 @@ public class RestaurantController : ControllerBase
         return Ok(value);
     }
     [HttpGet("GetRestaurantMenu/{id}")]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public ActionResult<List<Category>> GetRestaurantMenu(int id)
     {
         return _db.Categories.Where(c => c.RestaurantId == id).ToList();
