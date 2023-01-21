@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Resturant_managment.Controllers;
-
+[Authorize(Roles = "RestaurantAdmin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RestaurantController : ControllerBase
@@ -29,6 +29,7 @@ public class RestaurantController : ControllerBase
         _userManager = userManager;
     }
     [HttpGet]
+    [AllowAnonymous]
     public ActionResult<List<Restaurant>> Get(string tag, int size = 10, int number = 0, int cityid = -1)
     {
 
@@ -44,6 +45,7 @@ public class RestaurantController : ControllerBase
 
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public ActionResult<Restaurant> Get(int id)
     {
 
@@ -72,7 +74,7 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "RestaurantAdmin")]
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
 
@@ -85,6 +87,7 @@ public class RestaurantController : ControllerBase
         return Ok(value);
     }
     [HttpGet("GetRestaurantMenu/{id}")]
+    [AllowAnonymous]
     public ActionResult<List<Category>> GetRestaurantMenu(int id)
     {
         return _db.Categories.Where(c => c.RestaurantId == id).ToList();
@@ -107,6 +110,7 @@ public class RestaurantController : ControllerBase
 
 
     [HttpGet("fake")]
+    [AllowAnonymous]
     public ActionResult getFake()
     {
         var img = _db.Foods.FirstOrDefault().Image;
@@ -121,6 +125,7 @@ public class RestaurantController : ControllerBase
         return Content(img, type);
     }
     [HttpGet("FavoriteFood")]
+    [AllowAnonymous]
     public ActionResult<Restaurant> FavoriteFoodByCategory(int RestaurantId)
     {
         var restaurants = _db.Restaurant.FirstOrDefault(x => x.id == RestaurantId);
@@ -147,5 +152,6 @@ public class RestaurantController : ControllerBase
 
     }
 
+    
 }
 

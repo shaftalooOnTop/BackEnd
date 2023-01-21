@@ -1,4 +1,6 @@
-﻿namespace Resturant_managment.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Resturant_managment.Models
 {
     public class UserSignUp
     {
@@ -14,6 +16,7 @@
 
         public string Gender { get; set; }
 
-        
+       
+
     }
 }
