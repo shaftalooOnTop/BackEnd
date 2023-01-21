@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Resturant_managment.Controllers;
-[Authorize(Roles = "RestaurantAdmin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RestaurantController : ControllerBase
@@ -74,7 +73,7 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "RestaurantAdmin")]
+    [Authorize]
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
 
@@ -93,6 +92,8 @@ public class RestaurantController : ControllerBase
         return _db.Categories.Where(c => c.RestaurantId == id).ToList();
     }
     [HttpPut]
+    [Authorize(Roles = "RestaurantAdmin")]
+
     public ActionResult<Restaurant> Put(Restaurant restaurant)
     {
         _db.Update(restaurant);
@@ -100,6 +101,8 @@ public class RestaurantController : ControllerBase
         return restaurant;
     }
     [HttpDelete]
+    [Authorize(Roles = "RestaurantAdmin")]
+
     public ActionResult Delete(int id)
     {
         var obj = _db.Restaurant.Find(id);

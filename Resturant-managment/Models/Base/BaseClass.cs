@@ -6,8 +6,9 @@ namespace Resturant_managment.Models.Base
 {
 	public class BaseClass
 	{
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key, Column(Order = 0)]
+        
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Key, Column(Order = 0)]
         public int id { get; set; } = 0;
         public DateTime DateCreated { get; set; } = DateTime.Now;
     }

@@ -220,7 +220,7 @@ namespace Resturant_managment.Controllers
             {
                 return BadRequest("Bad credentials");
             }
-
+            
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!isPasswordValid)
@@ -337,7 +337,7 @@ namespace Resturant_managment.Controllers
             if (e.Succeeded)
 
                 return Ok(RestaurantUser);
-            return BadRequest(RestaurantUser);
+            return BadRequest();
         }
 
     }
