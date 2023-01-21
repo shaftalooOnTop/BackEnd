@@ -18,6 +18,8 @@ public class Restaurant:BaseClass
     public virtual int? CityId { get; set; }
     public virtual List<ThemeOfTable>?  ThemeOfTable { get; set; }
     public virtual List<Poll>? Polls { get; set; }
+    public virtual List<primium>? Primiums { get; set; }
+    public DateTime? primium_ex { get; set; }
     public  DateTime StartWorkingHour { get; set; }
     public DateTime EndWorkingHour { get; set; }
     public virtual List<RestaurantTable>? tables { get; set; }
@@ -40,5 +42,8 @@ public class Restaurant:BaseClass
     public virtual RestaurantIdentity? RestaurantIdentity { get; set; }
     public virtual string? RestaurantIdentityId { get; set; }
 
+   //[ForeignKey("PrimiumId")]
+    //public virtual primium? Primium { get; set; }
+    //public virtual int? PrimiumtId { get; set; }
 
 }

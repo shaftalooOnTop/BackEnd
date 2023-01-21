@@ -109,6 +109,11 @@ namespace Resturant_managment.Controllers
             _db.SaveChanges();
             return Ok(r);
         }
-       
+        [HttpGet("number")]
+        public ActionResult number(int restaurantid)
+        {
+            var n = _db.Polls.Where(x=>x.restaurantid == restaurantid).Count();
+            return Ok(n);
+        }
     }
 }

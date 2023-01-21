@@ -8,8 +8,8 @@ namespace Resturant_managment.Models
     public class RestaurantTable: BaseClass
     {
         public  int number { get; set; }
-        public int capacity { get; set; } 
-        
+        public int capacity { get; set; }
+        public string? img { get; set; }
         public double? rank { get; set; }
 
         public int RestaurantId { get; set; }

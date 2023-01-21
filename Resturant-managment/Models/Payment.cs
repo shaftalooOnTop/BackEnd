@@ -18,8 +18,8 @@ namespace Resturant_managment.Models
     }
 	public class Payment:BaseClass
 	{
-        public paymentType PaymentType { get; set; }
-        public paymentState PaymentState { get; set; }
+        public paymentType? PaymentType { get; set; }
+        public paymentState? PaymentState { get; set; }
         [ForeignKey("OrderId")]
         [JsonIgnore]
         [IgnoreDataMember]

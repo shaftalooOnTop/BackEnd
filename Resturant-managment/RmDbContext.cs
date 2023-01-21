@@ -46,4 +46,5 @@ public class RmDbContext:IdentityUserContext<RestaurantIdentity>
     public DbSet<LandingPage> LandingPages { get; set; }
     public DbSet<ThemeOfTable> ThemeOfTables { get; set; }
     public DbSet<Poll> Polls { get; set; }
+    public DbSet<primium> Primiums { get; set; }
 }

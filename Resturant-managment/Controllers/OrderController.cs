@@ -173,13 +173,28 @@ namespace Resturant_managment.Controllers
 
         }
 
-        [HttpGet("TotalNumberOfOrders")]
+        [HttpGet("TotalNumberOfToday")]
         public ActionResult<List<Order>> TotalNumberOfOrders(int restaurantid)
         {
-            return Ok( _db.Orders.Where(x=>x.restaurantId == restaurantid).ToList().Count());
+            var n = _db.Orders.Where(x => x.restaurantId == restaurantid && x.DateCreated <= DateTime.Now && x.DateCreated >= DateTime.Today).ToList().Count();
+            return Ok(n);
         }
 
+        [HttpGet("TotalNumberOfmonth")]
+        public ActionResult<List<Order>> TotalNumberOfMonth(int restaurantid)
+        {
+            DateTime dt = DateTime.Now;
+            var n = _db.Orders.Where(x => x.restaurantId == restaurantid && x.DateCreated <= DateTime.Now && x.DateCreated.Month >= dt.Month ).ToList().Count();
+            return Ok(n);
+        }
 
+        [HttpGet("TotalNumberOfyear")]
+        public ActionResult<List<Order>> TotalNumberOfyear(int restaurantid)
+        {
+            DateTime dt = DateTime.Now;
+            var n = _db.Orders.Where(x => x.restaurantId == restaurantid && x.DateCreated <= DateTime.Now && x.DateCreated.Year >= dt.Year).ToList().Count();
+            return Ok(n);
+        }
 
     }
 
