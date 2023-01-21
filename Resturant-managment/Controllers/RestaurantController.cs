@@ -74,7 +74,7 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "RestaurantAdmin")]
+    //[Authorize(Roles = "RestaurantAdmin")]
     public ActionResult<Restaurant> Post([FromBody] Restaurant value)
     {
 
