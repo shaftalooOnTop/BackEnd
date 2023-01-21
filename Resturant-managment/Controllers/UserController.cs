@@ -233,6 +233,44 @@ namespace Resturant_managment.Controllers
             return Ok(token);
 
         }
+
+
+        [HttpPost("AdminBearerToken")]
+        [AllowAnonymous]
+        public async Task<ActionResult<AuthenticationResponse>> CreateBearerTokenForAdmin(BearerTokenModel request)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+ 
+            
+            if (user == null )
+            {
+                return BadRequest("Bad credentials");
+            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var is_user_admin = userRoles.Any(x => x == "RestaurantAdmin");
+            if (!is_user_admin) return Forbid();
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+
+            if (!isPasswordValid)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var token = _jwtService.CreateToken(user);
+
+            return Ok(token);
+
+        }
+
+
+
         [HttpPut]
         [Authorize]
         public async Task<ActionResult<ReturnData>> UserUpdate(UserSignUp userupdate)
@@ -316,4 +354,6 @@ namespace Resturant_managment.Controllers
         public DateTime Expiration { get; set; }
         public List<string> Role { get; set; }
     }
+
+    
 }
