@@ -104,13 +104,12 @@ public class RestaurantController : ControllerBase
 
 
     [HttpDelete]
-    
-
     public ActionResult Delete(int id)
     {
         var obj = _db.Restaurant.Find(id);
         if (obj == null) return NotFound();
         _db.Remove(obj);
+        _db.SaveChanges();
         return Ok(id);
     }
 
