@@ -235,11 +235,11 @@ namespace Resturant_managment.Controllers
         }
         [HttpGet("getOrdersByStatus")]
         [Authorize]
-        public List<Order> GetOrdersByStatus(DateTime From ,DateTime To ,Orderstatus stat)
+        public List<Order> GetOrdersByStatus(DateTime From ,DateTime To ,Orderstatus stat , int restaurantid)
         {
             return
                 _db.Orders
-                .Where(c => c.DateCreated >= From && c.DateCreated <= To && c.stat == stat)
+                .Where(c => c.DateCreated >= From && c.DateCreated <= To && c.stat == stat && c.restaurantId == restaurantid)
                 .ToList();
         }
     }
