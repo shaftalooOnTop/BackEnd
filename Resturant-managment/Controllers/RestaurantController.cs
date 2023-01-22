@@ -91,9 +91,10 @@ public class RestaurantController : ControllerBase
     {
         return _db.Categories.Where(c => c.RestaurantId == id).ToList();
     }
-    [HttpPut]
-    [Authorize(Roles = "RestaurantAdmin")]
 
+
+    [HttpPut]
+   
     public ActionResult<Restaurant> Put(Restaurant restaurant)
     {
         _db.Update(restaurant);
