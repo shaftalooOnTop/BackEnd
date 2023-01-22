@@ -100,8 +100,10 @@ public class RestaurantController : ControllerBase
         _db.SaveChanges();
         return restaurant;
     }
+
+
     [HttpDelete]
-    [Authorize(Roles = "RestaurantAdmin")]
+    
 
     public ActionResult Delete(int id)
     {
