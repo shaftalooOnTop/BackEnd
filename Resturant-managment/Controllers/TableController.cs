@@ -77,7 +77,7 @@ namespace Resturant_managment.Controllers
             }
 
             var t = _db.RestaurantTables.Where(x => x.RestaurantId == restaurantid).OrderBy(x=>x.rank).Take(3).ToList();
-            return Ok();
+            return Ok(t);
         }
 
     }
