@@ -65,9 +65,9 @@ namespace Resturant_managment.Controllers
             return Ok(order);
         }
         [HttpGet("orderstatus")]
-        public ActionResult<Order> orderstatus( Orderstatus statu)
+        public ActionResult<Order> orderstatus( Orderstatus statu , int restauntid)
         {
-            var o =_db.Orders.Where(x => x.stat==statu);
+            var o =_db.Orders.Where(x => x.stat==statu && x.restaurantId == restauntid);
             return Ok(o);
         }
 
