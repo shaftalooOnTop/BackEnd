@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Resturant_managment.Models;
 using Resturant_managment.Models.Managment;
 
@@ -176,6 +177,7 @@ namespace Resturant_managment.Controllers
         [HttpGet("GetFoodSellChartDataWeek/{restaurantId}")]
         public List<FoodSell> GetFoodSellChartDataWeek(int restaurantId)
         {
+            
             var baseDate = DateTime.Now;
             var thisWeekStart = baseDate.AddDays(-(int)baseDate.DayOfWeek);
             var thisWeekEnd = thisWeekStart.AddDays(7).AddSeconds(-1);

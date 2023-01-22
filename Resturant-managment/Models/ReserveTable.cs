@@ -10,7 +10,6 @@ namespace Resturant_managment.Models
     public class ReserveTable : BaseClass
     {
         public string? theme { get; set; }
-        public int? rate { get; set; }
         public int? PaymentId { get; set; }
         [ForeignKey("PaymentId")]
        public virtual Payment ?Payment { get; set; }

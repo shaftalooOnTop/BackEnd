@@ -69,7 +69,14 @@ namespace Resturant_managment.Controllers
         [HttpGet("tablerank")]
         public ActionResult<List<RestaurantTable>> rank(int restaurantid)
         {
-            var t = _db.RestaurantTables.Where(x => x.RestaurantId == restaurantid).OrderBy(x=>x.rank).Take(5).ToList();
+            var r = _db.RestaurantTables.Where(x => x.RestaurantId == restaurantid).ToList();
+            foreach (var i in r)
+            {
+                var c = _db.ReserveTables.Where(x => x.TableId == i.id).ToList().Count();
+                i.rank = c;
+            }
+
+            var t = _db.RestaurantTables.Where(x => x.RestaurantId == restaurantid).OrderBy(x=>x.rank).Take(3).ToList();
             return Ok();
         }
 

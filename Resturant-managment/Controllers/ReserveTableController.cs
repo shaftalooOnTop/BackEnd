@@ -135,22 +135,7 @@ namespace Resturant_managment.Controllers
             return Ok(th);
         }
 
-        [HttpPut("TableRate")]
-        public ActionResult<List<RestaurantTable>> TableRate(int rate,int reservetableid)
-        {
-            var r = _db.ReserveTables.Find(reservetableid);
-            r.rate = rate;
-            var q = r.TableId;
-            _db.Update(r);
-            _db.SaveChanges();
-            return Ok();
-
-            var d = _db.ReserveTables.Where(x => x.TableId == q).ToList();
-            var ran = d.Average(x => x.rate);
-            var t = _db.RestaurantTables.Find(q);
-            t.rank = ran;
-            _db.Update(t);
-            _db.SaveChanges();
-        }
+       
+       
     }
 }
